@@ -6,9 +6,7 @@ use App\Models\Payment;
 use App\Models\User;
 use App\Services\Payments\ChipClient;
 use App\Services\Payments\ChipPaymentSynchronizer;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,71 +16,47 @@ use Throwable;
 
 class CheckoutController extends Controller
 {
-    public function index(Request $request): Response
+    public function index(): Response
     {
         return Inertia::render('Checkout/Index', [
             'plan' => [
-                'name' => 'JomKid Annual Access',
+                'name' => 'JomKid Lifetime Access',
                 'price_sen' => 6900,
                 'currency' => 'MYR',
                 'child_limit' => 3,
             ],
-            'activeSubscription' => $request->user()->subscriptions()
-                ->where('status', 'active')
-                ->latest()
-                ->first(),
         ]);
     }
 
     public function store(Request $request, ChipClient $chip): SymfonyResponse
     {
-        $hasActiveAccess = $request->user()->subscriptions()
-            ->where('status', 'active')
-            ->where(function ($query): void {
-                $query->whereNull('ends_at')->orWhere('ends_at', '>', now());
-            })
-            ->exists();
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:128'],
+            'email' => ['required', 'email:rfc', 'max:254'],
+        ]);
 
-        if ($hasActiveAccess) {
-            return back()->withErrors([
-                'payment' => 'Langganan JomKid anda masih aktif.',
-            ]);
-        }
+        $affiliateId = (int) $request->session()->get('affiliate_user_id');
+        $affiliateId = (int) User::query()
+            ->whereKey($affiliateId)
+            ->where('affiliate_active', true)
+            ->whereIn('role', ['affiliate', 'admin'])
+            ->value('id');
 
-        [$subscription, $payment] = DB::transaction(function () use ($request): array {
-            $subscription = $request->user()->subscriptions()->create([
-                'plan_code' => 'jomkid-annual',
-                'status' => 'pending',
-                'price_sen' => 6900,
-            ]);
-
-            $uuid = (string) Str::uuid();
-            $affiliateId = (int) $request->session()->get('affiliate_user_id');
-            if ($affiliateId === $request->user()->id) {
-                $affiliateId = 0;
-            }
-            $affiliateId = (int) User::query()
-                ->whereKey($affiliateId)
-                ->where('affiliate_active', true)
-                ->whereIn('role', ['affiliate', 'admin'])
-                ->value('id');
-
-            $payment = $request->user()->payments()->create([
-                'uuid' => $uuid,
-                'affiliate_user_id' => $affiliateId ?: null,
-                'subscription_id' => $subscription->id,
-                'provider' => 'chip',
-                'reference' => 'JOMKID-'.$request->user()->id.'-'.Str::upper(Str::substr($uuid, 0, 8)),
-                'status' => Payment::STATUS_INITIALIZED,
-                'amount_sen' => 6900,
-                'currency' => 'MYR',
-            ]);
-
-            return [$subscription, $payment];
-        });
+        $uuid = (string) Str::uuid();
+        $payment = Payment::create([
+            'uuid' => $uuid,
+            'customer_name' => $validated['name'],
+            'customer_email' => Str::lower($validated['email']),
+            'affiliate_user_id' => $affiliateId ?: null,
+            'provider' => 'chip',
+            'reference' => 'JOMKID-'.Str::upper(Str::substr($uuid, 0, 8)),
+            'status' => Payment::STATUS_INITIALIZED,
+            'amount_sen' => 6900,
+            'currency' => 'MYR',
+        ]);
 
         try {
-            $purchase = $chip->createPurchase($request->user(), $payment);
+            $purchase = $chip->createPurchase($payment);
             $purchaseId = data_get($purchase, 'id');
             $checkoutUrl = data_get($purchase, 'checkout_url');
 
@@ -101,7 +75,6 @@ class CheckoutController extends Controller
         } catch (Throwable $exception) {
             report($exception);
             $payment->update(['status' => Payment::STATUS_FAILED, 'failed_at' => now()]);
-            $subscription->update(['status' => 'failed']);
 
             return back()->withErrors([
                 'payment' => 'Pembayaran CHIP tidak dapat dimulakan. Sila cuba lagi sebentar lagi.',
@@ -110,38 +83,34 @@ class CheckoutController extends Controller
     }
 
     public function success(
-        Request $request,
-        Payment $payment,
-        ChipClient $chip,
-        ChipPaymentSynchronizer $synchronizer,
-    ): Response|RedirectResponse {
-        $this->authorizePayment($request, $payment);
-        $payment = $this->refreshFromChip($payment, $chip, $synchronizer);
-
-        return Inertia::render('Checkout/Result', [
-            'payment' => $payment->only(['uuid', 'status', 'amount_sen', 'currency', 'paid_at']),
-            'successful' => $payment->status === Payment::STATUS_PAID,
-        ]);
-    }
-
-    public function failure(
-        Request $request,
         Payment $payment,
         ChipClient $chip,
         ChipPaymentSynchronizer $synchronizer,
     ): Response {
-        $this->authorizePayment($request, $payment);
         $payment = $this->refreshFromChip($payment, $chip, $synchronizer);
 
-        return Inertia::render('Checkout/Result', [
-            'payment' => $payment->only(['uuid', 'status', 'amount_sen', 'currency', 'paid_at']),
-            'successful' => $payment->status === Payment::STATUS_PAID,
-        ]);
+        return $this->result($payment);
     }
 
-    private function authorizePayment(Request $request, Payment $payment): void
+    public function failure(
+        Payment $payment,
+        ChipClient $chip,
+        ChipPaymentSynchronizer $synchronizer,
+    ): Response {
+        $payment = $this->refreshFromChip($payment, $chip, $synchronizer);
+
+        return $this->result($payment);
+    }
+
+    private function result(Payment $payment): Response
     {
-        abort_unless($payment->user_id === $request->user()->id, 403);
+        return Inertia::render('Checkout/Result', [
+            'payment' => [
+                ...$payment->only(['uuid', 'status', 'amount_sen', 'currency', 'paid_at']),
+                'email_hint' => $this->maskEmail($payment->customer_email),
+            ],
+            'successful' => $payment->status === Payment::STATUS_PAID,
+        ]);
     }
 
     private function refreshFromChip(
@@ -160,5 +129,12 @@ class CheckoutController extends Controller
 
             return $payment->refresh();
         }
+    }
+
+    private function maskEmail(string $email): string
+    {
+        [$local, $domain] = array_pad(explode('@', $email, 2), 2, '');
+
+        return Str::substr($local, 0, 2).'***@'.$domain;
     }
 }

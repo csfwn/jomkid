@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Fillable([
-    'uuid', 'user_id', 'affiliate_user_id', 'subscription_id', 'provider', 'provider_purchase_id',
+    'uuid', 'customer_name', 'customer_email', 'user_id', 'affiliate_user_id',
+    'provider', 'provider_purchase_id',
     'reference', 'status', 'amount_sen', 'currency', 'checkout_url',
     'provider_payload', 'paid_at', 'failed_at', 'refunded_at',
 ])]
@@ -52,9 +54,9 @@ class Payment extends Model
         return $this->belongsTo(User::class, 'affiliate_user_id');
     }
 
-    /** @return BelongsTo<Subscription, $this> */
-    public function subscription(): BelongsTo
+    /** @return HasOne<AccessCode, $this> */
+    public function accessCode(): HasOne
     {
-        return $this->belongsTo(Subscription::class);
+        return $this->hasOne(AccessCode::class);
     }
 }

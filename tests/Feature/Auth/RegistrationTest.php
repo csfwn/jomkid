@@ -2,7 +2,11 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\AccessCode;
+use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Laravel\Fortify\Features;
 use Tests\TestCase;
 
@@ -17,16 +21,31 @@ class RegistrationTest extends TestCase
         $this->skipUnlessFortifyHas(Features::registration());
     }
 
-    public function test_registration_screen_can_be_rendered()
+    public function test_registration_screen_can_be_rendered(): void
     {
-        $response = $this->get(route('register'));
-
-        $response->assertOk();
+        $this->get(route('register'))->assertOk();
     }
 
-    public function test_new_users_can_register()
+    public function test_registration_is_blocked_without_an_access_code(): void
     {
+        $this->post(route('register.store'), [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ])->assertSessionHasErrors('access_code');
+
+        $this->assertGuest();
+        $this->assertDatabaseCount('users', 0);
+    }
+
+    public function test_paid_single_use_code_registers_one_lifetime_user(): void
+    {
+        $plainCode = 'JOMKID-ABCD-EFGH-JKLM';
+        $accessCode = $this->createAccessCode($plainCode, 'test@example.com');
+
         $response = $this->post(route('register.store'), [
+            'access_code' => $plainCode,
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'password',
@@ -35,5 +54,69 @@ class RegistrationTest extends TestCase
 
         $this->assertAuthenticated();
         $response->assertRedirect(route('dashboard', absolute: false));
+        $user = User::query()->sole();
+        $this->assertSame('active', $user?->access_status);
+        $this->assertNotNull($user?->lifetime_access_at);
+        $this->assertSame(AccessCode::STATUS_USED, $accessCode->refresh()->status);
+        $this->assertSame($user?->id, $accessCode->used_by_user_id);
+        $this->assertSame($user?->id, $accessCode->payment?->user_id);
+    }
+
+    public function test_used_code_cannot_register_another_user(): void
+    {
+        $plainCode = 'JOMKID-WXYZ-1234-5678';
+        $accessCode = $this->createAccessCode($plainCode, 'second@example.com');
+        $accessCode->update(['status' => AccessCode::STATUS_USED, 'used_at' => now()]);
+
+        $this->post(route('register.store'), [
+            'access_code' => $plainCode,
+            'name' => 'Second User',
+            'email' => 'second@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ])->assertSessionHasErrors('access_code');
+
+        $this->assertGuest();
+        $this->assertDatabaseCount('users', 0);
+    }
+
+    public function test_code_is_bound_to_purchase_email(): void
+    {
+        $plainCode = 'JOMKID-MAIL-ONLY-0001';
+        $this->createAccessCode($plainCode, 'buyer@example.com');
+
+        $this->post(route('register.store'), [
+            'access_code' => $plainCode,
+            'name' => 'Wrong Email',
+            'email' => 'other@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ])->assertSessionHasErrors('email');
+
+        $this->assertGuest();
+    }
+
+    private function createAccessCode(string $plainCode, string $email): AccessCode
+    {
+        $payment = Payment::create([
+            'uuid' => (string) Str::uuid(),
+            'customer_name' => 'Test Parent',
+            'customer_email' => $email,
+            'provider' => 'chip',
+            'provider_purchase_id' => (string) Str::uuid(),
+            'reference' => 'JOMKID-'.Str::upper(Str::random(8)),
+            'status' => Payment::STATUS_PAID,
+            'amount_sen' => 6900,
+            'currency' => 'MYR',
+            'paid_at' => now(),
+        ]);
+
+        return AccessCode::create([
+            'payment_id' => $payment->id,
+            'email' => $email,
+            'code_hash' => AccessCode::hashCode($plainCode),
+            'code_hint' => Str::substr($plainCode, -4),
+            'status' => AccessCode::STATUS_ACTIVE,
+        ]);
     }
 }

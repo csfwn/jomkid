@@ -12,48 +12,65 @@ import { store } from '@/routes/register';
 
 defineProps<{
     passwordRules: string;
+    accessCode: string;
 }>();
 
 defineOptions({
     layout: {
-        title: 'Create an account',
-        description: 'Enter your details below to create your account',
+        title: 'Daftar akaun JomKid',
+        description: 'Gunakan kod sekali guna yang dihantar selepas pembelian',
     },
 });
 </script>
 
 <template>
-    <Head title="Register" />
+    <Head title="Daftar dengan kod akses" />
 
     <Form
         v-bind="store.form()"
-        :reset-on-success="['password', 'password_confirmation']"
+        :reset-on-success="['access_code', 'password', 'password_confirmation']"
         v-slot="{ errors, processing }"
         class="flex flex-col gap-6"
     >
         <div class="grid gap-6">
             <div class="grid gap-2">
-                <Label for="name">Name</Label>
+                <Label for="access_code">Kod akses sekali guna</Label>
                 <Input
-                    id="name"
+                    id="access_code"
                     type="text"
                     required
                     autofocus
                     :tabindex="1"
+                    autocomplete="one-time-code"
+                    name="access_code"
+                    :default-value="accessCode"
+                    placeholder="JOMKID-XXXX-XXXX-XXXX"
+                    class="font-mono uppercase"
+                />
+                <InputError :message="errors.access_code" />
+            </div>
+
+            <div class="grid gap-2">
+                <Label for="name">Nama penuh</Label>
+                <Input
+                    id="name"
+                    type="text"
+                    required
+                    :tabindex="2"
                     autocomplete="name"
                     name="name"
-                    placeholder="Full name"
+                    placeholder="Nama penuh"
                 />
                 <InputError :message="errors.name" />
             </div>
 
             <div class="grid gap-2">
-                <Label for="email">Email address</Label>
+                <Label for="email">Alamat e-mel pembelian</Label>
                 <Input
                     id="email"
                     type="email"
                     required
-                    :tabindex="2"
+                    :tabindex="3"
                     autocomplete="email"
                     name="email"
                     placeholder="email@example.com"
@@ -62,28 +79,28 @@ defineOptions({
             </div>
 
             <div class="grid gap-2">
-                <Label for="password">Password</Label>
+                <Label for="password">Kata laluan</Label>
                 <PasswordInput
                     id="password"
                     required
-                    :tabindex="3"
+                    :tabindex="4"
                     autocomplete="new-password"
                     name="password"
-                    placeholder="Password"
+                    placeholder="Kata laluan"
                     :passwordrules="passwordRules"
                 />
                 <InputError :message="errors.password" />
             </div>
 
             <div class="grid gap-2">
-                <Label for="password_confirmation">Confirm password</Label>
+                <Label for="password_confirmation">Sahkan kata laluan</Label>
                 <PasswordInput
                     id="password_confirmation"
                     required
-                    :tabindex="4"
+                    :tabindex="5"
                     autocomplete="new-password"
                     name="password_confirmation"
-                    placeholder="Confirm password"
+                    placeholder="Sahkan kata laluan"
                     :passwordrules="passwordRules"
                 />
                 <InputError :message="errors.password_confirmation" />
@@ -92,22 +109,28 @@ defineOptions({
             <Button
                 type="submit"
                 class="mt-2 w-full"
-                tabindex="5"
+                tabindex="6"
                 :disabled="processing"
                 data-test="register-user-button"
             >
                 <Spinner v-if="processing" />
-                Create account
+                Daftar dan aktifkan akses
             </Button>
         </div>
 
         <div class="text-center text-sm text-muted-foreground">
-            Already have an account?
+            Belum beli kod akses?
+            <TextLink href="/checkout" class="underline underline-offset-4"
+                >Beli RM69</TextLink
+            >
+        </div>
+        <div class="text-center text-sm text-muted-foreground">
+            Sudah mempunyai akaun?
             <TextLink
                 :href="login()"
                 class="underline underline-offset-4"
-                :tabindex="6"
-                >Log in</TextLink
+                :tabindex="7"
+                >Log masuk</TextLink
             >
         </div>
     </Form>

@@ -3,7 +3,6 @@
 namespace App\Services\Payments;
 
 use App\Models\Payment;
-use App\Models\User;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
@@ -13,19 +12,19 @@ use RuntimeException;
 class ChipClient
 {
     /** @return array<string, mixed> */
-    public function createPurchase(User $user, Payment $payment): array
+    public function createPurchase(Payment $payment): array
     {
         $payload = [
             'brand_id' => $this->brandId(),
             'client' => [
-                'email' => $user->email,
-                'full_name' => $user->name,
+                'email' => $payment->customer_email,
+                'full_name' => $payment->customer_name,
             ],
             'purchase' => [
                 'currency' => 'MYR',
                 'language' => 'ms',
                 'products' => [[
-                    'name' => 'JomKid Annual Access',
+                    'name' => 'JomKid Lifetime Access',
                     'price' => $payment->amount_sen,
                 ]],
             ],
@@ -36,7 +35,7 @@ class ChipClient
             'failure_redirect' => route('checkout.failure', $payment->uuid),
             'cancel_redirect' => route('checkout.failure', $payment->uuid),
             'success_callback' => route('webhooks.chip'),
-            'tags' => ['jomkid', 'annual-access'],
+            'tags' => ['jomkid', 'lifetime-access'],
         ];
 
         /** @var array<string, mixed> $response */

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\CaptureAffiliateReferral;
+use App\Http\Middleware\EnsureLifetimeAccess;
 use App\Http\Middleware\EnsureRole;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'role' => EnsureRole::class,
+            'lifetime-access' => EnsureLifetimeAccess::class,
         ]);
 
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);

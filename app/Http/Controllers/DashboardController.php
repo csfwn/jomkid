@@ -16,7 +16,7 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard', [
             'children' => $user->childProfiles()->latest()->get(),
             'modules' => LearningModule::query()->where('status', 'published')->withCount(['lessons' => fn ($query) => $query->where('is_published', true)])->orderBy('sort_order')->get(),
-            'subscription' => $user->subscriptions()->latest()->first(),
+
         ]);
     }
 }

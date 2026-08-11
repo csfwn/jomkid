@@ -19,16 +19,19 @@ Route::post('webhooks/chip', ChipWebhookController::class)
     ->middleware('throttle:120,1')
     ->name('webhooks.chip');
 
+Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('checkout', [CheckoutController::class, 'store'])
+    ->middleware('throttle:10,1')
+    ->name('checkout.store');
+Route::get('checkout/{payment}/success', [CheckoutController::class, 'success'])->name('checkout.success');
+Route::get('checkout/{payment}/failure', [CheckoutController::class, 'failure'])->name('checkout.failure');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
-    Route::resource('children', ChildProfileController::class)->except(['create', 'show', 'edit']);
-    Route::get('learn', [LearnController::class, 'index'])->name('learn.index');
-    Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-    Route::post('checkout', [CheckoutController::class, 'store'])
-        ->middleware('throttle:10,1')
-        ->name('checkout.store');
-    Route::get('checkout/{payment}/success', [CheckoutController::class, 'success'])->name('checkout.success');
-    Route::get('checkout/{payment}/failure', [CheckoutController::class, 'failure'])->name('checkout.failure');
+    Route::middleware('lifetime-access')->group(function () {
+        Route::resource('children', ChildProfileController::class)->except(['create', 'show', 'edit']);
+        Route::get('learn', [LearnController::class, 'index'])->name('learn.index');
+    });
 
     Route::get('affiliate', AffiliateDashboardController::class)
         ->middleware('role:affiliate,admin')

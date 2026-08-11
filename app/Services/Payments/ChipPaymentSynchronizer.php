@@ -4,11 +4,14 @@ namespace App\Services\Payments;
 
 use App\Models\AffiliateCommission;
 use App\Models\Payment;
+use App\Services\Access\AccessCodeIssuer;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
 class ChipPaymentSynchronizer
 {
+    public function __construct(private readonly AccessCodeIssuer $accessCodes) {}
+
     /** @param array<string, mixed> $purchase */
     public function sync(Payment $payment, array $purchase): Payment
     {
@@ -34,18 +37,15 @@ class ChipPaymentSynchronizer
                     $locked->status = Payment::STATUS_PAID;
                     $locked->paid_at = $paidAt;
                     $locked->failed_at = null;
-                    $locked->subscription?->update([
-                        'status' => 'active',
-                        'starts_at' => $paidAt,
-                        'ends_at' => $paidAt->copy()->addYear(),
-                    ]);
+                    $this->accessCodes->issue($locked);
 
-                    if ($locked->affiliate_user_id && $locked->subscription_id) {
+                    if ($locked->affiliate_user_id) {
                         AffiliateCommission::firstOrCreate(
-                            ['subscription_id' => $locked->subscription_id],
+                            ['payment_id' => $locked->id],
                             [
                                 'affiliate_user_id' => $locked->affiliate_user_id,
-                                'buyer_user_id' => $locked->user_id,
+                                'buyer_user_id' => null,
+
                                 'amount_sen' => (int) config('affiliate.commission_sen', 3450),
                                 'status' => 'pending',
                                 'available_at' => $paidAt->copy()->addDays(
@@ -63,9 +63,7 @@ class ChipPaymentSynchronizer
                         ? Payment::STATUS_CANCELLED
                         : Payment::STATUS_FAILED;
                     $locked->failed_at = now();
-                    $locked->subscription?->update([
-                        'status' => $status === 'cancelled' ? 'cancelled' : 'failed',
-                    ]);
+
                 }
             } elseif ($locked->status === Payment::STATUS_INITIALIZED) {
                 $locked->status = Payment::STATUS_CREATED;
@@ -110,11 +108,8 @@ class ChipPaymentSynchronizer
 
         $payment->status = Payment::STATUS_REFUNDED;
         $payment->refunded_at = now();
-        $payment->subscription?->update([
-            'status' => 'cancelled',
-            'ends_at' => now(),
-        ]);
-        $payment->subscription?->commissions()->update([
+        $this->accessCodes->revoke($payment);
+        AffiliateCommission::query()->where('payment_id', $payment->id)->update([
             'status' => 'reversed',
             'available_at' => null,
         ]);

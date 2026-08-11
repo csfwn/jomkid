@@ -5,7 +5,7 @@ type Metrics = {
     users: number;
     children: number;
     modules: number;
-    active_subscriptions: number;
+    active_access: number;
     pending_commission_sen: number;
 };
 type User = {
@@ -58,9 +58,9 @@ const money = (sen: number) =>
             <article class="rounded-3xl border bg-white p-6">
                 <CreditCard class="text-emerald-600" />
                 <p class="mt-4 text-3xl font-black">
-                    {{ metrics.active_subscriptions }}
+                    {{ metrics.active_access }}
                 </p>
-                <p class="text-sm text-slate-500">Langganan aktif</p>
+                <p class="text-sm text-slate-500">Akses lifetime aktif</p>
             </article>
         </section>
         <section class="grid gap-6 xl:grid-cols-[1fr_320px]">

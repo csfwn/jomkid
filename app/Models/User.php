@@ -28,7 +28,10 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'email', 'password', 'role', 'affiliate_code', 'affiliate_active'])]
+#[Fillable([
+    'name', 'email', 'password', 'role', 'affiliate_code', 'affiliate_active',
+    'access_status', 'lifetime_access_at',
+])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements PasskeyUser
 {
@@ -52,6 +55,7 @@ class User extends Authenticatable implements PasskeyUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'affiliate_active' => 'boolean',
+            'lifetime_access_at' => 'datetime',
             /* @chisel-2fa */
             'two_factor_confirmed_at' => 'datetime',
             /* @end-chisel-2fa */
@@ -64,12 +68,6 @@ class User extends Authenticatable implements PasskeyUser
         return $this->hasMany(ChildProfile::class);
     }
 
-    /** @return HasMany<Subscription, $this> */
-    public function subscriptions(): HasMany
-    {
-        return $this->hasMany(Subscription::class);
-    }
-
     /** @return HasMany<AffiliateCommission, $this> */
     public function affiliateCommissions(): HasMany
     {
@@ -80,5 +78,11 @@ class User extends Authenticatable implements PasskeyUser
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
+    }
+
+    /** @return HasMany<AccessCode, $this> */
+    public function usedAccessCodes(): HasMany
+    {
+        return $this->hasMany(AccessCode::class, 'used_by_user_id');
     }
 }

@@ -24,11 +24,9 @@ type Module = {
     description: string;
     lessons_count: number;
 };
-type Subscription = { status: string; ends_at: string | null } | null;
 defineProps<{
     children: Child[];
     modules: Module[];
-    subscription: Subscription;
 }>();
 </script>
 

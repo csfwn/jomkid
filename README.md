@@ -14,6 +14,8 @@ JomKid is an interactive learning platform for Malaysian children, parents, affi
 ## Product surfaces
 
 - Public conversion-focused landing page
+- RM69 lifetime purchase followed by a single-use emailed registration code
+- Registration is blocked without a valid unused code bound to the purchase email
 - Parent/customer account and child profiles
 - Interactive learning, scoring, and privacy-safe ranking
 - Single-level affiliate dashboard
@@ -48,9 +50,9 @@ In the CHIP merchant portal, register this public HTTPS endpoint:
 https://jomkid.com/webhooks/chip
 ```
 
-Subscribe it to at least `purchase.paid`, `purchase.payment_failure`, `purchase.cancelled`, `payment.refunded`, and `payment.charged_back`. The webhook verifies `X-Signature` against the exact raw request body before changing payment, subscription, or affiliate commission state. Browser redirects are never treated as proof of payment.
+Subscribe it to at least `purchase.paid`, `purchase.payment_failure`, `purchase.cancelled`, `payment.refunded`, and `payment.charged_back`. The webhook verifies `X-Signature` against the exact raw request body before changing payment, access-code, lifetime-access, or affiliate commission state. Browser redirects are never treated as proof of payment.
 
-Affiliate sales use `?ref=AFFILIATE_CODE`. A verified payment creates one pending RM34.50 commission, available after the configured refund window. Refunds and chargebacks reverse access and the related commission.
+Affiliate sales use `?ref=AFFILIATE_CODE`. A verified RM69 payment creates exactly one one-time registration code and one pending RM34.50 commission, available after the configured refund window. The plaintext code is sent by email and only its SHA-256 hash is stored. Redeeming it once activates lifetime access; refunds and chargebacks revoke the code/access and reverse the related commission.
 
 ## Quality gates
 

@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['affiliate_user_id', 'buyer_user_id', 'subscription_id', 'amount_sen', 'status', 'available_at', 'paid_at'])]
+#[Fillable([
+    'affiliate_user_id', 'buyer_user_id', 'payment_id',
+    'amount_sen', 'status', 'available_at', 'paid_at',
+])]
 class AffiliateCommission extends Model
 {
     protected function casts(): array
@@ -26,9 +29,9 @@ class AffiliateCommission extends Model
         return $this->belongsTo(User::class, 'buyer_user_id');
     }
 
-    /** @return BelongsTo<Subscription, $this> */
-    public function subscription(): BelongsTo
+    /** @return BelongsTo<Payment, $this> */
+    public function payment(): BelongsTo
     {
-        return $this->belongsTo(Subscription::class);
+        return $this->belongsTo(Payment::class);
     }
 }

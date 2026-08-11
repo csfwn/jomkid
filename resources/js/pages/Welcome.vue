@@ -67,11 +67,7 @@ defineProps<{ canRegister: boolean }>();
                         >
                         <Link
                             v-if="canRegister"
-                            :href="
-                                $page.props.auth.user
-                                    ? '/checkout'
-                                    : '/register'
-                            "
+                            href="/checkout"
                             class="rounded-full bg-slate-950 px-5 py-2.5 text-sm font-bold text-white"
                             >Cuba sekarang</Link
                         >
@@ -107,11 +103,7 @@ defineProps<{ canRegister: boolean }>();
                         </p>
                         <div class="mt-8 flex flex-col gap-3 sm:flex-row">
                             <Link
-                                :href="
-                                    $page.props.auth.user
-                                        ? '/checkout'
-                                        : '/register'
-                                "
+                                href="/checkout"
                                 class="inline-flex items-center justify-center gap-2 rounded-full bg-indigo-600 px-7 py-4 font-black text-white transition hover:bg-indigo-700"
                             >
                                 Mulakan pembelajaran
@@ -136,7 +128,7 @@ defineProps<{ canRegister: boolean }>();
                             >
                             <span class="flex items-center gap-2"
                                 ><Check class="size-4 text-emerald-600" /> RM69
-                                setahun</span
+                                lifetime</span
                             >
                         </div>
                     </div>
@@ -313,21 +305,21 @@ defineProps<{ canRegister: boolean }>();
             >
                 <p class="font-black text-indigo-600">PELAN KELUARGA</p>
                 <h2 class="mt-3 text-4xl font-black tracking-tight sm:text-5xl">
-                    Satu harga. Setahun belajar.
+                    Satu harga. Akses lifetime.
                 </h2>
                 <div
                     class="mx-auto mt-10 max-w-xl rounded-[2rem] border-2 border-slate-900 bg-white p-8 text-left sm:p-10"
                 >
                     <div class="flex items-end justify-between gap-4">
                         <div>
-                            <p class="font-black">JomKid Tahunan</p>
+                            <p class="font-black">JomKid Lifetime</p>
                             <p class="mt-1 text-slate-500">
                                 Untuk satu keluarga
                             </p>
                         </div>
                         <div class="text-right">
                             <span class="text-5xl font-black">RM69</span>
-                            <p class="text-sm text-slate-500">/ tahun</p>
+                            <p class="text-sm text-slate-500">sekali sahaja</p>
                         </div>
                     </div>
                     <ul
@@ -351,9 +343,7 @@ defineProps<{ canRegister: boolean }>();
                         </li>
                     </ul>
                     <Link
-                        :href="
-                            $page.props.auth.user ? '/checkout' : '/register'
-                        "
+                        href="/checkout"
                         class="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-4 font-black text-white"
                         >Dapatkan akses RM69 <ArrowRight class="size-5"
                     /></Link>
