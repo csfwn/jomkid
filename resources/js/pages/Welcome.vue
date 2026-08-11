@@ -67,7 +67,11 @@ defineProps<{ canRegister: boolean }>();
                         >
                         <Link
                             v-if="canRegister"
-                            href="/register"
+                            :href="
+                                $page.props.auth.user
+                                    ? '/checkout'
+                                    : '/register'
+                            "
                             class="rounded-full bg-slate-950 px-5 py-2.5 text-sm font-bold text-white"
                             >Cuba sekarang</Link
                         >
@@ -103,7 +107,11 @@ defineProps<{ canRegister: boolean }>();
                         </p>
                         <div class="mt-8 flex flex-col gap-3 sm:flex-row">
                             <Link
-                                href="/register"
+                                :href="
+                                    $page.props.auth.user
+                                        ? '/checkout'
+                                        : '/register'
+                                "
                                 class="inline-flex items-center justify-center gap-2 rounded-full bg-indigo-600 px-7 py-4 font-black text-white transition hover:bg-indigo-700"
                             >
                                 Mulakan pembelajaran
@@ -343,7 +351,9 @@ defineProps<{ canRegister: boolean }>();
                         </li>
                     </ul>
                     <Link
-                        href="/register"
+                        :href="
+                            $page.props.auth.user ? '/checkout' : '/register'
+                        "
                         class="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-4 font-black text-white"
                         >Dapatkan akses RM69 <ArrowRight class="size-5"
                     /></Link>

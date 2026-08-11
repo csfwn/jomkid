@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CaptureAffiliateReferral;
 use App\Http\Middleware\EnsureRole;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -21,8 +22,10 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
+        $middleware->validateCsrfTokens(except: ['webhooks/chip']);
 
         $middleware->web(append: [
+            CaptureAffiliateReferral::class,
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,

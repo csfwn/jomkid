@@ -3,6 +3,7 @@ import { Link, usePage } from '@inertiajs/vue3';
 import {
     BadgeDollarSign,
     BookOpen,
+    CreditCard,
     LayoutDashboard,
     ShieldCheck,
     Users,
@@ -27,6 +28,7 @@ const mainNavItems: NavItem[] = [
     { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { title: 'Profil anak', href: '/children', icon: Users },
     { title: 'Belajar', href: '/learn', icon: BookOpen },
+    { title: 'Langganan', href: '/checkout', icon: CreditCard },
 ];
 
 if (user.role === 'affiliate' || user.role === 'admin') {

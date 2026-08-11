@@ -22,6 +22,14 @@ return [
         'key' => env('RESEND_API_KEY'),
     ],
 
+    'chip' => [
+        'base_url' => env('CHIP_BASE_URL', 'https://gate.chip-in.asia/api/v1'),
+        'secret_key' => env('CHIP_SECRET_KEY'),
+        'brand_id' => env('CHIP_BRAND_ID'),
+        'public_key' => env('CHIP_PUBLIC_KEY'),
+        'timeout' => env('CHIP_TIMEOUT', 15),
+    ],
+
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),

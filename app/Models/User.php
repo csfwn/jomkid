@@ -75,4 +75,10 @@ class User extends Authenticatable implements PasskeyUser
     {
         return $this->hasMany(AffiliateCommission::class, 'affiliate_user_id');
     }
+
+    /** @return HasMany<Payment, $this> */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

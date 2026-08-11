@@ -26,4 +26,10 @@ class Subscription extends Model
     {
         return $this->hasMany(AffiliateCommission::class);
     }
+
+    /** @return HasMany<Payment, $this> */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
 }
