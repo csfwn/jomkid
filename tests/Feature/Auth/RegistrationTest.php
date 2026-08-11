@@ -56,6 +56,10 @@ class RegistrationTest extends TestCase
         $response->assertRedirect(route('dashboard', absolute: false));
         $user = User::query()->sole();
         $this->assertSame('active', $user?->access_status);
+        $this->assertSame('basic', $user->package_code);
+        $this->assertSame(3, $user->child_profile_limit);
+        $this->assertFalse($user->affiliate_active);
+        $this->assertNull($user->affiliate_code);
         $this->assertNotNull($user?->lifetime_access_at);
         $this->assertSame(AccessCode::STATUS_USED, $accessCode->refresh()->status);
         $this->assertSame($user?->id, $accessCode->used_by_user_id);
@@ -80,6 +84,27 @@ class RegistrationTest extends TestCase
         $this->assertDatabaseCount('users', 0);
     }
 
+    public function test_premium_code_grants_reseller_and_unlimited_children(): void
+    {
+        $plainCode = 'JOMKID-PREM-IUM0-0001';
+        $this->createAccessCode($plainCode, 'premium@example.com', 'premium');
+
+        $this->post(route('register.store'), [
+            'access_code' => $plainCode,
+            'name' => 'Premium User',
+            'email' => 'premium@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ])->assertRedirect(route('dashboard', absolute: false));
+
+        $user = User::query()->sole();
+        $this->assertSame('premium', $user->package_code);
+        $this->assertNull($user->child_profile_limit);
+        $this->assertSame(User::ROLE_AFFILIATE, $user->role);
+        $this->assertTrue($user->affiliate_active);
+        $this->assertNotNull($user->affiliate_code);
+    }
+
     public function test_code_is_bound_to_purchase_email(): void
     {
         $plainCode = 'JOMKID-MAIL-ONLY-0001';
@@ -96,17 +121,21 @@ class RegistrationTest extends TestCase
         $this->assertGuest();
     }
 
-    private function createAccessCode(string $plainCode, string $email): AccessCode
+    private function createAccessCode(string $plainCode, string $email, string $package = 'basic'): AccessCode
     {
+        /** @var array{price_sen: int} $packageConfig */
+        $packageConfig = config('packages.'.$package);
+
         $payment = Payment::create([
             'uuid' => (string) Str::uuid(),
             'customer_name' => 'Test Parent',
             'customer_email' => $email,
+            'package_code' => $package,
             'provider' => 'chip',
             'provider_purchase_id' => (string) Str::uuid(),
             'reference' => 'JOMKID-'.Str::upper(Str::random(8)),
             'status' => Payment::STATUS_PAID,
-            'amount_sen' => 6900,
+            'amount_sen' => $packageConfig['price_sen'],
             'currency' => 'MYR',
             'paid_at' => now(),
         ]);

@@ -121,7 +121,7 @@ defineOptions({
         <div class="text-center text-sm text-muted-foreground">
             Belum beli kod akses?
             <TextLink href="/checkout" class="underline underline-offset-4"
-                >Beli RM69</TextLink
+                >Pilih pakej</TextLink
             >
         </div>
         <div class="text-center text-sm text-muted-foreground">

@@ -46,7 +46,10 @@ class ChipPaymentSynchronizer
                                 'affiliate_user_id' => $locked->affiliate_user_id,
                                 'buyer_user_id' => null,
 
-                                'amount_sen' => (int) config('affiliate.commission_sen', 3450),
+                                'amount_sen' => intdiv(
+                                    $locked->amount_sen * (int) config('affiliate.commission_percent', 50),
+                                    100,
+                                ),
                                 'status' => 'pending',
                                 'available_at' => $paidAt->copy()->addDays(
                                     (int) config('affiliate.refund_window_days', 30),

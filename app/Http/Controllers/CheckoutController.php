@@ -8,6 +8,7 @@ use App\Services\Payments\ChipClient;
 use App\Services\Payments\ChipPaymentSynchronizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 use RuntimeException;
@@ -16,15 +17,15 @@ use Throwable;
 
 class CheckoutController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $defaultPackage = in_array($request->query('package'), array_keys(config('packages')), true)
+            ? $request->query('package')
+            : 'basic';
+
         return Inertia::render('Checkout/Index', [
-            'plan' => [
-                'name' => 'JomKid Lifetime Access',
-                'price_sen' => 6900,
-                'currency' => 'MYR',
-                'child_limit' => 3,
-            ],
+            'packages' => array_values(config('packages')),
+            'defaultPackage' => $defaultPackage,
         ]);
     }
 
@@ -33,7 +34,11 @@ class CheckoutController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:128'],
             'email' => ['required', 'email:rfc', 'max:254'],
+            'package' => ['required', Rule::in(array_keys(config('packages')))],
         ]);
+
+        /** @var array{code: string, name: string, price_sen: int, child_limit: int|null, reseller: bool} $package */
+        $package = config('packages.'.$validated['package']);
 
         $affiliateId = (int) $request->session()->get('affiliate_user_id');
         $affiliateId = (int) User::query()
@@ -47,11 +52,12 @@ class CheckoutController extends Controller
             'uuid' => $uuid,
             'customer_name' => $validated['name'],
             'customer_email' => Str::lower($validated['email']),
+            'package_code' => $package['code'],
             'affiliate_user_id' => $affiliateId ?: null,
             'provider' => 'chip',
             'reference' => 'JOMKID-'.Str::upper(Str::substr($uuid, 0, 8)),
             'status' => Payment::STATUS_INITIALIZED,
-            'amount_sen' => 6900,
+            'amount_sen' => $package['price_sen'],
             'currency' => 'MYR',
         ]);
 

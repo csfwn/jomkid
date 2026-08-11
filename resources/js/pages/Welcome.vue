@@ -120,15 +120,15 @@ defineProps<{ canRegister: boolean }>();
                         >
                             <span class="flex items-center gap-2"
                                 ><Check class="size-4 text-emerald-600" /> 3
-                                profil anak</span
+                                atau unlimited profil anak</span
                             >
                             <span class="flex items-center gap-2"
                                 ><Check class="size-4 text-emerald-600" />
                                 Laporan ibu bapa</span
                             >
                             <span class="flex items-center gap-2"
-                                ><Check class="size-4 text-emerald-600" /> RM69
-                                lifetime</span
+                                ><Check class="size-4 text-emerald-600" /> Dari
+                                RM69 lifetime</span
                             >
                         </div>
                     </div>
@@ -281,10 +281,12 @@ defineProps<{ canRegister: boolean }>();
                     <div class="grid gap-4 sm:grid-cols-2">
                         <div class="rounded-3xl border border-white/20 p-6">
                             <Users class="text-yellow-300" />
-                            <h3 class="mt-4 font-black">Sehingga 3 anak</h3>
+                            <h3 class="mt-4 font-black">
+                                3 atau unlimited anak
+                            </h3>
                             <p class="mt-2 text-sm leading-6 text-indigo-100">
-                                Profil, tahap dan cadangan pembelajaran
-                                berasingan.
+                                Ikut pakej, dengan profil, tahap dan cadangan
+                                pembelajaran berasingan.
                             </p>
                         </div>
                         <div class="rounded-3xl border border-white/20 p-6">
@@ -305,48 +307,93 @@ defineProps<{ canRegister: boolean }>();
             >
                 <p class="font-black text-indigo-600">PELAN KELUARGA</p>
                 <h2 class="mt-3 text-4xl font-black tracking-tight sm:text-5xl">
-                    Satu harga. Akses lifetime.
+                    Pilih pakej lifetime anda.
                 </h2>
                 <div
-                    class="mx-auto mt-10 max-w-xl rounded-[2rem] border-2 border-slate-900 bg-white p-8 text-left sm:p-10"
+                    class="mx-auto mt-10 grid max-w-4xl gap-5 text-left md:grid-cols-2"
                 >
-                    <div class="flex items-end justify-between gap-4">
-                        <div>
-                            <p class="font-black">JomKid Lifetime</p>
-                            <p class="mt-1 text-slate-500">
-                                Untuk satu keluarga
-                            </p>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-5xl font-black">RM69</span>
-                            <p class="text-sm text-slate-500">sekali sahaja</p>
-                        </div>
-                    </div>
-                    <ul
-                        class="mt-8 grid gap-3 text-sm font-semibold sm:grid-cols-2"
+                    <article
+                        class="rounded-[2rem] border-2 border-slate-300 bg-white p-8"
                     >
-                        <li class="flex gap-2">
-                            <Check class="size-5 text-emerald-600" /> 3 profil
-                            anak
-                        </li>
-                        <li class="flex gap-2">
-                            <Check class="size-5 text-emerald-600" /> Semua
-                            modul asas
-                        </li>
-                        <li class="flex gap-2">
-                            <Check class="size-5 text-emerald-600" /> Laporan
-                            mingguan
-                        </li>
-                        <li class="flex gap-2">
-                            <Check class="size-5 text-emerald-600" /> Aktiviti
-                            suara & sentuhan
-                        </li>
-                    </ul>
-                    <Link
-                        href="/checkout"
-                        class="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-4 font-black text-white"
-                        >Dapatkan akses RM69 <ArrowRight class="size-5"
-                    /></Link>
+                        <p class="font-black text-indigo-600">BASIC</p>
+                        <div class="mt-3 flex items-end justify-between gap-4">
+                            <div>
+                                <p class="text-xl font-black">JomKid Basic</p>
+                                <p class="mt-1 text-sm text-slate-500">
+                                    Belajar bersama keluarga
+                                </p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-4xl font-black">RM69</span>
+                                <p class="text-xs text-slate-500">
+                                    sekali sahaja
+                                </p>
+                            </div>
+                        </div>
+                        <ul class="mt-7 grid gap-3 text-sm font-semibold">
+                            <li class="flex gap-2">
+                                <Check class="size-5 text-emerald-600" />
+                                Maksimum 3 profil anak
+                            </li>
+                            <li class="flex gap-2">
+                                <Check class="size-5 text-emerald-600" /> Akses
+                                lifetime pembelajaran
+                            </li>
+                            <li class="flex gap-2 text-slate-400">
+                                Tiada reseller atau affiliate license
+                            </li>
+                        </ul>
+                        <Link
+                            href="/checkout?package=basic"
+                            class="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-4 font-black text-white"
+                            >Pilih Basic <ArrowRight class="size-5"
+                        /></Link>
+                    </article>
+
+                    <article
+                        class="relative rounded-[2rem] border-2 border-indigo-600 bg-indigo-950 p-8 text-white"
+                    >
+                        <span
+                            class="absolute -top-3 right-6 rounded-full bg-yellow-300 px-4 py-1 text-xs font-black text-indigo-950"
+                            >RESELLER</span
+                        >
+                        <p class="font-black text-yellow-300">PREMIUM</p>
+                        <div class="mt-3 flex items-end justify-between gap-4">
+                            <div>
+                                <p class="text-xl font-black">
+                                    Premium + Reseller
+                                </p>
+                                <p class="mt-1 text-sm text-indigo-200">
+                                    Belajar dan jana komisen
+                                </p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-4xl font-black">RM99</span>
+                                <p class="text-xs text-indigo-200">
+                                    sekali sahaja
+                                </p>
+                            </div>
+                        </div>
+                        <ul class="mt-7 grid gap-3 text-sm font-semibold">
+                            <li class="flex gap-2">
+                                <Check class="size-5 text-yellow-300" />
+                                Unlimited profil anak
+                            </li>
+                            <li class="flex gap-2">
+                                <Check class="size-5 text-yellow-300" />
+                                Reseller license + link affiliate
+                            </li>
+                            <li class="flex gap-2">
+                                <Check class="size-5 text-yellow-300" /> Komisen
+                                50% setiap jualan referral
+                            </li>
+                        </ul>
+                        <Link
+                            href="/checkout?package=premium"
+                            class="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-yellow-300 px-6 py-4 font-black text-indigo-950"
+                            >Pilih Premium <ArrowRight class="size-5"
+                        /></Link>
+                    </article>
                 </div>
             </section>
         </main>

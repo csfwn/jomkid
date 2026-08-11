@@ -11,7 +11,7 @@ type Child = {
     current_level: number;
     leaderboard_opt_in: boolean;
 };
-defineProps<{ children: Child[]; limit: number }>();
+defineProps<{ children: Child[]; limit: number | null }>();
 const form = useForm({
     display_name: '',
     birth_year: 2020,
@@ -86,7 +86,7 @@ const remove = (child: Child) => {
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-black">Tambah profil</h2>
                 <span class="text-sm font-bold text-slate-500"
-                    >{{ children.length }}/{{ limit }}</span
+                    >{{ children.length }}/{{ limit ?? '∞' }}</span
                 >
             </div>
             <form class="mt-6 space-y-4" @submit.prevent="submit">
@@ -130,7 +130,10 @@ const remove = (child: Child) => {
                     {{ form.errors.display_name }}
                 </p>
                 <button
-                    :disabled="form.processing || children.length >= limit"
+                    :disabled="
+                        form.processing ||
+                        (limit !== null && children.length >= limit)
+                    "
                     class="flex w-full items-center justify-center gap-2 rounded-full bg-indigo-600 px-5 py-3 font-black text-white disabled:opacity-40"
                 >
                     <Plus class="size-4" /> Tambah profil

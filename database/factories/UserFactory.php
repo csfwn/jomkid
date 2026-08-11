@@ -32,6 +32,8 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'access_status' => 'active',
             'lifetime_access_at' => now(),
+            'package_code' => 'basic',
+            'child_profile_limit' => 3,
             /* @chisel-2fa */
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,

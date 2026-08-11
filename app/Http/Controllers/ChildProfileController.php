@@ -15,13 +15,18 @@ class ChildProfileController extends Controller
     {
         return Inertia::render('Children/Index', [
             'children' => $request->user()->childProfiles()->latest()->get(),
-            'limit' => 3,
+            'limit' => $request->user()->child_profile_limit,
         ]);
     }
 
     public function store(StoreChildProfileRequest $request): RedirectResponse
     {
-        abort_if($request->user()->childProfiles()->count() >= 3, 422, 'Each account may have up to three child profiles.');
+        $limit = $request->user()->child_profile_limit;
+        abort_if(
+            $limit !== null && $request->user()->childProfiles()->count() >= $limit,
+            422,
+            'Your package child profile limit has been reached.',
+        );
 
         $request->user()->childProfiles()->create($request->validated());
 

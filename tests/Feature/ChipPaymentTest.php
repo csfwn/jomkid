@@ -8,6 +8,7 @@ use App\Models\Payment;
 use App\Models\User;
 use App\Notifications\LifetimeAccessCodeIssued;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
@@ -56,6 +57,7 @@ class ChipPaymentTest extends TestCase
         $this->post('/checkout', [
             'name' => 'Test Parent',
             'email' => 'parent@example.com',
+            'package' => 'basic',
         ])->assertRedirect("https://gate.chip-in.asia/p/{$purchaseId}/");
 
         $payment = Payment::query()->sole();
@@ -69,10 +71,47 @@ class ChipPaymentTest extends TestCase
             return $request->url() === 'https://gate.chip-in.asia/api/v1/purchases/'
                 && $request->hasHeader('Authorization', 'Bearer test-secret')
                 && $request['client']['email'] === 'parent@example.com'
-                && $request['purchase']['products'][0]['name'] === 'JomKid Lifetime Access'
+                && $request['purchase']['products'][0]['name'] === 'JomKid Basic'
                 && $request['purchase']['products'][0]['price'] === 6900
                 && $request['reference'] === $payment->reference;
         });
+    }
+
+    public function test_premium_checkout_uses_server_controlled_rm99_price(): void
+    {
+        $purchaseId = (string) Str::uuid();
+        Http::fake([
+            'https://gate.chip-in.asia/api/v1/purchases/' => Http::response([
+                'id' => $purchaseId,
+                'checkout_url' => "https://gate.chip-in.asia/p/{$purchaseId}/",
+                'status' => 'created',
+            ], 201),
+        ]);
+
+        $this->post('/checkout', [
+            'name' => 'Premium Parent',
+            'email' => 'premium-parent@example.com',
+            'package' => 'premium',
+        ])->assertRedirect();
+
+        $payment = Payment::query()->sole();
+        $this->assertSame('premium', $payment->package_code);
+        $this->assertSame(9900, $payment->amount_sen);
+
+        Http::assertSent(fn (Request $request): bool => $request['purchase']['products'][0]['name'] === 'JomKid Premium + Reseller'
+            && $request['purchase']['products'][0]['price'] === 9900
+        );
+    }
+
+    public function test_unknown_package_is_rejected_before_payment_creation(): void
+    {
+        $this->post('/checkout', [
+            'name' => 'Invalid Package',
+            'email' => 'invalid@example.com',
+            'package' => 'enterprise',
+        ])->assertSessionHasErrors('package');
+
+        $this->assertDatabaseCount('payments', 0);
     }
 
     public function test_affiliate_referral_is_attached_to_public_checkout(): void
@@ -95,6 +134,7 @@ class ChipPaymentTest extends TestCase
         $this->post('/checkout', [
             'name' => 'Buyer',
             'email' => 'buyer@example.com',
+            'package' => 'basic',
         ])->assertRedirect();
 
         $this->assertSame($affiliate->id, Payment::query()->sole()->affiliate_user_id);
@@ -122,7 +162,7 @@ class ChipPaymentTest extends TestCase
             'affiliate_active' => true,
             'affiliate_code' => 'SELLER1',
         ]);
-        $payment = $this->createPayment($affiliate);
+        $payment = $this->createPayment($affiliate, 'premium');
         $rawBody = json_encode($this->paidPayload($payment), JSON_THROW_ON_ERROR);
         $signature = $this->sign($rawBody);
 
@@ -138,7 +178,7 @@ class ChipPaymentTest extends TestCase
         $this->assertSame(64, strlen($accessCode->code_hash));
         $this->assertSame(AccessCode::STATUS_ACTIVE, $accessCode->status);
         $commission = AffiliateCommission::query()->sole();
-        $this->assertSame(3450, $commission->amount_sen);
+        $this->assertSame(4950, $commission->amount_sen);
         $this->assertSame($payment->id, $commission->payment_id);
         Notification::assertSentOnDemandTimes(LifetimeAccessCodeIssued::class, 1);
     }
@@ -207,18 +247,22 @@ class ChipPaymentTest extends TestCase
         Notification::assertSentOnDemand(LifetimeAccessCodeIssued::class);
     }
 
-    private function createPayment(?User $affiliate = null): Payment
+    private function createPayment(?User $affiliate = null, string $package = 'basic'): Payment
     {
+        /** @var array{name: string, price_sen: int} $packageConfig */
+        $packageConfig = config('packages.'.$package);
+
         return Payment::create([
             'uuid' => (string) Str::uuid(),
             'customer_name' => 'Test Parent',
             'customer_email' => 'buyer@example.com',
+            'package_code' => $package,
             'affiliate_user_id' => $affiliate?->id,
             'provider' => 'chip',
             'provider_purchase_id' => (string) Str::uuid(),
             'reference' => 'JOMKID-'.Str::upper(Str::random(8)),
             'status' => Payment::STATUS_CREATED,
-            'amount_sen' => 6900,
+            'amount_sen' => $packageConfig['price_sen'],
             'currency' => 'MYR',
         ]);
     }
@@ -232,11 +276,11 @@ class ChipPaymentTest extends TestCase
             'event_type' => 'purchase.paid',
             'reference' => $payment->reference,
             'purchase' => [
-                'total' => 6900,
+                'total' => $payment->amount_sen,
                 'currency' => 'MYR',
                 'products' => [[
-                    'name' => 'JomKid Lifetime Access',
-                    'price' => 6900,
+                    'name' => config('packages.'.$payment->package_code.'.name'),
+                    'price' => $payment->amount_sen,
                 ]],
             ],
         ];

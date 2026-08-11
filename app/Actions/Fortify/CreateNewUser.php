@@ -58,12 +58,21 @@ class CreateNewUser implements CreatesNewUsers
                 ]);
             }
 
+            /** @var array{code: string, child_limit: int|null, reseller: bool} $package */
+            $package = config('packages.'.$accessCode->payment->package_code, config('packages.basic'));
+            $isReseller = $package['reseller'];
+
             $user = User::create([
                 'name' => $input['name'],
                 'email' => Str::lower($input['email']),
                 'password' => $input['password'],
                 'access_status' => 'active',
                 'lifetime_access_at' => now(),
+                'package_code' => $package['code'],
+                'child_profile_limit' => $package['child_limit'],
+                'role' => $isReseller ? User::ROLE_AFFILIATE : User::ROLE_PARENT,
+                'affiliate_active' => $isReseller,
+                'affiliate_code' => $isReseller ? $this->generateAffiliateCode() : null,
             ]);
 
             $accessCode->update([
@@ -78,5 +87,14 @@ class CreateNewUser implements CreatesNewUsers
 
             return $user;
         });
+    }
+
+    private function generateAffiliateCode(): string
+    {
+        do {
+            $code = 'JOM'.Str::upper(Str::random(7));
+        } while (User::query()->where('affiliate_code', $code)->exists());
+
+        return $code;
     }
 }

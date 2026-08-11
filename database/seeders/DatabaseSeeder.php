@@ -31,6 +31,8 @@ class DatabaseSeeder extends Seeder
             'role' => User::ROLE_AFFILIATE,
             'affiliate_code' => 'JOMDEMO',
             'affiliate_active' => true,
+            'package_code' => 'premium',
+            'child_profile_limit' => null,
         ]);
 
         $reading = LearningModule::create([

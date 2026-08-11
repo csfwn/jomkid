@@ -28,9 +28,11 @@ class AccessCodeIssuer
 
         $email = $payment->customer_email;
         $name = $payment->customer_name;
-        DB::afterCommit(function () use ($email, $name, $plainCode): void {
+        $amountSen = $payment->amount_sen;
+        $packageName = (string) config('packages.'.$payment->package_code.'.name', 'JomKid');
+        DB::afterCommit(function () use ($email, $name, $plainCode, $amountSen, $packageName): void {
             Notification::route('mail', $email)
-                ->notify(new LifetimeAccessCodeIssued($plainCode, $name));
+                ->notify(new LifetimeAccessCodeIssued($plainCode, $name, $amountSen, $packageName));
         });
     }
 

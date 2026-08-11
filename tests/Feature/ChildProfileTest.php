@@ -34,6 +34,25 @@ class ChildProfileTest extends TestCase
         ])->assertStatus(422);
     }
 
+    public function test_premium_parent_can_create_unlimited_child_profiles(): void
+    {
+        $parent = User::factory()->create([
+            'package_code' => 'premium',
+            'child_profile_limit' => null,
+        ]);
+
+        foreach (range(1, 6) as $number) {
+            $this->actingAs($parent)->post('/children', [
+                'display_name' => "Premium {$number}",
+                'birth_year' => 2020,
+                'avatar_key' => 'owl-indigo',
+                'leaderboard_opt_in' => false,
+            ])->assertRedirect();
+        }
+
+        $this->assertSame(6, $parent->childProfiles()->count());
+    }
+
     public function test_parent_cannot_delete_another_parents_child_profile(): void
     {
         $owner = User::factory()->create();

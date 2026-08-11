@@ -14,6 +14,8 @@ class ChipClient
     /** @return array<string, mixed> */
     public function createPurchase(Payment $payment): array
     {
+        $packageName = config('packages.'.$payment->package_code.'.name', 'JomKid Lifetime Access');
+
         $payload = [
             'brand_id' => $this->brandId(),
             'client' => [
@@ -24,7 +26,7 @@ class ChipClient
                 'currency' => 'MYR',
                 'language' => 'ms',
                 'products' => [[
-                    'name' => 'JomKid Lifetime Access',
+                    'name' => $packageName,
                     'price' => $payment->amount_sen,
                 ]],
             ],
@@ -35,7 +37,7 @@ class ChipClient
             'failure_redirect' => route('checkout.failure', $payment->uuid),
             'cancel_redirect' => route('checkout.failure', $payment->uuid),
             'success_callback' => route('webhooks.chip'),
-            'tags' => ['jomkid', 'lifetime-access'],
+            'tags' => ['jomkid', 'lifetime-access', $payment->package_code],
         ];
 
         /** @var array<string, mixed> $response */

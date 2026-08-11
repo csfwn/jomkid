@@ -37,7 +37,7 @@ const copy = () => navigator.clipboard.writeText(link);
     <div class="space-y-7 p-4 md:p-7">
         <header>
             <p class="text-sm font-bold text-indigo-600">JOMKID AFFILIATE</p>
-            <h1 class="mt-1 text-3xl font-black">Jual satu, dapat RM34.50</h1>
+            <h1 class="mt-1 text-3xl font-black">Dapat 50% setiap jualan</h1>
             <p class="mt-2 text-slate-500">
                 Program satu peringkat sahaja. Tiada upline, downline atau
                 komisen perekrutan.
