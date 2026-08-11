@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
-import { BookOpen, FolderGit2, LayoutGrid } from '@lucide/vue';
+import { Link, usePage } from '@inertiajs/vue3';
+import {
+    BadgeDollarSign,
+    BookOpen,
+    LayoutDashboard,
+    ShieldCheck,
+    Users,
+} from '@lucide/vue';
 import AppLogo from '@/components/AppLogo.vue';
-import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import {
@@ -14,53 +19,41 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
+import type { User } from '@/types/auth';
 
+const user = usePage().props.auth.user as User;
 const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
+    { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { title: 'Profil anak', href: '/children', icon: Users },
+    { title: 'Belajar', href: '/learn', icon: BookOpen },
 ];
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
-    },
-];
+if (user.role === 'affiliate' || user.role === 'admin') {
+    mainNavItems.push({
+        title: 'Affiliate',
+        href: '/affiliate',
+        icon: BadgeDollarSign,
+    });
+}
+
+if (user.role === 'admin') {
+    mainNavItems.push({ title: 'Admin', href: '/admin', icon: ShieldCheck });
+}
 </script>
 
 <template>
     <Sidebar collapsible="icon" variant="inset">
         <SidebarHeader>
-            <SidebarMenu>
-                <SidebarMenuItem>
-                    <SidebarMenuButton size="lg" as-child>
-                        <Link :href="dashboard()">
-                            <AppLogo />
-                        </Link>
-                    </SidebarMenuButton>
-                </SidebarMenuItem>
-            </SidebarMenu>
+            <SidebarMenu
+                ><SidebarMenuItem
+                    ><SidebarMenuButton size="lg" as-child
+                        ><Link href="/dashboard"
+                            ><AppLogo /></Link></SidebarMenuButton></SidebarMenuItem
+            ></SidebarMenu>
         </SidebarHeader>
-
-        <SidebarContent>
-            <NavMain :items="mainNavItems" />
-        </SidebarContent>
-
-        <SidebarFooter>
-            <NavFooter :items="footerNavItems" />
-            <NavUser />
-        </SidebarFooter>
+        <SidebarContent><NavMain :items="mainNavItems" /></SidebarContent>
+        <SidebarFooter><NavUser /></SidebarFooter>
     </Sidebar>
     <slot />
 </template>

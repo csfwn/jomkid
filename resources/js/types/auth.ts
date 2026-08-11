@@ -2,6 +2,9 @@ export type User = {
     id: number;
     name: string;
     email: string;
+    role: 'admin' | 'parent' | 'affiliate';
+    affiliate_code: string | null;
+    affiliate_active: boolean;
     avatar?: string;
     email_verified_at: string | null;
     /* @chisel-2fa */
