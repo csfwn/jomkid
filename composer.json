@@ -1,8 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "stwo-ventures/jomabc",
+    "name": "stwo-ventures/jomkid",
     "type": "project",
-    "description": "JomABC interactive learning platform for Malaysian children and parents.",
+    "description": "JomKid interactive learning platform for Malaysian children and parents.",
     "keywords": [
         "laravel",
         "framework"

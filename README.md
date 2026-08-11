@@ -1,6 +1,6 @@
-# JomABC
+# JomKid
 
-JomABC is an interactive learning platform for Malaysian children, parents, affiliates, and administrators. The production domain is planned for [jomkid.com](https://jomkid.com).
+JomKid is an interactive learning platform for Malaysian children, parents, affiliates, and administrators at [jomkid.com](https://jomkid.com). JomABC is the first learning module; JomMengaji and JomMengira are planned as additional modules.
 
 ## Stack
 

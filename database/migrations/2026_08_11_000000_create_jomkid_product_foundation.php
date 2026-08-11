@@ -69,7 +69,7 @@ return new class extends Migration
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('plan_code')->default('jomabc-annual');
+            $table->string('plan_code')->default('jomkid-annual');
             $table->string('status')->default('pending');
             $table->unsignedInteger('price_sen')->default(6900);
             $table->timestamp('starts_at')->nullable();

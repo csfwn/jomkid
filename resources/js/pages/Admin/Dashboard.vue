@@ -33,7 +33,7 @@ const money = (sen: number) =>
                 /></span>
                 <div>
                     <p class="text-sm font-bold text-indigo-600">
-                        ADMIN JOMABC
+                        ADMIN JOMKID
                     </p>
                     <h1 class="text-3xl font-black">Gambaran sistem</h1>
                 </div>

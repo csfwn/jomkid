@@ -18,7 +18,7 @@ defineProps<{ canRegister: boolean }>();
     <Head title="Belajar sambil bermain">
         <meta
             name="description"
-            content="JomABC membantu anak 5–8 tahun belajar membaca Bahasa Melayu dan matematik melalui aktiviti suara, sentuhan dan permainan ringkas."
+            content="JomKid membantu anak 5–8 tahun belajar melalui modul interaktif seperti JomABC, JomMengaji dan JomMengira."
         />
     </Head>
 
@@ -38,7 +38,7 @@ defineProps<{ canRegister: boolean }>();
                         >J</span
                     >
                     <span class="text-xl"
-                        >Jom<span class="text-indigo-600">ABC</span></span
+                        >Jom<span class="text-indigo-600">Kid</span></span
                     >
                 </Link>
                 <nav
@@ -98,7 +98,7 @@ defineProps<{ canRegister: boolean }>();
                             class="mt-6 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl"
                         >
                             Aktiviti Bahasa Melayu dan matematik yang pendek,
-                            interaktif dan menyeronokkan—dipandu watak JomABC
+                            interaktif dan menyeronokkan—dipandu watak JomKid
                             melalui suara dan sentuhan.
                         </p>
                         <div class="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -206,7 +206,7 @@ defineProps<{ canRegister: boolean }>();
 
             <section id="cara" class="mx-auto max-w-7xl px-5 py-20 lg:px-8">
                 <div class="max-w-2xl">
-                    <p class="font-black text-indigo-600">CARA JOMABC</p>
+                    <p class="font-black text-indigo-600">CARA JOMKID</p>
                     <h2
                         class="mt-3 text-4xl font-black tracking-tight sm:text-5xl"
                     >
@@ -223,7 +223,7 @@ defineProps<{ canRegister: boolean }>();
                         /></span>
                         <h3 class="mt-5 text-xl font-black">Tonton & dengar</h3>
                         <p class="mt-2 leading-7 text-slate-600">
-                            Watak JomABC menerangkan satu konsep dengan ayat
+                            Watak JomKid menerangkan satu konsep dengan ayat
                             pendek dan visual jelas.
                         </p>
                     </article>
@@ -312,7 +312,7 @@ defineProps<{ canRegister: boolean }>();
                 >
                     <div class="flex items-end justify-between gap-4">
                         <div>
-                            <p class="font-black">JomABC Tahunan</p>
+                            <p class="font-black">JomKid Tahunan</p>
                             <p class="mt-1 text-slate-500">
                                 Untuk satu keluarga
                             </p>
@@ -355,7 +355,7 @@ defineProps<{ canRegister: boolean }>();
             <div
                 class="mx-auto flex max-w-7xl flex-col justify-between gap-3 px-5 py-8 text-sm text-slate-500 sm:flex-row lg:px-8"
             >
-                <p>© 2026 Stwo Ventures. JomABC.</p>
+                <p>© 2026 Stwo Ventures. JomKid.</p>
                 <p>Belajar dengan selamat di jomkid.com</p>
             </div>
         </footer>

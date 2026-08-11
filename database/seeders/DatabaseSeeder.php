@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory()->create([
-            'name' => 'JomABC Admin',
+            'name' => 'JomKid Admin',
             'email' => 'admin@jomkid.com',
             'role' => User::ROLE_ADMIN,
         ]);
@@ -47,21 +47,30 @@ class DatabaseSeeder extends Seeder
             ['slug' => 'cantum-suku-kata', 'title' => 'Cantum Suku Kata', 'description' => 'Susun suku kata menjadi perkataan.', 'is_published' => true, 'sort_order' => 2],
         ]);
 
-        $maths = LearningModule::create([
-            'slug' => 'jomabc-matematik-asas',
-            'title' => 'JomABC Matematik',
+        $counting = LearningModule::create([
+            'slug' => 'jommengira-matematik-asas',
+            'title' => 'JomMengira',
             'subject' => 'Matematik',
             'description' => 'Nombor, tambah dan tolak melalui permainan visual ringkas.',
-            'status' => 'published',
+            'status' => 'draft',
             'sort_order' => 2,
         ]);
 
-        $maths->lessons()->create([
+        $counting->lessons()->create([
             'slug' => 'kira-1-hingga-10',
             'title' => 'Kira 1 hingga 10',
             'description' => 'Kira objek dan pilih jawapan yang tepat.',
             'is_published' => true,
             'sort_order' => 1,
+        ]);
+
+        LearningModule::create([
+            'slug' => 'jommengaji-asas-iqra',
+            'title' => 'JomMengaji',
+            'subject' => 'Pendidikan Islam',
+            'description' => 'Pengenalan huruf hijaiyah dan bacaan asas secara interaktif.',
+            'status' => 'draft',
+            'sort_order' => 3,
         ]);
     }
 }

@@ -40,7 +40,7 @@ defineProps<{
         >
             <div class="max-w-2xl">
                 <p class="font-bold text-yellow-300">
-                    SELAMAT DATANG KE JOMABC
+                    SELAMAT DATANG KE JOMKID
                 </p>
                 <h1 class="mt-2 text-3xl font-black tracking-tight md:text-4xl">
                     Bina rutin belajar yang anak suka.
