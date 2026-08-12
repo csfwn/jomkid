@@ -9,7 +9,6 @@ import {
     XCircle,
 } from '@lucide/vue';
 import { computed } from 'vue';
-
 type Payment = {
     uuid: string;
     status: string;
@@ -18,7 +17,6 @@ type Payment = {
     paid_at: string | null;
     email_hint: string;
 };
-
 const props = defineProps<{ payment: Payment; successful: boolean }>();
 const money = (sen: number) =>
     new Intl.NumberFormat('ms-MY', {
@@ -32,180 +30,157 @@ const processing = computed(
         (props.payment.status === 'created' ||
             props.payment.status === 'initialized'),
 );
+const tone = computed(() =>
+    props.successful
+        ? { bg: 'bg-[#E4F5E8]', ink: 'text-[#28653D]', ring: 'ring-[#8ED39F]' }
+        : processing.value
+          ? {
+                bg: 'bg-[#FFF0B8]',
+                ink: 'text-[#845400]',
+                ring: 'ring-[#FFD84D]',
+            }
+          : {
+                bg: 'bg-[#FFE0D8]',
+                ink: 'text-[#9C3E2B]',
+                ring: 'ring-[#FF8F78]',
+            },
+);
 </script>
 
 <template>
     <Head title="Status pembayaran JomKid" />
-    <div class="min-h-screen overflow-x-clip bg-[#fffaf0] text-[#17152b]">
-        <header class="border-b-2 border-[#17152b] bg-[#f6c945]">
+    <div class="min-h-screen overflow-x-clip bg-[#FFF9E8] text-[#17213B]">
+        <header>
             <div
-                class="mx-auto flex min-h-18 max-w-6xl items-center justify-between gap-4 px-5 py-3 lg:px-8"
+                class="mx-auto flex min-h-20 max-w-5xl items-center justify-between px-5 lg:px-8"
             >
-                <Link
-                    href="/"
-                    class="flex min-h-11 items-center gap-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#9a5b00]"
-                >
-                    <span
-                        class="grid size-10 place-items-center rounded-[14px_14px_14px_4px] border-2 border-[#17152b] bg-[#f6c945] font-black text-[#17152b]"
+                <Link href="/" class="flex min-h-11 items-center gap-3"
+                    ><span
+                        class="grid size-11 place-items-center rounded-2xl bg-[#FFD84D] text-xl font-black shadow-[0_4px_0_#E0A800]"
                         >J</span
-                    >
-                    <span class="text-xl font-black tracking-[-0.03em]"
-                        >JomKid</span
-                    >
-                </Link>
-                <Link
+                    ><span class="text-2xl font-black">JomKid</span></Link
+                ><Link
                     href="/"
-                    class="inline-flex min-h-11 items-center gap-2 text-sm font-black hover:text-[#9a5b00] focus-visible:outline-2 focus-visible:outline-offset-4"
-                    ><ChevronLeft class="size-4" /> Halaman utama</Link
+                    class="inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-bold hover:bg-white"
+                    ><ChevronLeft class="size-4" /> Utama</Link
                 >
             </div>
         </header>
 
         <main
-            class="mx-auto grid min-h-[calc(100vh-74px)] max-w-6xl items-center gap-10 px-5 py-12 lg:grid-cols-[1fr_380px] lg:px-8"
+            class="mx-auto grid min-h-[calc(100vh-80px)] max-w-5xl items-center gap-10 px-5 py-12 lg:grid-cols-[1fr_360px] lg:px-8"
         >
             <section>
-                <template v-if="successful">
-                    <p
-                        class="flex items-center gap-3 text-sm font-black text-[#1f6b41]"
-                    >
-                        <span class="h-1 w-10 bg-[#1f6b41]"></span>BAYARAN
-                        DISAHKAN
+                <div
+                    class="grid size-28 place-items-center rounded-full ring-8"
+                    :class="[tone.bg, tone.ink, tone.ring]"
+                >
+                    <MailCheck v-if="successful" class="size-12" /><Clock3
+                        v-else-if="processing"
+                        class="size-12"
+                    /><XCircle v-else class="size-12" />
+                </div>
+                <template v-if="successful"
+                    ><p class="mt-8 text-sm font-black text-[#28653D]">
+                        BAYARAN DISAHKAN
                     </p>
                     <h1
-                        class="mt-5 max-w-3xl text-5xl leading-[0.95] font-black tracking-[-0.055em] sm:text-7xl"
+                        class="mt-3 max-w-2xl text-5xl leading-[.98] font-black tracking-[-0.055em] sm:text-7xl"
                     >
-                        Kod anda sedang menuju ke e-mel.
+                        Semak e-mel untuk kod anda.
                     </h1>
-                    <p class="mt-7 max-w-xl text-lg leading-8 text-[#5b586d]">
-                        Kami telah menghantar kod pendaftaran sekali guna ke
-                        <strong class="text-[#17152b]">{{
+                    <p class="mt-6 max-w-xl text-lg leading-8 text-[#65708E]">
+                        Kod pendaftaran sekali guna dihantar ke
+                        <strong class="text-[#17213B]">{{
                             payment.email_hint
                         }}</strong
-                        >. Buka e-mel tersebut, kemudian daftar menggunakan kod
-                        yang diterima.
+                        >. Gunakan kod itu bersama e-mel pembelian semasa
+                        mendaftar.
                     </p>
                     <Link
                         href="/register"
-                        class="mt-8 inline-flex min-h-14 items-center gap-3 rounded-[18px_18px_18px_5px] border-2 border-[#17152b] bg-[#f6c945] px-7 font-black text-[#17152b] transition hover:-translate-y-0.5 hover:bg-[#ffd95f] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#ff766b]"
-                    >
-                        <Check class="size-5" /> Daftar menggunakan kod
-                    </Link>
-                </template>
-
-                <template v-else-if="processing">
-                    <p
-                        class="flex items-center gap-3 text-sm font-black text-[#9b6410]"
-                    >
-                        <span class="h-1 w-10 bg-[#f6c945]"></span>MENUNGGU
-                        PENGESAHAN
+                        class="mt-8 inline-flex min-h-15 items-center gap-3 rounded-full bg-[#17213B] px-7 font-black text-white shadow-[0_5px_0_#65708E]"
+                        ><Check class="size-5" />Daftar menggunakan kod</Link
+                    ></template
+                >
+                <template v-else-if="processing"
+                    ><p class="mt-8 text-sm font-black text-[#845400]">
+                        MENUNGGU PENGESAHAN
                     </p>
                     <h1
-                        class="mt-5 max-w-3xl text-5xl leading-[0.95] font-black tracking-[-0.055em] sm:text-7xl"
+                        class="mt-3 max-w-2xl text-5xl leading-[.98] font-black tracking-[-0.055em] sm:text-7xl"
                     >
-                        CHIP masih menyemak bayaran anda.
+                        CHIP masih menyemak bayaran.
                     </h1>
-                    <p class="mt-7 max-w-xl text-lg leading-8 text-[#5b586d]">
-                        Kod belum dikeluarkan. Tekan semak semula selepas CHIP
-                        selesai mengesahkan bayaran pada server JomKid.
+                    <p class="mt-6 max-w-xl text-lg leading-8 text-[#65708E]">
+                        Kod belum dikeluarkan. Semak semula selepas status
+                        bayaran selesai disahkan pada server JomKid.
                     </p>
                     <button
                         type="button"
-                        class="mt-8 inline-flex min-h-14 items-center gap-3 rounded-[18px_18px_18px_5px] border-2 border-[#17152b] bg-[#f6c945] px-7 font-black transition hover:-translate-y-0.5 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#9a5b00]"
+                        class="mt-8 inline-flex min-h-15 items-center gap-3 rounded-full bg-[#FFD84D] px-7 font-black shadow-[0_5px_0_#E0A800]"
                         @click="reload"
                     >
-                        <RefreshCw class="size-5" /> Semak status semula
-                    </button>
-                </template>
-
-                <template v-else>
-                    <p
-                        class="flex items-center gap-3 text-sm font-black text-[#a92d25]"
-                    >
-                        <span class="h-1 w-10 bg-[#ff766b]"></span>BAYARAN BELUM
-                        BERJAYA
+                        <RefreshCw class="size-5" />Semak status semula
+                    </button></template
+                >
+                <template v-else
+                    ><p class="mt-8 text-sm font-black text-[#9C3E2B]">
+                        BAYARAN BELUM BERJAYA
                     </p>
                     <h1
-                        class="mt-5 max-w-3xl text-5xl leading-[0.95] font-black tracking-[-0.055em] sm:text-7xl"
+                        class="mt-3 max-w-2xl text-5xl leading-[.98] font-black tracking-[-0.055em] sm:text-7xl"
                     >
-                        Tiada kod pendaftaran dikeluarkan.
+                        Tiada kod dikeluarkan.
                     </h1>
-                    <p class="mt-7 max-w-xl text-lg leading-8 text-[#5b586d]">
-                        Bayaran tidak disahkan. Anda boleh kembali ke checkout,
-                        semak pakej dan cuba pembayaran semula.
+                    <p class="mt-6 max-w-xl text-lg leading-8 text-[#65708E]">
+                        Bayaran belum disahkan. Kembali ke checkout untuk semak
+                        pakej dan cuba semula.
                     </p>
                     <Link
                         href="/checkout"
-                        class="mt-8 inline-flex min-h-14 items-center rounded-[18px_18px_18px_5px] border-2 border-[#17152b] bg-[#17152b] px-7 font-black text-white transition hover:-translate-y-0.5 hover:bg-[#9a5b00] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#ff766b]"
+                        class="mt-8 inline-flex min-h-15 items-center rounded-full bg-[#17213B] px-7 font-black text-white shadow-[0_5px_0_#65708E]"
                         >Kembali ke checkout</Link
-                    >
-                </template>
+                    ></template
+                >
             </section>
 
-            <aside class="relative">
-                <div
-                    class="absolute -right-3 -bottom-3 h-full w-full rounded-[26px_26px_26px_6px] border-2 border-[#17152b]"
-                    :class="
-                        successful
-                            ? 'bg-[#87d6a9]'
-                            : processing
-                              ? 'bg-[#f6c945]'
-                              : 'bg-[#ff766b]'
-                    "
-                ></div>
-                <div
-                    class="relative rounded-[26px_26px_26px_6px] border-2 border-[#17152b] bg-white p-6 sm:p-7"
+            <aside
+                class="rounded-[32px] bg-white p-7 shadow-[0_18px_55px_rgba(23,33,59,.1)]"
+            >
+                <p class="text-sm font-black text-[#65708E]">
+                    RINGKASAN BAYARAN
+                </p>
+                <dl class="mt-5 space-y-4">
+                    <div
+                        class="flex justify-between gap-4 border-b border-[#E2E5EC] pb-4"
+                    >
+                        <dt class="text-sm text-[#65708E]">Jumlah</dt>
+                        <dd class="font-black">
+                            {{ money(payment.amount_sen) }}
+                        </dd>
+                    </div>
+                    <div
+                        class="flex justify-between gap-4 border-b border-[#E2E5EC] pb-4"
+                    >
+                        <dt class="text-sm text-[#65708E]">Rujukan</dt>
+                        <dd class="font-mono text-sm font-black">
+                            {{ payment.uuid.slice(0, 8).toUpperCase() }}
+                        </dd>
+                    </div>
+                    <div class="flex justify-between gap-4">
+                        <dt class="text-sm text-[#65708E]">Status</dt>
+                        <dd class="text-sm font-black uppercase">
+                            {{ payment.status }}
+                        </dd>
+                    </div>
+                </dl>
+                <p
+                    class="mt-6 rounded-2xl bg-[#F3F5F8] p-4 text-xs leading-5 text-[#65708E]"
                 >
-                    <span
-                        class="grid size-14 place-items-center rounded-[16px_16px_16px_4px] border-2 border-[#17152b]"
-                        :class="
-                            successful
-                                ? 'bg-[#dff7e9] text-[#1f6b41]'
-                                : processing
-                                  ? 'bg-[#fff4c4] text-[#79500d]'
-                                  : 'bg-[#ffebe7] text-[#a92d25]'
-                        "
-                    >
-                        <MailCheck v-if="successful" />
-                        <Clock3 v-else-if="processing" />
-                        <XCircle v-else />
-                    </span>
-                    <p class="mt-6 text-sm font-black text-[#5b586d]">
-                        RINGKASAN TRANSAKSI
-                    </p>
-                    <dl
-                        class="mt-4 divide-y-2 divide-[#17152b] border-y-2 border-[#17152b]"
-                    >
-                        <div class="flex justify-between gap-4 py-4">
-                            <dt class="text-sm font-semibold text-[#5b586d]">
-                                Jumlah
-                            </dt>
-                            <dd class="font-black">
-                                {{ money(payment.amount_sen) }}
-                            </dd>
-                        </div>
-                        <div class="flex justify-between gap-4 py-4">
-                            <dt class="text-sm font-semibold text-[#5b586d]">
-                                Rujukan
-                            </dt>
-                            <dd class="font-mono text-sm font-black">
-                                {{ payment.uuid.slice(0, 8).toUpperCase() }}
-                            </dd>
-                        </div>
-                        <div class="flex justify-between gap-4 py-4">
-                            <dt class="text-sm font-semibold text-[#5b586d]">
-                                Status
-                            </dt>
-                            <dd class="text-sm font-black uppercase">
-                                {{ payment.status }}
-                            </dd>
-                        </div>
-                    </dl>
-                    <p class="mt-5 text-xs leading-5 text-[#5b586d]">
-                        Browser redirect bukan bukti bayaran. Status ini disemak
-                        menggunakan data server CHIP.
-                    </p>
-                </div>
+                    Browser redirect bukan bukti bayaran. Status ini datang
+                    daripada semakan server CHIP.
+                </p>
             </aside>
         </main>
     </div>
