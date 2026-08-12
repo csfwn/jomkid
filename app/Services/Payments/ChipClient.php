@@ -24,7 +24,7 @@ class ChipClient
             ],
             'purchase' => [
                 'currency' => 'MYR',
-                'language' => 'ms',
+                'language' => 'en',
                 'products' => [[
                     'name' => $packageName,
                     'price' => $payment->amount_sen,

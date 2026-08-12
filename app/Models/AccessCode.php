@@ -16,8 +16,6 @@ class AccessCode extends Model
 
     public const STATUS_USED = 'used';
 
-    public const STATUS_REVOKED = 'revoked';
-
     protected function casts(): array
     {
         return ['used_at' => 'datetime'];

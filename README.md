@@ -51,9 +51,9 @@ In the CHIP merchant portal, register this public HTTPS endpoint:
 https://jomkid.com/webhooks/chip
 ```
 
-Subscribe it to at least `purchase.paid`, `purchase.payment_failure`, `purchase.cancelled`, `payment.refunded`, and `payment.charged_back`. The webhook verifies `X-Signature` against the exact raw request body before changing payment, access-code, lifetime-access, or affiliate commission state. Browser redirects are never treated as proof of payment.
+Subscribe it to at least `purchase.paid`, `purchase.payment_failure`, and `purchase.cancelled`. The webhook verifies `X-Signature` against the exact raw request body before changing payment, access-code, lifetime-access, or affiliate commission state. Browser redirects are never treated as proof of payment.
 
-Only Premium buyers receive an affiliate code and reseller license. Affiliate sales use `?ref=AFFILIATE_CODE` and earn 50% of the directly referred customer's package price (RM34.50 for Basic or RM49.50 for Premium). A verified payment creates exactly one one-time registration code and one pending commission, available after the configured refund window. The plaintext code is sent by email and only its SHA-256 hash is stored. Redeeming it once activates lifetime access; refunds and chargebacks revoke the code/access and reverse the related commission.
+Only Premium buyers receive an affiliate code and reseller license. Affiliate sales use `?ref=AFFILIATE_CODE` and earn 50% of the directly referred customer's package price (RM34.50 for Basic or RM49.50 for Premium). A verified payment creates exactly one one-time registration code and one commission that is available immediately for payout. The plaintext code is sent by email and only its SHA-256 hash is stored. Redeeming it once activates lifetime access. Every completed purchase is a final sale and cannot be refunded.
 
 ## Quality gates
 

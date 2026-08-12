@@ -36,17 +36,6 @@ class AccessCodeIssuer
         });
     }
 
-    public function revoke(Payment $payment): void
-    {
-        $accessCode = AccessCode::query()->where('payment_id', $payment->id)->first();
-        if (! $accessCode) {
-            return;
-        }
-
-        $accessCode->update(['status' => AccessCode::STATUS_REVOKED]);
-        $accessCode->usedBy?->update(['access_status' => 'revoked']);
-    }
-
     private function generateCode(): string
     {
         do {

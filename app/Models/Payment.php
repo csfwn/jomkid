@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
     'uuid', 'customer_name', 'customer_email', 'package_code', 'user_id', 'affiliate_user_id',
     'provider', 'provider_purchase_id',
     'reference', 'status', 'amount_sen', 'currency', 'checkout_url',
-    'provider_payload', 'paid_at', 'failed_at', 'refunded_at',
+    'provider_payload', 'paid_at', 'failed_at',
 ])]
 class Payment extends Model
 {
@@ -25,15 +25,12 @@ class Payment extends Model
 
     public const STATUS_CANCELLED = 'cancelled';
 
-    public const STATUS_REFUNDED = 'refunded';
-
     protected function casts(): array
     {
         return [
             'provider_payload' => 'array',
             'paid_at' => 'datetime',
             'failed_at' => 'datetime',
-            'refunded_at' => 'datetime',
         ];
     }
 

@@ -91,7 +91,7 @@ const money = (sen: number) =>
                     {{ money(metrics.pending_commission_sen) }}
                 </p>
                 <p class="mt-3 text-sm leading-6 text-indigo-100">
-                    Komisen hanya boleh tersedia selepas tempoh refund tamat.
+                    Komisen tersedia sebaik sahaja bayaran disahkan dan menunggu pembayaran.
                 </p>
             </aside>
         </section>

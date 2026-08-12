@@ -31,14 +31,11 @@ class ChipWebhookController extends Controller
         }
 
         $eventType = data_get($payload, 'event_type');
-        $isReversal = in_array($eventType, ['payment.refunded', 'payment.charged_back'], true);
-        $purchaseId = $isReversal
-            ? data_get($payload, 'related_to.id')
-            : data_get($payload, 'id');
-
-        if ($isReversal && data_get($payload, 'related_to.type') !== 'purchase') {
-            throw new RuntimeException('Verified CHIP reversal is not related to a Purchase.');
+        if (in_array($eventType, ['payment.refunded', 'payment.charged_back'], true)) {
+            return response()->json(['received' => true]);
         }
+
+        $purchaseId = data_get($payload, 'id');
         if (! is_string($purchaseId) || $purchaseId === '') {
             throw new RuntimeException('Verified CHIP callback has no purchase ID.');
         }
@@ -48,11 +45,7 @@ class ChipWebhookController extends Controller
             return response()->json(['received' => true]);
         }
 
-        if ($isReversal) {
-            $synchronizer->reverse($payment, $payload);
-        } else {
-            $synchronizer->sync($payment, $payload);
-        }
+        $synchronizer->sync($payment, $payload);
 
         return response()->json(['received' => true]);
     }

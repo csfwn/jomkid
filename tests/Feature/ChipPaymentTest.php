@@ -183,7 +183,7 @@ class ChipPaymentTest extends TestCase
         Notification::assertSentOnDemandTimes(LifetimeAccessCodeIssued::class, 1);
     }
 
-    public function test_refund_revokes_used_access_and_affiliate_commission(): void
+    public function test_refund_webhook_does_not_reverse_a_final_sale(): void
     {
         Notification::fake();
         $affiliate = User::factory()->create([
@@ -195,13 +195,7 @@ class ChipPaymentTest extends TestCase
         $paidBody = json_encode($this->paidPayload($payment), JSON_THROW_ON_ERROR);
         $this->postRawWebhook($paidBody, $this->sign($paidBody))->assertOk();
 
-        $user = User::factory()->create(['access_status' => 'active']);
         $accessCode = AccessCode::query()->sole();
-        $accessCode->update([
-            'status' => AccessCode::STATUS_USED,
-            'used_by_user_id' => $user->id,
-            'used_at' => now(),
-        ]);
 
         $refundPayload = [
             'id' => (string) Str::uuid(),
@@ -220,13 +214,9 @@ class ChipPaymentTest extends TestCase
         $refundBody = json_encode($refundPayload, JSON_THROW_ON_ERROR);
         $this->postRawWebhook($refundBody, $this->sign($refundBody))->assertOk();
 
-        $this->assertSame(Payment::STATUS_REFUNDED, $payment->refresh()->status);
-        $this->assertSame(AccessCode::STATUS_REVOKED, $accessCode->refresh()->status);
-        $this->assertSame('revoked', $user->refresh()->access_status);
-        $this->assertSame('reversed', AffiliateCommission::query()->sole()->status);
-
-        $this->postRawWebhook($paidBody, $this->sign($paidBody))->assertOk();
-        $this->assertSame(Payment::STATUS_REFUNDED, $payment->refresh()->status);
+        $this->assertSame(Payment::STATUS_PAID, $payment->refresh()->status);
+        $this->assertSame(AccessCode::STATUS_ACTIVE, $accessCode->refresh()->status);
+        $this->assertSame('pending', AffiliateCommission::query()->sole()->status);
         $this->assertDatabaseCount('access_codes', 1);
     }
 

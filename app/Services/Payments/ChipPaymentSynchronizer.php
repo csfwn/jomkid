@@ -32,7 +32,7 @@ class ChipPaymentSynchronizer
             if ($status === 'paid') {
                 $this->assertPaidAmount($locked, $purchase);
 
-                if (! in_array($locked->status, [Payment::STATUS_PAID, Payment::STATUS_REFUNDED], true)) {
+                if ($locked->status !== Payment::STATUS_PAID) {
                     $paidAt = now();
                     $locked->status = Payment::STATUS_PAID;
                     $locked->paid_at = $paidAt;
@@ -51,15 +51,11 @@ class ChipPaymentSynchronizer
                                     100,
                                 ),
                                 'status' => 'pending',
-                                'available_at' => $paidAt->copy()->addDays(
-                                    (int) config('affiliate.refund_window_days', 30),
-                                ),
+                                'available_at' => $paidAt,
                             ],
                         );
                     }
                 }
-            } elseif (in_array($status, ['refunded', 'chargeback'], true)) {
-                $this->applyReversal($locked);
             } elseif (in_array($status, ['error', 'cancelled', 'expired', 'blocked', 'released'], true)) {
                 if ($locked->status !== Payment::STATUS_PAID) {
                     $locked->status = $status === 'cancelled'
@@ -76,46 +72,6 @@ class ChipPaymentSynchronizer
 
             return $locked->refresh();
         });
-    }
-
-    /** @param array<string, mixed> $event */
-    public function reverse(Payment $payment, array $event): Payment
-    {
-        $amount = (int) data_get($event, 'payment.amount');
-        $currency = data_get($event, 'payment.currency');
-        $reference = data_get($event, 'reference');
-
-        if ($amount < 1 || $amount > $payment->amount_sen || $currency !== $payment->currency) {
-            throw new RuntimeException('CHIP reversal amount or currency does not match the local payment.');
-        }
-
-        if (is_string($reference) && $reference !== '' && $reference !== $payment->reference) {
-            throw new RuntimeException('CHIP reversal reference does not match the local payment.');
-        }
-
-        return DB::transaction(function () use ($payment, $event): Payment {
-            $locked = Payment::query()->whereKey($payment->id)->lockForUpdate()->firstOrFail();
-            $locked->setAttribute('provider_payload', $event);
-            $this->applyReversal($locked);
-            $locked->save();
-
-            return $locked->refresh();
-        });
-    }
-
-    private function applyReversal(Payment $payment): void
-    {
-        if ($payment->status === Payment::STATUS_REFUNDED) {
-            return;
-        }
-
-        $payment->status = Payment::STATUS_REFUNDED;
-        $payment->refunded_at = now();
-        $this->accessCodes->revoke($payment);
-        AffiliateCommission::query()->where('payment_id', $payment->id)->update([
-            'status' => 'reversed',
-            'available_at' => null,
-        ]);
     }
 
     /** @param array<string, mixed> $purchase */

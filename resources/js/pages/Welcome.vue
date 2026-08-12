@@ -82,12 +82,12 @@ defineProps<{ canRegister: boolean }>();
                     class="mx-auto grid max-w-7xl items-center gap-14 px-5 py-16 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:py-24"
                 >
                     <div>
-                        <div
+                        <!-- <div
                             class="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm font-bold text-indigo-700"
                         >
                             <Sparkles class="size-4" /> Belajar dua hala untuk
                             umur 5–8 tahun
-                        </div>
+                        </div> -->
                         <h1
                             class="max-w-3xl text-5xl leading-[1.04] font-black tracking-[-0.045em] sm:text-6xl lg:text-7xl"
                         >
@@ -343,11 +343,11 @@ defineProps<{ canRegister: boolean }>();
                                 Tiada reseller atau affiliate license
                             </li>
                         </ul>
-                        <Link
+                        <a
                             href="/checkout?package=basic"
                             class="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-4 font-black text-white"
                             >Pilih Basic <ArrowRight class="size-5"
-                        /></Link>
+                        /></a>
                     </article>
 
                     <article
@@ -388,11 +388,11 @@ defineProps<{ canRegister: boolean }>();
                                 50% setiap jualan referral
                             </li>
                         </ul>
-                        <Link
+                        <a
                             href="/checkout?package=premium"
                             class="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-yellow-300 px-6 py-4 font-black text-indigo-950"
                             >Pilih Premium <ArrowRight class="size-5"
-                        /></Link>
+                        /></a>
                     </article>
                 </div>
             </section>
