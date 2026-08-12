@@ -37,16 +37,16 @@ const processing = computed(
 <template>
     <Head title="Status pembayaran JomKid" />
     <div class="min-h-screen overflow-x-clip bg-[#fffaf0] text-[#17152b]">
-        <header class="border-b-2 border-[#17152b]">
+        <header class="border-b-2 border-[#17152b] bg-[#f6c945]">
             <div
                 class="mx-auto flex min-h-18 max-w-6xl items-center justify-between gap-4 px-5 py-3 lg:px-8"
             >
                 <Link
                     href="/"
-                    class="flex min-h-11 items-center gap-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4f46e5]"
+                    class="flex min-h-11 items-center gap-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#9a5b00]"
                 >
                     <span
-                        class="grid size-10 place-items-center rounded-[14px_14px_14px_4px] border-2 border-[#17152b] bg-[#ff766b] font-black text-white"
+                        class="grid size-10 place-items-center rounded-[14px_14px_14px_4px] border-2 border-[#17152b] bg-[#f6c945] font-black text-[#17152b]"
                         >J</span
                     >
                     <span class="text-xl font-black tracking-[-0.03em]"
@@ -55,7 +55,7 @@ const processing = computed(
                 </Link>
                 <Link
                     href="/"
-                    class="inline-flex min-h-11 items-center gap-2 text-sm font-black hover:text-[#4f46e5] focus-visible:outline-2 focus-visible:outline-offset-4"
+                    class="inline-flex min-h-11 items-center gap-2 text-sm font-black hover:text-[#9a5b00] focus-visible:outline-2 focus-visible:outline-offset-4"
                     ><ChevronLeft class="size-4" /> Halaman utama</Link
                 >
             </div>
@@ -87,7 +87,7 @@ const processing = computed(
                     </p>
                     <Link
                         href="/register"
-                        class="mt-8 inline-flex min-h-14 items-center gap-3 rounded-[18px_18px_18px_5px] border-2 border-[#17152b] bg-[#4f46e5] px-7 font-black text-white transition hover:-translate-y-0.5 hover:bg-[#3730a3] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#ff766b]"
+                        class="mt-8 inline-flex min-h-14 items-center gap-3 rounded-[18px_18px_18px_5px] border-2 border-[#17152b] bg-[#f6c945] px-7 font-black text-[#17152b] transition hover:-translate-y-0.5 hover:bg-[#ffd95f] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#ff766b]"
                     >
                         <Check class="size-5" /> Daftar menggunakan kod
                     </Link>
@@ -97,7 +97,7 @@ const processing = computed(
                     <p
                         class="flex items-center gap-3 text-sm font-black text-[#9b6410]"
                     >
-                        <span class="h-1 w-10 bg-[#f1c84b]"></span>MENUNGGU
+                        <span class="h-1 w-10 bg-[#f6c945]"></span>MENUNGGU
                         PENGESAHAN
                     </p>
                     <h1
@@ -111,7 +111,7 @@ const processing = computed(
                     </p>
                     <button
                         type="button"
-                        class="mt-8 inline-flex min-h-14 items-center gap-3 rounded-[18px_18px_18px_5px] border-2 border-[#17152b] bg-[#f1c84b] px-7 font-black transition hover:-translate-y-0.5 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#4f46e5]"
+                        class="mt-8 inline-flex min-h-14 items-center gap-3 rounded-[18px_18px_18px_5px] border-2 border-[#17152b] bg-[#f6c945] px-7 font-black transition hover:-translate-y-0.5 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#9a5b00]"
                         @click="reload"
                     >
                         <RefreshCw class="size-5" /> Semak status semula
@@ -136,7 +136,7 @@ const processing = computed(
                     </p>
                     <Link
                         href="/checkout"
-                        class="mt-8 inline-flex min-h-14 items-center rounded-[18px_18px_18px_5px] border-2 border-[#17152b] bg-[#17152b] px-7 font-black text-white transition hover:-translate-y-0.5 hover:bg-[#4f46e5] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#ff766b]"
+                        class="mt-8 inline-flex min-h-14 items-center rounded-[18px_18px_18px_5px] border-2 border-[#17152b] bg-[#17152b] px-7 font-black text-white transition hover:-translate-y-0.5 hover:bg-[#9a5b00] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#ff766b]"
                         >Kembali ke checkout</Link
                     >
                 </template>
@@ -149,7 +149,7 @@ const processing = computed(
                         successful
                             ? 'bg-[#87d6a9]'
                             : processing
-                              ? 'bg-[#f1c84b]'
+                              ? 'bg-[#f6c945]'
                               : 'bg-[#ff766b]'
                     "
                 ></div>

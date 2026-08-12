@@ -75,7 +75,7 @@ const gameModes = [
     <Head title="JomKid, Belajar Bahasa Melayu Melalui Permainan">
         <meta
             name="description"
-            content="JomKid ialah PWA pembelajaran game-first untuk anak Malaysia. Mulakan dengan permainan interaktif JomABC dan pantau kemajuan anak."
+            content="JomKid ialah game-first web app untuk anak Malaysia. Mulakan dengan permainan interaktif JomABC dan pantau kemajuan anak."
         />
     </Head>
 
@@ -86,11 +86,12 @@ const gameModes = [
             >
                 <Link
                     href="/"
-                    class="flex min-h-11 items-center gap-3 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#5650e8]"
+                    class="flex min-h-11 items-center gap-3 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#9a5b00]"
                 >
-                    <span class="oji-mini" aria-hidden="true">
-                        <span></span><span></span>
-                    </span>
+                    <span
+                        class="grid size-10 place-items-center rounded-[14px_14px_14px_4px] border-2 border-[#17203a] bg-[#f6c945] font-black"
+                        >J</span
+                    >
                     <span class="text-xl font-black tracking-[-0.04em]"
                         >JomKid</span
                     >
@@ -121,13 +122,13 @@ const gameModes = [
                     <template v-else>
                         <Link
                             href="/login"
-                            class="hidden min-h-11 items-center px-3 text-sm font-black hover:text-[#5650e8] focus-visible:outline-3 sm:inline-flex"
+                            class="hidden min-h-11 items-center px-3 text-sm font-black hover:text-[#9a5b00] focus-visible:outline-3 sm:inline-flex"
                             >Log masuk</Link
                         >
                         <Link
                             v-if="canRegister"
                             href="/checkout"
-                            class="inline-flex min-h-11 items-center rounded-[15px_15px_15px_5px] border-2 border-[#17203a] bg-[#17203a] px-5 text-sm font-black text-white transition hover:-translate-y-0.5 hover:bg-[#5650e8] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#ff7369]"
+                            class="inline-flex min-h-11 items-center rounded-[15px_15px_15px_5px] border-2 border-[#17203a] bg-[#17203a] px-5 text-sm font-black text-white transition hover:-translate-y-0.5 hover:bg-[#9a5b00] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#ff7369]"
                             >Mula bermain</Link
                         >
                     </template>
@@ -136,7 +137,7 @@ const gameModes = [
         </header>
 
         <main>
-            <section class="relative border-b-2 border-[#17203a] bg-[#7dd3fc]">
+            <section class="relative border-b-2 border-[#17203a] bg-[#f6c945]">
                 <div
                     class="absolute top-8 left-[8%] size-8 rotate-12 border-4 border-[#17203a] bg-[#f1c84b]"
                     aria-hidden="true"
@@ -152,14 +153,14 @@ const gameModes = [
                         <p
                             class="inline-flex min-h-10 items-center gap-2 rounded-full border-2 border-[#17203a] bg-[#fff9ed] px-4 text-sm font-black"
                         >
-                            <Gamepad2 class="size-5 text-[#5650e8]" /> PWA
+                            <Gamepad2 class="size-5 text-[#9a5b00]" /> WEB APP
                             GAME-FIRST UNTUK ANAK
                         </p>
                         <h1
                             class="mt-5 max-w-3xl text-[clamp(3.25rem,7vw,6.9rem)] leading-[0.86] font-black tracking-[-0.07em] sm:mt-6"
                         >
                             Main.<br />Cuba.<br /><span
-                                class="relative inline-block text-[#5650e8]"
+                                class="relative inline-block text-[#9a5b00]"
                                 >Pandai!<span
                                     class="absolute -top-3 -right-7 text-3xl text-[#ff7369] sm:text-5xl"
                                     >✦</span
@@ -178,7 +179,7 @@ const gameModes = [
                         >
                             <Link
                                 href="/checkout?package=basic"
-                                class="inline-flex min-h-15 items-center gap-3 rounded-[20px_20px_20px_6px] border-3 border-[#17203a] bg-[#5650e8] px-7 text-base font-black text-white transition hover:-translate-y-1 hover:bg-[#403abd] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#ff7369]"
+                                class="inline-flex min-h-15 items-center gap-3 rounded-[20px_20px_20px_6px] border-3 border-[#17203a] bg-[#17203a] px-7 text-base font-black text-white transition hover:-translate-y-1 hover:bg-[#9a5b00] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#ff7369]"
                             >
                                 Mulakan dengan JomABC
                                 <ChevronRight class="size-5" />
@@ -186,23 +187,13 @@ const gameModes = [
                             <p class="text-sm leading-6 font-black">
                                 RM69 lifetime<br /><span
                                     class="font-semibold text-[#38435f]"
-                                    >PWA, beli sekali</span
+                                    >Web app, beli sekali</span
                                 >
                             </p>
                         </div>
                     </div>
 
                     <div class="relative mx-auto w-full max-w-xl">
-                        <div
-                            class="oji absolute -top-8 -left-2 z-10"
-                            aria-label="Oji, panduan JomKid"
-                        >
-                            <div class="oji-ear left"></div>
-                            <div class="oji-ear right"></div>
-                            <div class="oji-eye left"><span></span></div>
-                            <div class="oji-eye right"><span></span></div>
-                            <div class="oji-beak"></div>
-                        </div>
                         <div
                             class="absolute -right-3 -bottom-3 h-full w-full rounded-[34px_34px_34px_10px] border-3 border-[#17203a] bg-[#ff7369]"
                         ></div>
@@ -215,7 +206,7 @@ const gameModes = [
                             >
                                 <div>
                                     <p
-                                        class="text-xs font-black text-[#5650e8]"
+                                        class="text-xs font-black text-[#9a5b00]"
                                     >
                                         CUBA SEKARANG
                                     </p>
@@ -227,7 +218,7 @@ const gameModes = [
                                     class="flex gap-1"
                                     aria-label="Kemajuan 1 daripada 3"
                                 >
-                                    <span class="h-2 w-8 bg-[#5650e8]"></span>
+                                    <span class="h-2 w-8 bg-[#9a5b00]"></span>
                                     <span class="h-2 w-8 bg-[#d8dbe5]"></span>
                                     <span class="h-2 w-8 bg-[#d8dbe5]"></span>
                                 </div>
@@ -243,7 +234,7 @@ const gameModes = [
                                 </p>
                                 <button
                                     type="button"
-                                    class="mx-auto mt-5 grid size-16 place-items-center rounded-full border-3 border-[#17203a] bg-[#f1c84b] transition hover:scale-105 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#5650e8]"
+                                    class="mx-auto mt-5 grid size-16 place-items-center rounded-full border-3 border-[#17203a] bg-[#f1c84b] transition hover:scale-105 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#9a5b00]"
                                     aria-label="Mainkan arahan bunyi"
                                     @click="replayPrompt"
                                 >
@@ -257,7 +248,7 @@ const gameModes = [
                                         v-for="letter in ['N', 'M', 'B']"
                                         :key="letter"
                                         type="button"
-                                        class="grid min-h-22 place-items-center rounded-[20px_20px_20px_6px] border-3 border-[#17203a] text-4xl font-black transition hover:-translate-y-1 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#5650e8]"
+                                        class="grid min-h-22 place-items-center rounded-[20px_20px_20px_6px] border-3 border-[#17203a] text-4xl font-black transition hover:-translate-y-1 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#9a5b00]"
                                         :class="[
                                             answer === letter && letter === 'M'
                                                 ? 'bg-[#a7e8bd]'
@@ -386,11 +377,11 @@ const gameModes = [
 
             <section
                 id="dunia"
-                class="border-y-3 border-[#17203a] bg-[#5650e8] text-white"
+                class="border-y-3 border-[#17203a] bg-[#f6c945] text-[#17203a]"
             >
                 <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24">
                     <div class="max-w-3xl">
-                        <p class="text-sm font-black text-[#f1c84b]">
+                        <p class="text-sm font-black text-[#9a5b00]">
                             PETA DUNIA JOMKID
                         </p>
                         <h2
@@ -399,7 +390,7 @@ const gameModes = [
                             Satu dunia dahulu. Lebih banyak menyusul.
                         </h2>
                         <p
-                            class="mt-5 max-w-2xl text-lg leading-8 text-[#deddfc]"
+                            class="mt-5 max-w-2xl text-lg leading-8 text-[#51472e]"
                         >
                             Kami bermula dengan JomABC supaya pengalaman huruf,
                             bunyi dan perkataan dapat dibina dengan baik sebelum
@@ -500,7 +491,7 @@ const gameModes = [
                             semakan ibu bapa.
                         </p>
                         <div class="mt-8 grid gap-5 sm:grid-cols-2">
-                            <div class="border-l-4 border-[#5650e8] pl-4">
+                            <div class="border-l-4 border-[#9a5b00] pl-4">
                                 <p class="font-black">Profil berasingan</p>
                                 <p
                                     class="mt-2 text-sm leading-6 text-[#59627a]"
@@ -536,7 +527,7 @@ const gameModes = [
                                     >
                                     <div>
                                         <p
-                                            class="text-xs font-black text-[#5650e8]"
+                                            class="text-xs font-black text-[#9a5b00]"
                                         >
                                             PROFIL ANAK
                                         </p>
@@ -560,15 +551,15 @@ const gameModes = [
                                         class="flex items-center justify-between"
                                     >
                                         <p class="font-black">Laluan bunyi</p>
-                                        <Trophy class="size-5 text-[#5650e8]" />
+                                        <Trophy class="size-5 text-[#9a5b00]" />
                                     </div>
                                     <div class="mt-6 flex items-center gap-2">
                                         <span
-                                            class="grid size-10 place-items-center rounded-full bg-[#5650e8] font-black text-white"
+                                            class="grid size-10 place-items-center rounded-full bg-[#9a5b00] font-black text-white"
                                             >M</span
                                         >
                                         <span
-                                            class="h-1 flex-1 bg-[#5650e8]"
+                                            class="h-1 flex-1 bg-[#9a5b00]"
                                         ></span>
                                         <span
                                             class="grid size-10 place-items-center rounded-full border-2 border-[#17203a] bg-white font-black"
@@ -616,9 +607,23 @@ const gameModes = [
                                     class="mx-auto h-1.5 w-14 rounded-full bg-[#17203a]"
                                 ></div>
                                 <div class="mt-8 grid place-items-center">
-                                    <span class="oji large"
-                                        ><span></span><span></span
-                                    ></span>
+                                    <div
+                                        class="grid grid-cols-2 gap-2"
+                                        aria-hidden="true"
+                                    >
+                                        <span
+                                            class="grid size-14 place-items-center rounded-[16px_16px_16px_5px] border-3 border-[#17203a] bg-white text-2xl font-black"
+                                            >A</span
+                                        >
+                                        <span
+                                            class="grid size-14 place-items-center rounded-[16px_16px_16px_5px] border-3 border-[#17203a] bg-[#ff9f97] text-2xl font-black"
+                                            >B</span
+                                        >
+                                        <span
+                                            class="col-span-2 grid min-h-12 place-items-center rounded-[16px_16px_16px_5px] border-3 border-[#17203a] bg-[#a7e8bd] text-2xl font-black"
+                                            >C</span
+                                        >
+                                    </div>
                                     <p
                                         class="mt-5 text-center text-xl font-black"
                                     >
@@ -633,28 +638,30 @@ const gameModes = [
                             </div>
                         </div>
                         <Sparkles
-                            class="absolute -top-3 -right-10 size-10 text-[#5650e8]"
+                            class="absolute -top-3 -right-10 size-10 text-[#9a5b00]"
                         />
                     </div>
                     <div>
                         <p class="text-sm font-black text-[#17633c]">
-                            PWA DAHULU
+                            WEB APP DAHULU
                         </p>
                         <h2
                             class="mt-3 text-4xl leading-[.98] font-black tracking-[-0.055em] sm:text-6xl"
                         >
-                            Buka seperti web. Pasang seperti app.
+                            Buka terus melalui browser.
                         </h2>
                         <p
                             class="mt-6 max-w-2xl text-lg leading-8 text-[#354b43]"
                         >
-                            JomKid dibina sebagai Progressive Web App. Ia boleh
-                            dibuka melalui browser dan dipasang pada peranti
-                            yang menyokong PWA tanpa menunggu aplikasi native.
+                            JomKid dibina mobile-first dan boleh digunakan
+                            melalui browser. Sokongan pemasangan PWA akan
+                            ditambah selepas manifest, service worker dan
+                            pengalaman offline selesai diuji.
                         </p>
                         <ul class="mt-7 grid gap-4 font-black sm:grid-cols-2">
                             <li class="flex items-center gap-3">
-                                <Smartphone class="size-5" />Mobile-first
+                                <Smartphone class="size-5" />Paparan
+                                mobile-first
                             </li>
                             <li class="flex items-center gap-3">
                                 <Cloud class="size-5" />Kemajuan disimpan ke
@@ -678,7 +685,7 @@ const gameModes = [
                 class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28"
             >
                 <div class="max-w-3xl">
-                    <p class="text-sm font-black text-[#5650e8]">
+                    <p class="text-sm font-black text-[#9a5b00]">
                         AKSES LIFETIME
                     </p>
                     <h2
@@ -696,7 +703,7 @@ const gameModes = [
                     >
                         <div class="flex items-start justify-between gap-4">
                             <div>
-                                <p class="text-sm font-black text-[#5650e8]">
+                                <p class="text-sm font-black text-[#9a5b00]">
                                     BASIC
                                 </p>
                                 <h3 class="mt-2 text-3xl font-black">
@@ -713,17 +720,17 @@ const gameModes = [
                         <ul class="mt-8 grid gap-4 text-sm font-black">
                             <li class="flex gap-3">
                                 <Check
-                                    class="size-5 shrink-0 text-[#5650e8]"
+                                    class="size-5 shrink-0 text-[#9a5b00]"
                                 />Maksimum 3 profil anak
                             </li>
                             <li class="flex gap-3">
                                 <Gamepad2
-                                    class="size-5 shrink-0 text-[#5650e8]"
+                                    class="size-5 shrink-0 text-[#9a5b00]"
                                 />Akses lifetime JomABC
                             </li>
                             <li class="flex gap-3">
                                 <BarChart3
-                                    class="size-5 shrink-0 text-[#5650e8]"
+                                    class="size-5 shrink-0 text-[#9a5b00]"
                                 />Kemajuan setiap profil
                             </li>
                             <li class="flex gap-3 text-[#72798b]">
@@ -733,7 +740,7 @@ const gameModes = [
                         </ul>
                         <Link
                             href="/checkout?package=basic"
-                            class="mt-9 inline-flex min-h-14 items-center justify-between border-t-3 border-[#17203a] pt-5 font-black text-[#5650e8] focus-visible:outline-3 focus-visible:outline-offset-4"
+                            class="mt-9 inline-flex min-h-14 items-center justify-between border-t-3 border-[#17203a] pt-5 font-black text-[#9a5b00] focus-visible:outline-3 focus-visible:outline-offset-4"
                         >
                             <span>Pilih Basic</span><ChevronRight />
                         </Link>
@@ -800,13 +807,14 @@ const gameModes = [
                 class="mx-auto flex max-w-7xl flex-col justify-between gap-6 px-5 py-8 text-sm sm:flex-row sm:items-center lg:px-8"
             >
                 <div class="flex items-center gap-3">
-                    <span class="oji-mini" aria-hidden="true"
-                        ><span></span><span></span
-                    ></span>
+                    <span
+                        class="grid size-10 place-items-center rounded-[14px_14px_14px_4px] border-2 border-[#17203a] bg-[#f6c945] font-black"
+                        >J</span
+                    >
                     <div>
                         <p class="font-black">JomKid</p>
                         <p class="text-[#59627a]">
-                            Game-first learning PWA oleh Stwo Ventures.
+                            Game-first learning web app oleh Stwo Ventures.
                         </p>
                     </div>
                 </div>
@@ -831,123 +839,15 @@ const gameModes = [
 }
 .nav-link:hover,
 .footer-link:hover {
-    color: #5650e8;
+    color: #9a5b00;
 }
 .nav-link:focus-visible,
 .footer-link:focus-visible {
-    outline: 3px solid #5650e8;
+    outline: 3px solid #9a5b00;
     outline-offset: 4px;
-}
-.oji {
-    width: 92px;
-    height: 78px;
-    border: 3px solid #17203a;
-    border-radius: 48% 48% 42% 42%;
-    background: #5650e8;
-    animation: oji-float 3.5s ease-in-out infinite;
-}
-.oji-ear {
-    position: absolute;
-    top: -12px;
-    width: 31px;
-    height: 31px;
-    border: 3px solid #17203a;
-    background: #5650e8;
-    transform: rotate(45deg);
-    z-index: -1;
-}
-.oji-ear.left {
-    left: 7px;
-}
-.oji-ear.right {
-    right: 7px;
-}
-.oji-eye {
-    position: absolute;
-    top: 20px;
-    width: 30px;
-    height: 30px;
-    border: 3px solid #17203a;
-    border-radius: 50%;
-    background: white;
-}
-.oji-eye.left {
-    left: 14px;
-}
-.oji-eye.right {
-    right: 14px;
-}
-.oji-eye span {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #17203a;
-}
-.oji-beak {
-    position: absolute;
-    top: 44px;
-    left: 38px;
-    width: 15px;
-    height: 15px;
-    border-right: 3px solid #17203a;
-    border-bottom: 3px solid #17203a;
-    background: #f1c84b;
-    transform: rotate(45deg);
-}
-.oji-mini {
-    position: relative;
-    display: inline-flex;
-    width: 42px;
-    height: 38px;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    border: 2px solid #17203a;
-    border-radius: 18px 18px 15px 15px;
-    background: #5650e8;
-}
-.oji-mini::after {
-    position: absolute;
-    bottom: 5px;
-    width: 7px;
-    height: 7px;
-    content: '';
-    border: 2px solid #17203a;
-    background: #f1c84b;
-    transform: rotate(45deg);
-}
-.oji-mini > span {
-    width: 11px;
-    height: 11px;
-    border: 2px solid #17203a;
-    border-radius: 50%;
-    background: white;
-}
-.oji-mini.large {
-    width: 78px;
-    height: 68px;
-    border-width: 3px;
-    border-radius: 32px 32px 27px 27px;
-}
-.oji-mini.large > span {
-    width: 22px;
-    height: 22px;
-    border-width: 3px;
 }
 .sound-pulse {
     animation: sound-pulse 0.65s ease-in-out;
-}
-@keyframes oji-float {
-    0%,
-    100% {
-        transform: translateY(0) rotate(-3deg);
-    }
-    50% {
-        transform: translateY(-8px) rotate(2deg);
-    }
 }
 @keyframes sound-pulse {
     0%,
@@ -959,7 +859,6 @@ const gameModes = [
     }
 }
 @media (prefers-reduced-motion: reduce) {
-    .oji,
     .sound-pulse {
         animation: none;
     }
