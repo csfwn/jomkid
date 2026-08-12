@@ -18,3 +18,5 @@ Landing page pendidikan kanak-kanak untuk ibu bapa Malaysia, dalam bahasa visual
 - **Hero CTA:** One primary checkout CTA above the fold keeps the purchase decision clear. Navigation links only point to sections that exist.
 - **Product preview:** The hero shows a static, honest JomABC lesson example rather than a fake interactive control or skeleton screenshot.
 - **Evidence:** No testimonials, user statistics, performance percentages, or trust claims are shown without real source data.
+- **Checkout continuity:** Package controls look like tangible workbook tickets while the buyer form uses a raised speech-bubble panel. This carries the landing identity into payment while keeping selection and form hierarchy distinct.
+- **Checkout states:** Success, processing, and failure share one transaction-summary structure and use green, yellow, or coral only to identify status. Each state exposes one context-specific next action.
