@@ -14,6 +14,15 @@ use Inertia\Response;
 
 class AdminDashboardController extends Controller
 {
+    /**
+     * Keep compatibility with deployments that still have the previous
+     * invokable admin route cached while the new route cache is rebuilt.
+     */
+    public function __invoke(): Response
+    {
+        return $this->dashboard();
+    }
+
     public function dashboard(): Response
     {
         $paid = Payment::query()->where('status', Payment::STATUS_PAID);

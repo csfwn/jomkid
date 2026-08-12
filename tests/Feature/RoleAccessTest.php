@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Controllers\AdminDashboardController;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -26,6 +27,11 @@ class RoleAccessTest extends TestCase
             $this->actingAs($parent)->get($route)->assertForbidden();
             $this->actingAs($admin)->get($route)->assertOk();
         }
+    }
+
+    public function test_admin_controller_remains_backward_compatible_with_cached_invokable_route(): void
+    {
+        $this->assertTrue(is_callable(new AdminDashboardController));
     }
 
     public function test_only_affiliates_and_admins_can_view_affiliate_dashboard(): void
