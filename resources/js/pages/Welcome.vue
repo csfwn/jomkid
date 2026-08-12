@@ -6,7 +6,6 @@ import {
     Check,
     Mic2,
     ShieldCheck,
-    Sparkles,
     Star,
     Users,
 } from '@lucide/vue';

@@ -3,8 +3,9 @@ import { Link, usePage } from '@inertiajs/vue3';
 import {
     BadgeDollarSign,
     BookOpen,
+    Boxes,
+    GraduationCap,
     LayoutDashboard,
-    ShieldCheck,
     Users,
 } from '@lucide/vue';
 import AppLogo from '@/components/AppLogo.vue';
@@ -23,22 +24,38 @@ import type { NavItem } from '@/types';
 import type { User } from '@/types/auth';
 
 const user = usePage().props.auth.user as User;
-const mainNavItems: NavItem[] = [
-    { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { title: 'Profil anak', href: '/children', icon: Users },
-    { title: 'Belajar', href: '/learn', icon: BookOpen },
-];
+const mainNavItems: NavItem[] = [];
 
-if (user.role === 'affiliate' || user.role === 'admin') {
+if (user.role === 'admin') {
+    mainNavItems.push(
+        { title: 'Analitik', href: '/admin', icon: LayoutDashboard },
+        { title: 'Senarai pengguna', href: '/admin/users', icon: Users },
+        { title: 'Senarai pakej', href: '/admin/packages', icon: Boxes },
+        {
+            title: 'Senarai pelajar',
+            href: '/admin/students',
+            icon: GraduationCap,
+        },
+        {
+            title: 'Senarai affiliate',
+            href: '/admin/affiliates',
+            icon: BadgeDollarSign,
+        },
+    );
+} else {
+    mainNavItems.push(
+        { title: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+        { title: 'Profil anak', href: '/children', icon: Users },
+        { title: 'Belajar', href: '/learn', icon: BookOpen },
+    );
+}
+
+if (user.role === 'affiliate') {
     mainNavItems.push({
         title: 'Affiliate',
         href: '/affiliate',
         icon: BadgeDollarSign,
     });
-}
-
-if (user.role === 'admin') {
-    mainNavItems.push({ title: 'Admin', href: '/admin', icon: ShieldCheck });
 }
 </script>
 
@@ -48,7 +65,10 @@ if (user.role === 'admin') {
             <SidebarMenu
                 ><SidebarMenuItem
                     ><SidebarMenuButton size="lg" as-child
-                        ><Link href="/dashboard"
+                        ><Link
+                            :href="
+                                user.role === 'admin' ? '/admin' : '/dashboard'
+                            "
                             ><AppLogo /></Link></SidebarMenuButton></SidebarMenuItem
             ></SidebarMenu>
         </SidebarHeader>

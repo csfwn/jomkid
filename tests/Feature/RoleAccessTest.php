@@ -14,9 +14,18 @@ class RoleAccessTest extends TestCase
     {
         $parent = User::factory()->create(['role' => User::ROLE_PARENT]);
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
+        $adminRoutes = [
+            '/admin',
+            '/admin/users',
+            '/admin/packages',
+            '/admin/students',
+            '/admin/affiliates',
+        ];
 
-        $this->actingAs($parent)->get('/admin')->assertForbidden();
-        $this->actingAs($admin)->get('/admin')->assertOk();
+        foreach ($adminRoutes as $route) {
+            $this->actingAs($parent)->get($route)->assertForbidden();
+            $this->actingAs($admin)->get($route)->assertOk();
+        }
     }
 
     public function test_only_affiliates_and_admins_can_view_affiliate_dashboard(): void

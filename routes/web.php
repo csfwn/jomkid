@@ -38,7 +38,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('affiliate.dashboard');
 
     Route::prefix('admin')->middleware('role:admin')->group(function () {
-        Route::get('/', AdminDashboardController::class)->name('admin.dashboard');
+        Route::get('/', [AdminDashboardController::class, 'dashboard'])->name('admin.dashboard');
+        Route::get('users', [AdminDashboardController::class, 'users'])->name('admin.users');
+        Route::get('packages', [AdminDashboardController::class, 'packages'])->name('admin.packages');
+        Route::get('students', [AdminDashboardController::class, 'students'])->name('admin.students');
+        Route::get('affiliates', [AdminDashboardController::class, 'affiliates'])->name('admin.affiliates');
     });
 });
 
