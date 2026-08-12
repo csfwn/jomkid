@@ -4,65 +4,106 @@ import {
     AudioLines,
     BadgeDollarSign,
     BarChart3,
-    BookOpenText,
     Check,
     ChevronRight,
     CircleCheck,
-    Eye,
+    Cloud,
+    Gamepad2,
+    Grip,
+    KeyRound,
     Mic2,
     MousePointer2,
+    Puzzle,
+    RotateCcw,
     ShieldCheck,
+    Smartphone,
+    Sparkles,
+    Star,
+    Trophy,
     Users,
 } from '@lucide/vue';
+import { ref } from 'vue';
 
 defineProps<{ canRegister: boolean }>();
+
+const answer = ref<string | null>(null);
+const playSound = ref(false);
+const chooseLetter = (letter: string) => {
+    answer.value = letter;
+};
+const replayPrompt = () => {
+    playSound.value = true;
+    window.setTimeout(() => (playSound.value = false), 650);
+};
+const resetGame = () => {
+    answer.value = null;
+};
+
+const gameModes = [
+    {
+        icon: AudioLines,
+        name: 'Dengar & Pilih',
+        copy: 'Kenal bunyi, kemudian pilih huruf atau gambar yang sepadan.',
+        color: 'bg-[#7dd3fc]',
+        marker: 'BUNYI',
+    },
+    {
+        icon: Grip,
+        name: 'Seret & Padankan',
+        copy: 'Padankan huruf dengan bentuk dan perkataan menggunakan sentuhan.',
+        color: 'bg-[#f1c84b]',
+        marker: 'PADAN',
+    },
+    {
+        icon: Mic2,
+        name: 'Sebut Bersama',
+        copy: 'Ikut sebut bunyi dan perkataan dalam sesi latihan pendek.',
+        color: 'bg-[#ff9f97]',
+        marker: 'SUARA',
+    },
+    {
+        icon: Puzzle,
+        name: 'Susun Perkataan',
+        copy: 'Susun huruf mengikut turutan untuk membina perkataan mudah.',
+        color: 'bg-[#a7e8bd]',
+        marker: 'SUSUN',
+    },
+];
 </script>
 
 <template>
-    <Head title="Belajar Bahasa Melayu dengan JomKid">
+    <Head title="JomKid, Belajar Bahasa Melayu Melalui Permainan">
         <meta
             name="description"
-            content="JomKid ialah platform pembelajaran interaktif untuk anak 5 hingga 8 tahun. Mulakan dengan JomABC melalui aktiviti suara, sentuhan dan laporan ibu bapa."
+            content="JomKid ialah PWA pembelajaran game-first untuk anak Malaysia. Mulakan dengan permainan interaktif JomABC dan pantau kemajuan anak."
         />
     </Head>
 
-    <div class="min-h-screen overflow-x-clip bg-[#fffaf0] text-[#17152b]">
-        <header class="border-b-2 border-[#17152b] bg-[#fffaf0]">
+    <div class="min-h-screen overflow-x-clip bg-[#fff9ed] text-[#17203a]">
+        <header class="relative z-20 border-b-2 border-[#17203a] bg-[#fff9ed]">
             <div
                 class="mx-auto flex min-h-18 max-w-7xl items-center justify-between gap-4 px-5 py-3 lg:px-8"
             >
                 <Link
                     href="/"
-                    class="flex min-h-11 items-center gap-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4f46e5]"
+                    class="flex min-h-11 items-center gap-3 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#5650e8]"
                 >
-                    <span
-                        class="grid size-10 place-items-center rounded-[14px_14px_14px_4px] border-2 border-[#17152b] bg-[#ff766b] font-black text-white"
-                        >J</span
-                    >
-                    <span class="text-xl font-black tracking-[-0.03em]"
+                    <span class="oji-mini" aria-hidden="true">
+                        <span></span><span></span>
+                    </span>
+                    <span class="text-xl font-black tracking-[-0.04em]"
                         >JomKid</span
                     >
                 </Link>
 
                 <nav
                     aria-label="Navigasi utama"
-                    class="hidden items-center gap-7 text-sm font-bold md:flex"
+                    class="hidden items-center gap-7 text-sm font-black md:flex"
                 >
-                    <a
-                        class="hover:text-[#4f46e5] focus-visible:outline-2 focus-visible:outline-offset-4"
-                        href="#jomabc"
-                        >JomABC</a
-                    >
-                    <a
-                        class="hover:text-[#4f46e5] focus-visible:outline-2 focus-visible:outline-offset-4"
-                        href="#ibu-bapa"
-                        >Untuk ibu bapa</a
-                    >
-                    <a
-                        class="hover:text-[#4f46e5] focus-visible:outline-2 focus-visible:outline-offset-4"
-                        href="#pakej"
-                        >Pakej</a
-                    >
+                    <a href="#permainan" class="nav-link">Permainan</a>
+                    <a href="#dunia" class="nav-link">Dunia JomKid</a>
+                    <a href="#ibu-bapa" class="nav-link">Ibu bapa</a>
+                    <a href="#pakej" class="nav-link">Pakej</a>
                 </nav>
 
                 <div class="flex items-center gap-2">
@@ -73,21 +114,21 @@ defineProps<{ canRegister: boolean }>();
                                 ? '/admin'
                                 : '/dashboard'
                         "
-                        class="inline-flex min-h-11 items-center border-b-2 border-[#17152b] px-3 text-sm font-black focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4f46e5]"
+                        class="inline-flex min-h-11 items-center rounded-[15px_15px_15px_5px] border-2 border-[#17203a] bg-[#17203a] px-5 text-sm font-black text-white focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#ff7369]"
                     >
                         Buka akaun
                     </Link>
                     <template v-else>
                         <Link
                             href="/login"
-                            class="hidden min-h-11 items-center px-3 text-sm font-bold hover:text-[#4f46e5] focus-visible:outline-2 focus-visible:outline-offset-2 sm:inline-flex"
+                            class="hidden min-h-11 items-center px-3 text-sm font-black hover:text-[#5650e8] focus-visible:outline-3 sm:inline-flex"
                             >Log masuk</Link
                         >
                         <Link
                             v-if="canRegister"
                             href="/checkout"
-                            class="inline-flex min-h-11 items-center rounded-[14px_14px_14px_4px] border-2 border-[#17152b] bg-[#17152b] px-5 text-sm font-black text-white transition hover:-translate-y-0.5 hover:bg-[#4f46e5] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4f46e5]"
-                            >Pilih pakej</Link
+                            class="inline-flex min-h-11 items-center rounded-[15px_15px_15px_5px] border-2 border-[#17203a] bg-[#17203a] px-5 text-sm font-black text-white transition hover:-translate-y-0.5 hover:bg-[#5650e8] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#ff7369]"
+                            >Mula bermain</Link
                         >
                     </template>
                 </div>
@@ -95,211 +136,341 @@ defineProps<{ canRegister: boolean }>();
         </header>
 
         <main>
-            <section class="relative border-b-2 border-[#17152b]">
+            <section class="relative border-b-2 border-[#17203a] bg-[#7dd3fc]">
                 <div
-                    class="absolute inset-y-0 right-0 hidden w-[38%] bg-[#f1c84b] lg:block"
+                    class="absolute top-8 left-[8%] size-8 rotate-12 border-4 border-[#17203a] bg-[#f1c84b]"
+                    aria-hidden="true"
                 ></div>
                 <div
-                    class="relative mx-auto grid max-w-7xl gap-12 px-5 py-14 sm:py-20 lg:grid-cols-[1.04fr_.96fr] lg:items-center lg:px-8 lg:py-24"
+                    class="absolute right-[5%] bottom-10 size-10 rounded-full border-4 border-[#17203a] bg-[#ff7369]"
+                    aria-hidden="true"
+                ></div>
+                <div
+                    class="relative mx-auto grid max-w-7xl gap-12 px-5 py-10 sm:py-14 lg:grid-cols-[.92fr_1.08fr] lg:items-center lg:px-8 lg:py-20"
                 >
-                    <div class="max-w-3xl">
+                    <div class="relative z-10">
                         <p
-                            class="mb-5 flex items-center gap-3 text-sm font-black text-[#4f46e5]"
+                            class="inline-flex min-h-10 items-center gap-2 rounded-full border-2 border-[#17203a] bg-[#fff9ed] px-4 text-sm font-black"
                         >
-                            <span class="h-1 w-10 bg-[#ff766b]"></span>UNTUK
-                            ANAK 5 HINGGA 8 TAHUN
+                            <Gamepad2 class="size-5 text-[#5650e8]" /> PWA
+                            GAME-FIRST UNTUK ANAK
                         </p>
                         <h1
-                            class="text-[clamp(3rem,7vw,6.6rem)] leading-[0.9] font-black tracking-[-0.065em]"
+                            class="mt-5 max-w-3xl text-[clamp(3.25rem,7vw,6.9rem)] leading-[0.86] font-black tracking-[-0.07em] sm:mt-6"
                         >
-                            Dengar.<br />Jawab.<br /><span
-                                class="relative inline-block text-[#4f46e5]"
-                                >Terus faham.<span
-                                    class="absolute -bottom-2 left-1 h-2 w-3/4 -rotate-1 bg-[#ff766b]"
+                            Main.<br />Cuba.<br /><span
+                                class="relative inline-block text-[#5650e8]"
+                                >Pandai!<span
+                                    class="absolute -top-3 -right-7 text-3xl text-[#ff7369] sm:text-5xl"
+                                    >✦</span
                                 ></span
-                            ></span>
+                            >
                         </h1>
                         <p
-                            class="mt-9 max-w-xl text-lg leading-8 text-[#45425c] sm:text-xl"
+                            class="mt-6 max-w-xl text-lg leading-8 font-semibold text-[#303954] sm:mt-8 sm:text-xl"
                         >
-                            JomKid membantu anak belajar Bahasa Melayu melalui
-                            suara, sentuhan dan aktiviti pendek. Ibu bapa boleh
-                            melihat kemajuan setiap profil anak dalam satu
-                            akaun.
+                            JomKid mengubah pembelajaran Bahasa Melayu menjadi
+                            permainan pendek yang anak boleh dengar, sentuh,
+                            susun dan cuba semula.
                         </p>
-                        <Link
-                            href="/checkout"
-                            class="mt-8 inline-flex min-h-14 items-center gap-4 rounded-[18px_18px_18px_5px] border-2 border-[#17152b] bg-[#4f46e5] px-7 text-base font-black text-white transition hover:-translate-y-1 hover:bg-[#3730a3] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#ff766b]"
+                        <div
+                            class="mt-6 flex flex-wrap items-center gap-5 sm:mt-8"
                         >
-                            Pilih akses lifetime
-                            <ChevronRight class="size-5" />
-                        </Link>
-                        <p class="mt-4 text-sm font-semibold text-[#5b586d]">
-                            Bermula RM69 sekali bayar. Kod pendaftaran dihantar
-                            selepas bayaran CHIP disahkan.
-                        </p>
+                            <Link
+                                href="/checkout?package=basic"
+                                class="inline-flex min-h-15 items-center gap-3 rounded-[20px_20px_20px_6px] border-3 border-[#17203a] bg-[#5650e8] px-7 text-base font-black text-white transition hover:-translate-y-1 hover:bg-[#403abd] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#ff7369]"
+                            >
+                                Mulakan dengan JomABC
+                                <ChevronRight class="size-5" />
+                            </Link>
+                            <p class="text-sm leading-6 font-black">
+                                RM69 lifetime<br /><span
+                                    class="font-semibold text-[#38435f]"
+                                    >PWA, beli sekali</span
+                                >
+                            </p>
+                        </div>
                     </div>
 
-                    <div class="relative mx-auto w-full max-w-lg lg:mx-0">
+                    <div class="relative mx-auto w-full max-w-xl">
                         <div
-                            class="absolute -top-4 -left-4 h-full w-full rounded-[30px_30px_30px_8px] border-2 border-[#17152b] bg-[#ff766b]"
+                            class="oji absolute -top-8 -left-2 z-10"
+                            aria-label="Oji, panduan JomKid"
+                        >
+                            <div class="oji-ear left"></div>
+                            <div class="oji-ear right"></div>
+                            <div class="oji-eye left"><span></span></div>
+                            <div class="oji-eye right"><span></span></div>
+                            <div class="oji-beak"></div>
+                        </div>
+                        <div
+                            class="absolute -right-3 -bottom-3 h-full w-full rounded-[34px_34px_34px_10px] border-3 border-[#17203a] bg-[#ff7369]"
                         ></div>
                         <article
-                            aria-label="Contoh paparan aktiviti JomABC"
-                            class="relative rounded-[30px_30px_30px_8px] border-2 border-[#17152b] bg-white p-5 sm:p-7"
+                            aria-label="Mini permainan JomABC yang boleh dicuba"
+                            class="relative rounded-[34px_34px_34px_10px] border-3 border-[#17203a] bg-white p-5 sm:p-7"
                         >
                             <div
-                                class="flex items-center justify-between border-b-2 border-[#17152b] pb-5"
+                                class="flex items-center justify-between gap-4"
                             >
                                 <div>
                                     <p
-                                        class="text-sm font-black text-[#4f46e5]"
+                                        class="text-xs font-black text-[#5650e8]"
                                     >
-                                        JOMABC
+                                        CUBA SEKARANG
                                     </p>
-                                    <p class="mt-1 text-lg font-black">
-                                        Bunyi huruf
-                                    </p>
+                                    <h2 class="mt-1 text-xl font-black">
+                                        Bunyi misteri
+                                    </h2>
                                 </div>
-                                <span
-                                    class="rounded-[12px_12px_12px_3px] border-2 border-[#17152b] bg-[#f1c84b] px-3 py-2 text-xs font-black"
-                                    >AKTIVITI 04</span
+                                <div
+                                    class="flex gap-1"
+                                    aria-label="Kemajuan 1 daripada 3"
                                 >
-                            </div>
-                            <div class="py-8 sm:py-10">
-                                <p
-                                    class="max-w-sm text-2xl leading-tight font-black sm:text-3xl"
-                                >
-                                    Huruf manakah berbunyi “mmm”?
-                                </p>
-                                <div class="mt-7 flex items-center gap-4">
-                                    <span
-                                        class="grid size-15 shrink-0 place-items-center rounded-full border-2 border-[#17152b] bg-[#ffebe7] text-[#d9473d]"
-                                        ><AudioLines
-                                    /></span>
-                                    <div class="h-2 flex-1 bg-[#17152b]"></div>
-                                    <div class="h-7 w-2 bg-[#ff766b]"></div>
-                                    <div class="h-12 w-2 bg-[#4f46e5]"></div>
-                                    <div class="h-5 w-2 bg-[#f1c84b]"></div>
-                                    <div class="h-2 flex-1 bg-[#17152b]"></div>
-                                </div>
-                                <div class="mt-8 grid grid-cols-3 gap-3">
-                                    <span
-                                        class="grid min-h-20 place-items-center rounded-[18px_18px_18px_5px] border-2 border-[#17152b] text-3xl font-black"
-                                        >N</span
-                                    >
-                                    <span
-                                        class="grid min-h-20 place-items-center rounded-[18px_18px_18px_5px] border-2 border-[#17152b] bg-[#4f46e5] text-3xl font-black text-white"
-                                        >M</span
-                                    >
-                                    <span
-                                        class="grid min-h-20 place-items-center rounded-[18px_18px_18px_5px] border-2 border-[#17152b] text-3xl font-black"
-                                        >B</span
-                                    >
+                                    <span class="h-2 w-8 bg-[#5650e8]"></span>
+                                    <span class="h-2 w-8 bg-[#d8dbe5]"></span>
+                                    <span class="h-2 w-8 bg-[#d8dbe5]"></span>
                                 </div>
                             </div>
+
                             <div
-                                class="flex items-center gap-3 rounded-[16px_16px_16px_4px] bg-[#dff7e9] p-4 font-bold text-[#165b36]"
+                                class="mt-7 rounded-[24px_24px_24px_7px] bg-[#e8f8ff] p-5 sm:p-7"
                             >
-                                <CircleCheck class="size-5 shrink-0" /> Betul.
-                                Ini bunyi huruf M.
+                                <p
+                                    class="text-center text-xl font-black sm:text-2xl"
+                                >
+                                    Pilih huruf yang berbunyi “mmm”
+                                </p>
+                                <button
+                                    type="button"
+                                    class="mx-auto mt-5 grid size-16 place-items-center rounded-full border-3 border-[#17203a] bg-[#f1c84b] transition hover:scale-105 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#5650e8]"
+                                    aria-label="Mainkan arahan bunyi"
+                                    @click="replayPrompt"
+                                >
+                                    <AudioLines
+                                        class="size-7"
+                                        :class="playSound ? 'sound-pulse' : ''"
+                                    />
+                                </button>
+                                <div class="mt-7 grid grid-cols-3 gap-3">
+                                    <button
+                                        v-for="letter in ['N', 'M', 'B']"
+                                        :key="letter"
+                                        type="button"
+                                        class="grid min-h-22 place-items-center rounded-[20px_20px_20px_6px] border-3 border-[#17203a] text-4xl font-black transition hover:-translate-y-1 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#5650e8]"
+                                        :class="[
+                                            answer === letter && letter === 'M'
+                                                ? 'bg-[#a7e8bd]'
+                                                : answer === letter
+                                                  ? 'bg-[#ffaaa3]'
+                                                  : 'bg-white',
+                                        ]"
+                                        @click="chooseLetter(letter)"
+                                    >
+                                        {{ letter }}
+                                    </button>
+                                </div>
                             </div>
+
+                            <div
+                                v-if="answer"
+                                aria-live="polite"
+                                class="mt-4 flex min-h-14 items-center gap-3 rounded-[17px_17px_17px_5px] border-2 border-[#17203a] p-4 font-black"
+                                :class="
+                                    answer === 'M'
+                                        ? 'bg-[#a7e8bd]'
+                                        : 'bg-[#ffddd9]'
+                                "
+                            >
+                                <CircleCheck
+                                    v-if="answer === 'M'"
+                                    class="size-5 shrink-0"
+                                />
+                                <RotateCcw v-else class="size-5 shrink-0" />
+                                <span>{{
+                                    answer === 'M'
+                                        ? 'Tepat! Ini huruf M.'
+                                        : 'Belum tepat. Cuba sekali lagi.'
+                                }}</span>
+                                <button
+                                    v-if="answer !== 'M'"
+                                    type="button"
+                                    class="ml-auto min-h-11 underline underline-offset-4"
+                                    @click="resetGame"
+                                >
+                                    Ulang
+                                </button>
+                            </div>
+                            <p
+                                v-else
+                                class="mt-4 text-center text-sm font-semibold text-[#59627a]"
+                            >
+                                Tekan satu huruf untuk menjawab.
+                            </p>
                         </article>
                     </div>
                 </div>
             </section>
 
             <section
-                id="jomabc"
+                id="permainan"
                 class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28"
             >
                 <div
-                    class="grid gap-12 lg:grid-cols-[.72fr_1.28fr] lg:items-start"
+                    class="grid gap-10 lg:grid-cols-[.65fr_1.35fr] lg:items-end"
                 >
-                    <div class="lg:sticky lg:top-8">
-                        <p class="text-sm font-black text-[#d9473d]">
-                            MODUL PERTAMA
+                    <div>
+                        <p class="text-sm font-black text-[#e0443b]">
+                            CARA ANAK BERMAIN
                         </p>
                         <h2
-                            class="mt-3 text-4xl leading-[1.02] font-black tracking-[-0.045em] sm:text-5xl"
+                            class="mt-3 text-4xl leading-[.98] font-black tracking-[-0.055em] sm:text-6xl"
                         >
-                            JomABC bukan video untuk ditonton diam-diam.
+                            Bukan tekan “next” sahaja.
                         </h2>
-                        <p class="mt-5 text-lg leading-8 text-[#5b586d]">
-                            Anak mendengar arahan, memberi jawapan dan menerima
-                            maklum balas dalam sesi yang sama.
+                    </div>
+                    <p
+                        class="max-w-xl text-lg leading-8 text-[#59627a] lg:justify-self-end"
+                    >
+                        Setiap format meminta respons berbeza. Anak bergerak,
+                        mendengar dan membuat keputusan dalam sesi yang pendek.
+                    </p>
+                </div>
+
+                <div
+                    class="mt-12 grid border-3 border-[#17203a] md:grid-cols-2"
+                >
+                    <article
+                        v-for="(game, index) in gameModes"
+                        :key="game.name"
+                        class="group relative min-h-72 p-6 sm:p-8"
+                        :class="[
+                            game.color,
+                            index % 2 === 0
+                                ? 'md:border-r-3 md:border-[#17203a]'
+                                : '',
+                            index < 2
+                                ? 'border-b-3 border-[#17203a]'
+                                : index === 2
+                                  ? 'border-b-3 border-[#17203a] md:border-b-0'
+                                  : '',
+                        ]"
+                    >
+                        <div class="flex items-start justify-between gap-5">
+                            <span
+                                class="grid size-15 place-items-center rounded-[18px_18px_18px_5px] border-3 border-[#17203a] bg-white transition group-hover:scale-105 group-hover:-rotate-3"
+                            >
+                                <component :is="game.icon" class="size-7" />
+                            </span>
+                            <span class="text-xs font-black">{{
+                                game.marker
+                            }}</span>
+                        </div>
+                        <h3
+                            class="mt-10 text-3xl font-black tracking-[-0.04em]"
+                        >
+                            {{ game.name }}
+                        </h3>
+                        <p
+                            class="mt-3 max-w-md leading-7 font-semibold text-[#35405b]"
+                        >
+                            {{ game.copy }}
+                        </p>
+                    </article>
+                </div>
+                <p class="mt-5 text-sm font-semibold text-[#59627a]">
+                    Format permainan dilancarkan secara berperingkat dalam
+                    JomABC.
+                </p>
+            </section>
+
+            <section
+                id="dunia"
+                class="border-y-3 border-[#17203a] bg-[#5650e8] text-white"
+            >
+                <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24">
+                    <div class="max-w-3xl">
+                        <p class="text-sm font-black text-[#f1c84b]">
+                            PETA DUNIA JOMKID
+                        </p>
+                        <h2
+                            class="mt-3 text-4xl leading-[.98] font-black tracking-[-0.055em] sm:text-6xl"
+                        >
+                            Satu dunia dahulu. Lebih banyak menyusul.
+                        </h2>
+                        <p
+                            class="mt-5 max-w-2xl text-lg leading-8 text-[#deddfc]"
+                        >
+                            Kami bermula dengan JomABC supaya pengalaman huruf,
+                            bunyi dan perkataan dapat dibina dengan baik sebelum
+                            dunia pembelajaran lain dibuka.
                         </p>
                     </div>
 
-                    <div class="border-y-2 border-[#17152b]">
+                    <div
+                        class="relative mt-14 grid gap-8 lg:grid-cols-3 lg:items-center"
+                    >
+                        <div
+                            class="absolute top-1/2 left-[15%] hidden h-1 w-[70%] -translate-y-1/2 border-t-4 border-dashed border-[#f1c84b] lg:block"
+                        ></div>
                         <article
-                            class="grid gap-5 border-b-2 border-[#17152b] py-8 sm:grid-cols-[72px_1fr] sm:items-start"
+                            class="relative z-10 rotate-[-1deg] rounded-[30px_30px_30px_8px] border-3 border-[#17203a] bg-[#7dd3fc] p-7 text-[#17203a]"
                         >
-                            <span
-                                class="grid size-16 place-items-center rounded-[18px_18px_18px_5px] bg-[#f1c84b]"
-                                ><BookOpenText
-                            /></span>
-                            <div>
-                                <p class="text-xs font-black text-[#4f46e5]">
-                                    01
-                                </p>
-                                <h3 class="mt-1 text-2xl font-black">
-                                    Konsep pendek, bahasa jelas
-                                </h3>
-                                <p
-                                    class="mt-2 max-w-2xl leading-7 text-[#5b586d]"
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="grid size-14 place-items-center rounded-full border-3 border-[#17203a] bg-white text-2xl font-black"
+                                    >A</span
                                 >
-                                    Setiap aktiviti memberi satu arahan dan satu
-                                    fokus. Anak tidak perlu menavigasi halaman
-                                    yang padat.
-                                </p>
+                                <span
+                                    class="rounded-full bg-[#17203a] px-4 py-2 text-xs font-black text-white"
+                                    >DIBUKA PERTAMA</span
+                                >
                             </div>
+                            <h3 class="mt-10 text-4xl font-black">JomABC</h3>
+                            <p class="mt-3 leading-7 font-semibold">
+                                Huruf, bunyi, suku kata dan perkataan asas
+                                melalui permainan.
+                            </p>
                         </article>
                         <article
-                            class="grid gap-5 border-b-2 border-[#17152b] py-8 sm:grid-cols-[72px_1fr] sm:items-start sm:pl-10"
+                            class="relative z-10 rounded-[30px_30px_30px_8px] border-3 border-[#17203a] bg-[#f1c84b] p-7 text-[#17203a] lg:translate-y-8"
                         >
-                            <span
-                                class="grid size-16 place-items-center rounded-full border-2 border-[#17152b] bg-[#ffebe7]"
-                                ><Mic2
-                            /></span>
-                            <div>
-                                <p class="text-xs font-black text-[#d9473d]">
-                                    02
-                                </p>
-                                <h3 class="mt-1 text-2xl font-black">
-                                    Respons melalui suara atau sentuhan
-                                </h3>
-                                <p
-                                    class="mt-2 max-w-2xl leading-7 text-[#5b586d]"
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="grid size-14 place-items-center rounded-full border-3 border-[#17203a] bg-white text-2xl font-black"
+                                    >ا</span
                                 >
-                                    Aktiviti menggunakan bentuk respons yang
-                                    sesuai dengan kandungan, termasuk pilihan
-                                    huruf, susunan dan suara.
-                                </p>
+                                <span class="text-xs font-black"
+                                    >AKAN DATANG</span
+                                >
                             </div>
+                            <h3 class="mt-10 text-4xl font-black">
+                                JomMengaji
+                            </h3>
+                            <p class="mt-3 leading-7 font-semibold">
+                                Dunia pembelajaran mengaji sedang dalam
+                                perancangan.
+                            </p>
                         </article>
                         <article
-                            class="grid gap-5 py-8 sm:grid-cols-[72px_1fr] sm:items-start"
+                            class="relative z-10 rotate-[1deg] rounded-[30px_30px_30px_8px] border-3 border-[#17203a] bg-[#ff9f97] p-7 text-[#17203a]"
                         >
-                            <span
-                                class="grid size-16 place-items-center rounded-[18px_18px_18px_5px] bg-[#4f46e5] text-white"
-                                ><CircleCheck
-                            /></span>
-                            <div>
-                                <p class="text-xs font-black text-[#4f46e5]">
-                                    03
-                                </p>
-                                <h3 class="mt-1 text-2xl font-black">
-                                    Jawapan disemak terus
-                                </h3>
-                                <p
-                                    class="mt-2 max-w-2xl leading-7 text-[#5b586d]"
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="grid size-14 place-items-center rounded-full border-3 border-[#17203a] bg-white text-2xl font-black"
+                                    >1</span
                                 >
-                                    Maklum balas muncul selepas respons supaya
-                                    anak tahu apa yang betul dan boleh mencuba
-                                    semula.
-                                </p>
+                                <span class="text-xs font-black"
+                                    >AKAN DATANG</span
+                                >
                             </div>
+                            <h3 class="mt-10 text-4xl font-black">
+                                JomMengira
+                            </h3>
+                            <p class="mt-3 leading-7 font-semibold">
+                                Dunia nombor dan kiraan asas sedang dalam
+                                perancangan.
+                            </p>
                         </article>
                     </div>
                 </div>
@@ -307,122 +478,123 @@ defineProps<{ canRegister: boolean }>();
 
             <section
                 id="ibu-bapa"
-                class="border-y-2 border-[#17152b] bg-[#17152b] text-white"
+                class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28"
             >
                 <div
-                    class="mx-auto grid max-w-7xl gap-12 px-5 py-20 lg:grid-cols-[1fr_1.05fr] lg:items-center lg:px-8 lg:py-24"
+                    class="grid gap-12 lg:grid-cols-[.9fr_1.1fr] lg:items-center"
                 >
                     <div>
-                        <p class="text-sm font-black text-[#f1c84b]">
-                            PANDANGAN IBU BAPA
+                        <p class="text-sm font-black text-[#e0443b]">
+                            UNTUK IBU BAPA
                         </p>
                         <h2
-                            class="mt-3 max-w-xl text-4xl leading-[1.02] font-black tracking-[-0.045em] sm:text-5xl"
+                            class="mt-3 text-4xl leading-[.98] font-black tracking-[-0.055em] sm:text-6xl"
                         >
-                            Tahu bahagian yang anak sudah kuasai.
+                            Anak nampak permainan. Anda nampak kemajuan.
                         </h2>
                         <p
-                            class="mt-5 max-w-xl text-lg leading-8 text-[#d7d4e5]"
+                            class="mt-6 max-w-xl text-lg leading-8 text-[#59627a]"
                         >
-                            Setiap profil menyimpan kemajuan sendiri. Lihat
-                            aktiviti, skor dan ketepatan tanpa mencampurkan
-                            rekod adik-beradik.
+                            Setiap anak menggunakan profil sendiri. Aktiviti,
+                            cubaan dan topik yang perlu diulang disusun untuk
+                            semakan ibu bapa.
                         </p>
-                        <dl class="mt-9 grid gap-6 sm:grid-cols-2">
-                            <div class="border-l-4 border-[#ff766b] pl-4">
-                                <dt class="font-black">Profil berasingan</dt>
-                                <dd
-                                    class="mt-2 text-sm leading-6 text-[#c6c3d4]"
+                        <div class="mt-8 grid gap-5 sm:grid-cols-2">
+                            <div class="border-l-4 border-[#5650e8] pl-4">
+                                <p class="font-black">Profil berasingan</p>
+                                <p
+                                    class="mt-2 text-sm leading-6 text-[#59627a]"
                                 >
-                                    Basic menyokong 3 profil. Premium menyokong
-                                    profil tanpa had.
-                                </dd>
+                                    Basic sehingga 3 anak. Premium tanpa had.
+                                </p>
                             </div>
-                            <div class="border-l-4 border-[#f1c84b] pl-4">
-                                <dt class="font-black">Privasi terkawal</dt>
-                                <dd
-                                    class="mt-2 text-sm leading-6 text-[#c6c3d4]"
+                            <div class="border-l-4 border-[#ff7369] pl-4">
+                                <p class="font-black">Kawalan parent</p>
+                                <p
+                                    class="mt-2 text-sm leading-6 text-[#59627a]"
                                 >
-                                    Leaderboard menggunakan alias dan avatar
-                                    apabila ibu bapa memilih untuk menyertai.
-                                </dd>
+                                    Profil anak kekal di bawah akaun ibu bapa.
+                                </p>
                             </div>
-                        </dl>
+                        </div>
                     </div>
 
-                    <article
-                        class="relative bg-[#fffaf0] p-5 text-[#17152b] sm:p-7"
-                    >
+                    <article class="relative">
                         <div
-                            class="absolute -top-3 -right-3 h-full w-full border-2 border-[#f1c84b]"
+                            class="absolute -right-3 -bottom-3 h-full w-full rounded-[30px_30px_30px_8px] border-3 border-[#17203a] bg-[#a7e8bd]"
                         ></div>
                         <div
-                            class="relative border-2 border-[#17152b] bg-white p-5 sm:p-7"
+                            class="relative rounded-[30px_30px_30px_8px] border-3 border-[#17203a] bg-white p-5 sm:p-7"
                         >
                             <div
-                                class="flex items-start justify-between gap-4 border-b-2 border-[#17152b] pb-5"
+                                class="flex items-center justify-between gap-4 border-b-3 border-[#17203a] pb-5"
                             >
-                                <div>
-                                    <p
-                                        class="text-xs font-black text-[#4f46e5]"
+                                <div class="flex items-center gap-3">
+                                    <span
+                                        class="grid size-12 place-items-center rounded-full bg-[#f1c84b] text-xl font-black"
+                                        >B</span
                                     >
-                                        PROFIL ANAK
-                                    </p>
-                                    <p class="mt-1 text-2xl font-black">
-                                        Bintang
-                                    </p>
+                                    <div>
+                                        <p
+                                            class="text-xs font-black text-[#5650e8]"
+                                        >
+                                            PROFIL ANAK
+                                        </p>
+                                        <p class="text-xl font-black">
+                                            Bintang
+                                        </p>
+                                    </div>
                                 </div>
                                 <span
-                                    class="rounded-[12px_12px_12px_3px] bg-[#ffebe7] px-3 py-2 text-xs font-black text-[#a92d25]"
+                                    class="rounded-full bg-[#e8f8ff] px-4 py-2 text-xs font-black"
                                     >JomABC</span
                                 >
                             </div>
                             <div
-                                class="mt-6 grid gap-5 sm:grid-cols-[1fr_150px]"
+                                class="mt-6 grid gap-4 sm:grid-cols-[1fr_160px]"
                             >
-                                <div>
-                                    <p class="text-sm font-bold text-[#5b586d]">
-                                        Topik semasa
-                                    </p>
-                                    <p class="mt-1 text-xl font-black">
-                                        Bunyi huruf M
-                                    </p>
+                                <div
+                                    class="rounded-[22px_22px_22px_6px] bg-[#f4f1ff] p-5"
+                                >
                                     <div
-                                        class="mt-4 h-3 border-2 border-[#17152b] bg-white"
+                                        class="flex items-center justify-between"
                                     >
-                                        <div
-                                            class="h-full w-3/4 bg-[#4f46e5]"
-                                        ></div>
+                                        <p class="font-black">Laluan bunyi</p>
+                                        <Trophy class="size-5 text-[#5650e8]" />
                                     </div>
-                                    <p class="mt-2 text-sm text-[#5b586d]">
-                                        3 daripada 4 aktiviti selesai
+                                    <div class="mt-6 flex items-center gap-2">
+                                        <span
+                                            class="grid size-10 place-items-center rounded-full bg-[#5650e8] font-black text-white"
+                                            >M</span
+                                        >
+                                        <span
+                                            class="h-1 flex-1 bg-[#5650e8]"
+                                        ></span>
+                                        <span
+                                            class="grid size-10 place-items-center rounded-full border-2 border-[#17203a] bg-white font-black"
+                                            >B</span
+                                        >
+                                        <span
+                                            class="h-1 flex-1 bg-[#d8dbe5]"
+                                        ></span>
+                                        <span
+                                            class="grid size-10 place-items-center rounded-full border-2 border-[#d8dbe5] bg-white font-black text-[#7a8192]"
+                                            >S</span
+                                        >
+                                    </div>
+                                    <p
+                                        class="mt-5 text-sm font-semibold text-[#59627a]"
+                                    >
+                                        Topik seterusnya: bunyi huruf B
                                     </p>
                                 </div>
                                 <div
-                                    class="rounded-[18px_18px_18px_5px] bg-[#f1c84b] p-4"
+                                    class="rounded-[22px_22px_22px_6px] bg-[#f1c84b] p-5"
                                 >
-                                    <BarChart3 class="size-5" />
-                                    <p class="mt-4 text-3xl font-black">75%</p>
-                                    <p class="text-sm font-semibold">
-                                        Ketepatan topik
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="mt-6 grid grid-cols-2 gap-3">
-                                <div class="border-2 border-[#17152b] p-4">
-                                    <Eye class="size-5 text-[#4f46e5]" />
-                                    <p class="mt-3 font-black">
-                                        Aktiviti terakhir
-                                    </p>
-                                    <p class="mt-1 text-sm text-[#5b586d]">
-                                        Padankan huruf
-                                    </p>
-                                </div>
-                                <div class="border-2 border-[#17152b] p-4">
-                                    <Users class="size-5 text-[#d9473d]" />
-                                    <p class="mt-3 font-black">Cadangan</p>
-                                    <p class="mt-1 text-sm text-[#5b586d]">
-                                        Ulang bunyi M
+                                    <BarChart3 class="size-6" />
+                                    <p class="mt-7 text-4xl font-black">3/4</p>
+                                    <p class="mt-1 text-sm font-black">
+                                        aktiviti selesai
                                     </p>
                                 </div>
                             </div>
@@ -431,222 +603,368 @@ defineProps<{ canRegister: boolean }>();
                 </div>
             </section>
 
-            <section class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24">
+            <section class="border-y-3 border-[#17203a] bg-[#a7e8bd]">
                 <div
-                    class="grid gap-8 border-b-2 border-[#17152b] pb-12 lg:grid-cols-[.65fr_1.35fr]"
+                    class="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-[.8fr_1.2fr] lg:items-center lg:px-8 lg:py-20"
                 >
-                    <h2
-                        class="text-3xl font-black tracking-[-0.04em] sm:text-4xl"
-                    >
-                        JomKid berkembang bersama anak.
-                    </h2>
-                    <div class="grid gap-4 sm:grid-cols-3">
-                        <div class="bg-[#4f46e5] p-5 text-white">
-                            <p class="text-xs font-black text-[#f1c84b]">
-                                TERSEDIA
-                            </p>
-                            <p class="mt-2 text-xl font-black">JomABC</p>
-                            <p class="mt-2 text-sm leading-6 text-indigo-100">
-                                Asas Bahasa Melayu melalui huruf, bunyi dan
-                                perkataan.
-                            </p>
+                    <div class="relative mx-auto">
+                        <div
+                            class="h-[290px] w-[165px] rounded-[30px] border-4 border-[#17203a] bg-white p-3"
+                        >
+                            <div class="h-full rounded-[20px] bg-[#7dd3fc] p-3">
+                                <div
+                                    class="mx-auto h-1.5 w-14 rounded-full bg-[#17203a]"
+                                ></div>
+                                <div class="mt-8 grid place-items-center">
+                                    <span class="oji large"
+                                        ><span></span><span></span
+                                    ></span>
+                                    <p
+                                        class="mt-5 text-center text-xl font-black"
+                                    >
+                                        Jom main!
+                                    </p>
+                                    <div
+                                        class="mt-5 w-full rounded-[14px_14px_14px_4px] border-2 border-[#17203a] bg-[#f1c84b] py-3 text-center text-sm font-black"
+                                    >
+                                        Mula JomABC
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="border-2 border-[#17152b] p-5">
-                            <p class="text-xs font-black text-[#d9473d]">
-                                AKAN DATANG
-                            </p>
-                            <p class="mt-2 text-xl font-black">JomMengaji</p>
-                            <p class="mt-2 text-sm leading-6 text-[#5b586d]">
-                                Modul pembelajaran mengaji sedang dirancang.
-                            </p>
-                        </div>
-                        <div class="border-2 border-[#17152b] p-5">
-                            <p class="text-xs font-black text-[#d9473d]">
-                                AKAN DATANG
-                            </p>
-                            <p class="mt-2 text-xl font-black">JomMengira</p>
-                            <p class="mt-2 text-sm leading-6 text-[#5b586d]">
-                                Modul asas nombor dan kiraan sedang dirancang.
-                            </p>
-                        </div>
+                        <Sparkles
+                            class="absolute -top-3 -right-10 size-10 text-[#5650e8]"
+                        />
+                    </div>
+                    <div>
+                        <p class="text-sm font-black text-[#17633c]">
+                            PWA DAHULU
+                        </p>
+                        <h2
+                            class="mt-3 text-4xl leading-[.98] font-black tracking-[-0.055em] sm:text-6xl"
+                        >
+                            Buka seperti web. Pasang seperti app.
+                        </h2>
+                        <p
+                            class="mt-6 max-w-2xl text-lg leading-8 text-[#354b43]"
+                        >
+                            JomKid dibina sebagai Progressive Web App. Ia boleh
+                            dibuka melalui browser dan dipasang pada peranti
+                            yang menyokong PWA tanpa menunggu aplikasi native.
+                        </p>
+                        <ul class="mt-7 grid gap-4 font-black sm:grid-cols-2">
+                            <li class="flex items-center gap-3">
+                                <Smartphone class="size-5" />Mobile-first
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <Cloud class="size-5" />Kemajuan disimpan ke
+                                akaun
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <MousePointer2 class="size-5" />Sentuhan dan
+                                klik
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <KeyRound class="size-5" />Akses melalui kod
+                                pembelian
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </section>
 
-            <section id="pakej" class="pb-20 lg:pb-28">
-                <div class="mx-auto max-w-7xl px-5 lg:px-8">
-                    <div class="max-w-3xl">
-                        <p class="text-sm font-black text-[#4f46e5]">
-                            AKSES LIFETIME
-                        </p>
-                        <h2
-                            class="mt-3 text-4xl leading-[1.02] font-black tracking-[-0.045em] sm:text-6xl"
-                        >
-                            Bayar sekali. Pilih ikut cara keluarga menggunakan
-                            JomKid.
-                        </h2>
-                    </div>
-                    <div
-                        class="mt-12 grid border-2 border-[#17152b] lg:grid-cols-2"
+            <section
+                id="pakej"
+                class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28"
+            >
+                <div class="max-w-3xl">
+                    <p class="text-sm font-black text-[#5650e8]">
+                        AKSES LIFETIME
+                    </p>
+                    <h2
+                        class="mt-3 text-4xl leading-[.98] font-black tracking-[-0.055em] sm:text-6xl"
                     >
-                        <article
-                            class="flex flex-col bg-white p-6 sm:p-9 lg:border-r-2 lg:border-[#17152b]"
-                        >
-                            <div class="flex items-start justify-between gap-4">
-                                <div>
-                                    <p
-                                        class="text-sm font-black text-[#4f46e5]"
-                                    >
-                                        BASIC
-                                    </p>
-                                    <h3 class="mt-2 text-3xl font-black">
-                                        Untuk keluarga
-                                    </h3>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-5xl font-black">RM69</p>
-                                    <p
-                                        class="text-sm font-semibold text-[#5b586d]"
-                                    >
-                                        sekali bayar
-                                    </p>
-                                </div>
-                            </div>
-                            <ul class="mt-8 grid gap-4 text-sm font-bold">
-                                <li class="flex gap-3">
-                                    <Check
-                                        class="size-5 shrink-0 text-[#4f46e5]"
-                                    />Maksimum 3 profil anak
-                                </li>
-                                <li class="flex gap-3">
-                                    <Check
-                                        class="size-5 shrink-0 text-[#4f46e5]"
-                                    />Akses lifetime pembelajaran
-                                </li>
-                                <li class="flex gap-3">
-                                    <Check
-                                        class="size-5 shrink-0 text-[#4f46e5]"
-                                    />Laporan kemajuan ibu bapa
-                                </li>
-                                <li class="flex gap-3 text-[#777487]">
-                                    <span class="w-5 shrink-0 text-center"
-                                        >×</span
-                                    >Tiada reseller atau affiliate license
-                                </li>
-                            </ul>
-                            <Link
-                                href="/checkout?package=basic"
-                                class="mt-9 inline-flex min-h-13 items-center justify-between border-t-2 border-[#17152b] pt-5 font-black text-[#4f46e5] focus-visible:outline-2 focus-visible:outline-offset-4"
-                                ><span>Beli JomKid Basic</span><ChevronRight
-                            /></Link>
-                        </article>
-
-                        <article
-                            class="relative flex flex-col bg-[#f1c84b] p-6 sm:p-9"
-                        >
-                            <span
-                                class="absolute top-0 right-5 -translate-y-1/2 rounded-[11px_11px_11px_3px] border-2 border-[#17152b] bg-[#ff766b] px-4 py-2 text-xs font-black text-white"
-                                >RESELLER LICENSE</span
-                            >
-                            <div class="flex items-start justify-between gap-4">
-                                <div>
-                                    <p
-                                        class="text-sm font-black text-[#a92d25]"
-                                    >
-                                        PREMIUM
-                                    </p>
-                                    <h3 class="mt-2 text-3xl font-black">
-                                        Untuk belajar dan menjual
-                                    </h3>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-5xl font-black">RM99</p>
-                                    <p class="text-sm font-semibold">
-                                        sekali bayar
-                                    </p>
-                                </div>
-                            </div>
-                            <ul class="mt-8 grid gap-4 text-sm font-bold">
-                                <li class="flex gap-3">
-                                    <Check class="size-5 shrink-0" />Profil anak
-                                    tanpa had
-                                </li>
-                                <li class="flex gap-3">
-                                    <ShieldCheck
-                                        class="size-5 shrink-0"
-                                    />Reseller license
-                                </li>
-                                <li class="flex gap-3">
-                                    <BadgeDollarSign
-                                        class="size-5 shrink-0"
-                                    />Link affiliate peribadi
-                                </li>
-                                <li class="flex gap-3">
-                                    <Check class="size-5 shrink-0" />Komisen 50%
-                                    untuk jualan referral langsung
-                                </li>
-                            </ul>
-                            <Link
-                                href="/checkout?package=premium"
-                                class="mt-9 inline-flex min-h-13 items-center justify-between border-t-2 border-[#17152b] pt-5 font-black focus-visible:outline-2 focus-visible:outline-offset-4"
-                                ><span>Beli Premium + Reseller</span
-                                ><ChevronRight
-                            /></Link>
-                        </article>
-                    </div>
-                    <div
-                        class="grid gap-4 border-x-2 border-b-2 border-[#17152b] bg-[#fffaf0] p-5 text-sm sm:grid-cols-3 sm:p-6"
-                    >
-                        <p class="flex items-center gap-3 font-bold">
-                            <ShieldCheck class="size-5 text-[#4f46e5]" />Bayaran
-                            melalui CHIP
-                        </p>
-                        <p class="flex items-center gap-3 font-bold">
-                            <MousePointer2 class="size-5 text-[#4f46e5]" />Beli
-                            sebelum daftar
-                        </p>
-                        <p class="flex items-center gap-3 font-bold">
-                            <CircleCheck class="size-5 text-[#4f46e5]" />Kod
-                            pendaftaran sekali guna
-                        </p>
-                    </div>
+                        Pilih berapa ramai anak yang akan bermain.
+                    </h2>
                 </div>
+
+                <div
+                    class="mt-12 grid border-3 border-[#17203a] lg:grid-cols-2"
+                >
+                    <article
+                        class="flex flex-col bg-white p-6 sm:p-9 lg:border-r-3 lg:border-[#17203a]"
+                    >
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <p class="text-sm font-black text-[#5650e8]">
+                                    BASIC
+                                </p>
+                                <h3 class="mt-2 text-3xl font-black">
+                                    Keluarga
+                                </h3>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-5xl font-black">RM69</p>
+                                <p class="text-sm font-semibold text-[#59627a]">
+                                    sekali bayar
+                                </p>
+                            </div>
+                        </div>
+                        <ul class="mt-8 grid gap-4 text-sm font-black">
+                            <li class="flex gap-3">
+                                <Check
+                                    class="size-5 shrink-0 text-[#5650e8]"
+                                />Maksimum 3 profil anak
+                            </li>
+                            <li class="flex gap-3">
+                                <Gamepad2
+                                    class="size-5 shrink-0 text-[#5650e8]"
+                                />Akses lifetime JomABC
+                            </li>
+                            <li class="flex gap-3">
+                                <BarChart3
+                                    class="size-5 shrink-0 text-[#5650e8]"
+                                />Kemajuan setiap profil
+                            </li>
+                            <li class="flex gap-3 text-[#72798b]">
+                                <span class="w-5 text-center">×</span>Tiada
+                                reseller atau affiliate
+                            </li>
+                        </ul>
+                        <Link
+                            href="/checkout?package=basic"
+                            class="mt-9 inline-flex min-h-14 items-center justify-between border-t-3 border-[#17203a] pt-5 font-black text-[#5650e8] focus-visible:outline-3 focus-visible:outline-offset-4"
+                        >
+                            <span>Pilih Basic</span><ChevronRight />
+                        </Link>
+                    </article>
+
+                    <article
+                        class="relative flex flex-col bg-[#f1c84b] p-6 sm:p-9"
+                    >
+                        <span
+                            class="absolute top-0 right-5 -translate-y-1/2 rounded-full border-3 border-[#17203a] bg-[#ff7369] px-4 py-2 text-xs font-black text-white"
+                            >RESELLER LICENSE</span
+                        >
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <p class="text-sm font-black text-[#a62e27]">
+                                    PREMIUM
+                                </p>
+                                <h3 class="mt-2 text-3xl font-black">
+                                    Keluarga + Reseller
+                                </h3>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-5xl font-black">RM99</p>
+                                <p class="text-sm font-semibold">
+                                    sekali bayar
+                                </p>
+                            </div>
+                        </div>
+                        <ul class="mt-8 grid gap-4 text-sm font-black">
+                            <li class="flex gap-3">
+                                <Users class="size-5 shrink-0" />Profil anak
+                                tanpa had
+                            </li>
+                            <li class="flex gap-3">
+                                <ShieldCheck class="size-5 shrink-0" />Reseller
+                                license
+                            </li>
+                            <li class="flex gap-3">
+                                <BadgeDollarSign class="size-5 shrink-0" />Link
+                                affiliate peribadi
+                            </li>
+                            <li class="flex gap-3">
+                                <Star class="size-5 shrink-0" />Komisen 50%
+                                jualan langsung
+                            </li>
+                        </ul>
+                        <Link
+                            href="/checkout?package=premium"
+                            class="mt-9 inline-flex min-h-14 items-center justify-between border-t-3 border-[#17203a] pt-5 font-black focus-visible:outline-3 focus-visible:outline-offset-4"
+                        >
+                            <span>Pilih Premium</span><ChevronRight />
+                        </Link>
+                    </article>
+                </div>
+                <p class="mt-5 text-sm font-semibold text-[#59627a]">
+                    Beli sebelum daftar. Kod sekali guna dihantar selepas
+                    bayaran CHIP disahkan.
+                </p>
             </section>
         </main>
 
-        <footer class="border-t-2 border-[#17152b] bg-white">
+        <footer class="border-t-3 border-[#17203a] bg-white">
             <div
-                class="mx-auto flex max-w-7xl flex-col justify-between gap-5 px-5 py-8 text-sm sm:flex-row sm:items-center lg:px-8"
+                class="mx-auto flex max-w-7xl flex-col justify-between gap-6 px-5 py-8 text-sm sm:flex-row sm:items-center lg:px-8"
             >
-                <div>
-                    <p class="font-black">JomKid</p>
-                    <p class="mt-1 text-[#5b586d]">
-                        Platform pembelajaran interaktif oleh Stwo Ventures.
-                    </p>
+                <div class="flex items-center gap-3">
+                    <span class="oji-mini" aria-hidden="true"
+                        ><span></span><span></span
+                    ></span>
+                    <div>
+                        <p class="font-black">JomKid</p>
+                        <p class="text-[#59627a]">
+                            Game-first learning PWA oleh Stwo Ventures.
+                        </p>
+                    </div>
                 </div>
-                <div class="flex flex-wrap gap-5 font-bold">
-                    <a
-                        href="#jomabc"
-                        class="inline-flex min-h-11 items-center hover:text-[#4f46e5] focus-visible:outline-2 focus-visible:outline-offset-2"
-                        >JomABC</a
-                    >
-                    <a
-                        href="#ibu-bapa"
-                        class="inline-flex min-h-11 items-center hover:text-[#4f46e5] focus-visible:outline-2 focus-visible:outline-offset-2"
-                        >Ibu bapa</a
-                    >
-                    <a
-                        href="#pakej"
-                        class="inline-flex min-h-11 items-center hover:text-[#4f46e5] focus-visible:outline-2 focus-visible:outline-offset-2"
-                        >Pakej</a
-                    >
-                    <Link
-                        href="/login"
-                        class="inline-flex min-h-11 items-center hover:text-[#4f46e5] focus-visible:outline-2 focus-visible:outline-offset-2"
-                        >Log masuk</Link
-                    >
+                <div class="flex flex-wrap gap-5 font-black">
+                    <a href="#permainan" class="footer-link">Permainan</a>
+                    <a href="#dunia" class="footer-link">Dunia</a>
+                    <a href="#ibu-bapa" class="footer-link">Ibu bapa</a>
+                    <a href="#pakej" class="footer-link">Pakej</a>
+                    <Link href="/login" class="footer-link">Log masuk</Link>
                 </div>
             </div>
         </footer>
     </div>
 </template>
+
+<style scoped>
+.nav-link,
+.footer-link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+}
+.nav-link:hover,
+.footer-link:hover {
+    color: #5650e8;
+}
+.nav-link:focus-visible,
+.footer-link:focus-visible {
+    outline: 3px solid #5650e8;
+    outline-offset: 4px;
+}
+.oji {
+    width: 92px;
+    height: 78px;
+    border: 3px solid #17203a;
+    border-radius: 48% 48% 42% 42%;
+    background: #5650e8;
+    animation: oji-float 3.5s ease-in-out infinite;
+}
+.oji-ear {
+    position: absolute;
+    top: -12px;
+    width: 31px;
+    height: 31px;
+    border: 3px solid #17203a;
+    background: #5650e8;
+    transform: rotate(45deg);
+    z-index: -1;
+}
+.oji-ear.left {
+    left: 7px;
+}
+.oji-ear.right {
+    right: 7px;
+}
+.oji-eye {
+    position: absolute;
+    top: 20px;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #17203a;
+    border-radius: 50%;
+    background: white;
+}
+.oji-eye.left {
+    left: 14px;
+}
+.oji-eye.right {
+    right: 14px;
+}
+.oji-eye span {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #17203a;
+}
+.oji-beak {
+    position: absolute;
+    top: 44px;
+    left: 38px;
+    width: 15px;
+    height: 15px;
+    border-right: 3px solid #17203a;
+    border-bottom: 3px solid #17203a;
+    background: #f1c84b;
+    transform: rotate(45deg);
+}
+.oji-mini {
+    position: relative;
+    display: inline-flex;
+    width: 42px;
+    height: 38px;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    border: 2px solid #17203a;
+    border-radius: 18px 18px 15px 15px;
+    background: #5650e8;
+}
+.oji-mini::after {
+    position: absolute;
+    bottom: 5px;
+    width: 7px;
+    height: 7px;
+    content: '';
+    border: 2px solid #17203a;
+    background: #f1c84b;
+    transform: rotate(45deg);
+}
+.oji-mini > span {
+    width: 11px;
+    height: 11px;
+    border: 2px solid #17203a;
+    border-radius: 50%;
+    background: white;
+}
+.oji-mini.large {
+    width: 78px;
+    height: 68px;
+    border-width: 3px;
+    border-radius: 32px 32px 27px 27px;
+}
+.oji-mini.large > span {
+    width: 22px;
+    height: 22px;
+    border-width: 3px;
+}
+.sound-pulse {
+    animation: sound-pulse 0.65s ease-in-out;
+}
+@keyframes oji-float {
+    0%,
+    100% {
+        transform: translateY(0) rotate(-3deg);
+    }
+    50% {
+        transform: translateY(-8px) rotate(2deg);
+    }
+}
+@keyframes sound-pulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.25);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .oji,
+    .sound-pulse {
+        animation: none;
+    }
+    * {
+        scroll-behavior: auto !important;
+    }
+}
+</style>

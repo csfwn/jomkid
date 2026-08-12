@@ -1,22 +1,31 @@
-# JomKid Landing Page Design Direction
+# JomKid Game-First PWA Design Direction
 
 ## Design Read
 
-Landing page pendidikan kanak-kanak untuk ibu bapa Malaysia, dalam bahasa visual buku aktiviti moden dengan motif speech bubble dan garisan dakwat.
+JomKid is an original game-first Bahasa Melayu learning world for Malaysian children. The landing page should feel like opening a playful game map, while still giving parents clear product, pricing, and progress information.
 
-**Dial:** ENERGY 3 / RHYTHM 3 / MOTION 1
+**Dial:** ENERGY 4 / RHYTHM 4 / MOTION 2
+
+## Product direction
+
+- JomKid launches as an installable web app before native mobile apps.
+- JomABC is the first playable world.
+- Core activities are short interactive games: listen and choose, drag and match, trace, speak, sort, and timed challenges.
+- JomMengaji and JomMengira are future worlds, clearly labelled as not yet available.
+- Children enter through parent-owned profiles. Parent progress and package controls remain outside the child play surface.
+- We may learn from Lingokids' game-first content hierarchy, but must not copy its illustrations, characters, layouts, copy, badges, or proprietary visual assets.
 
 ## Major decisions and reasons
 
-- **Color:** Indigo acts as the dependable parent-facing anchor, coral brings childlike energy, and butter yellow marks decisions and feedback. This keeps the palette specific to JomKid without using decorative gradients.
-- **Layout:** An editorial, asymmetric rhythm moves between a split hero, a horizontal learning sequence, a parent report composition, and a direct package comparison. Each composition follows a different content need.
-- **Typography:** Instrument Sans stays because its wide, friendly forms remain readable for parents while heavy weights support the workbook-like personality.
-- **Spacing:** Large section gaps separate the product story into clear decisions. Tighter spacing is reserved for lesson and report details that belong together.
-- **Cards:** Cards are used only for concrete product surfaces, package choices, and parent report data. Their shape and density vary according to hierarchy.
-- **Icons and motif:** Relevant learning, audio, parent, and payment icons clarify functions. Speech-bubble corners, offset borders, and short coral strokes repeat as the JomKid identity motif.
-- **Motion:** Motion is limited to hover and focus transitions. The page should feel energetic through composition and color, not decorative animation.
-- **Hero CTA:** One primary checkout CTA above the fold keeps the purchase decision clear. Navigation links only point to sections that exist.
-- **Product preview:** The hero shows a static, honest JomABC lesson example rather than a fake interactive control or skeleton screenshot.
-- **Evidence:** No testimonials, user statistics, performance percentages, or trust claims are shown without real source data.
-- **Checkout continuity:** Package controls look like tangible workbook tickets while the buyer form uses a raised speech-bubble panel. This carries the landing identity into payment while keeping selection and form hierarchy distinct.
-- **Checkout states:** Success, processing, and failure share one transaction-summary structure and use green, yellow, or coral only to identify status. Each state exposes one context-specific next action.
+- **Visual metaphor:** A side-scrolling game map replaces standard feature-card storytelling. It communicates playable progression without pretending unfinished games already exist.
+- **Original mascot:** A simple owl guide named Oji appears as CSS-built shapes and speech bubbles. It is original to JomKid and does not imitate third-party characters.
+- **Color:** Deep ink anchors parent trust; sky blue, coral, mango, leaf green, and lilac identify play zones. Flat colors and ink outlines avoid generic gradients.
+- **Layout:** The hero behaves like a game start screen. Subsequent sections alternate between a playable activity rail, child journey map, parent progress strip, and package comparison.
+- **Typography:** Instrument Sans remains highly readable. Large, compact headlines carry game energy while interface copy stays plain and direct.
+- **Cards:** Containers represent actual game tiles, child profile surfaces, reports, or package decisions. Decorative feature-card grids are avoided.
+- **Icons:** Lucide icons explain interaction types. CSS shapes and letters provide original product visuals without unlicensed media.
+- **Motion:** Restrained hover lifts and one gentle mascot float create liveliness. Reduced-motion users receive static content.
+- **CTA:** One dominant above-fold action, `Mulakan dengan JomABC`, leads to package selection and shows the real lifetime starting price beside it.
+- **Evidence:** No invented family counts, ratings, awards, testimonials, safety certifications, game totals, or performance claims.
+- **PWA language:** The page says the product is being built as an installable web app, not that App Store or Play Store versions already exist.
+- **Checkout continuity:** Existing checkout keeps the workbook/ticket treatment and remains the honest purchase step for Basic RM69 and Premium RM99.
