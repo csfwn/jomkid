@@ -2,17 +2,10 @@
 import { Head, Link } from '@inertiajs/vue3';
 import {
     ArrowRight,
-    BarChart3,
-    BookOpen,
     Check,
-    ChevronRight,
     Headphones,
     Mail,
-    MousePointer2,
-    RotateCcw,
-    Sparkles,
-    Star,
-    Users,
+    RefreshCw,
     Volume2,
 } from '@lucide/vue';
 import { computed, ref } from 'vue';
@@ -22,91 +15,49 @@ defineProps<{ canRegister: boolean }>();
 const answer = ref<string | null>(null);
 const listening = ref(false);
 const correct = computed(() => answer.value === 'M');
+
 const playPrompt = () => {
     listening.value = true;
     window.setTimeout(() => (listening.value = false), 650);
 };
 const choose = (letter: string) => (answer.value = letter);
 const reset = () => (answer.value = null);
-
-const activities = [
-    {
-        icon: Headphones,
-        title: 'Dengar bunyi',
-        copy: 'Anak dengar arahan pendek.',
-        color: 'bg-[#DDF2FF]',
-    },
-    {
-        icon: MousePointer2,
-        title: 'Pilih jawapan',
-        copy: 'Sentuh huruf atau gambar.',
-        color: 'bg-[#FFF0B8]',
-    },
-    {
-        icon: RotateCcw,
-        title: 'Cuba semula',
-        copy: 'Maklum balas diberi terus.',
-        color: 'bg-[#FFE0D8]',
-    },
-    {
-        icon: Star,
-        title: 'Buka langkah baru',
-        copy: 'Kemajuan disimpan per profil.',
-        color: 'bg-[#E4F5E8]',
-    },
-];
 </script>
 
 <template>
     <Head title="JomKid, Belajar Bahasa Melayu Melalui Permainan">
         <meta
             name="description"
-            content="JomKid ialah game-first web app untuk anak Malaysia. Main aktiviti JomABC dan pantau kemajuan anak."
+            content="JomKid menjadikan pembelajaran Bahasa Melayu satu pengalaman bermain yang ringkas, aktif dan mudah diikuti anak."
         />
+        <link rel="preload" as="image" href="/images/jomkid-hero.webp" />
     </Head>
 
-    <div class="min-h-screen overflow-x-clip bg-[#FFF9E8] text-[#17213B]">
-        <header class="relative z-30 bg-[#FFF9E8]/95 backdrop-blur">
+    <div class="marketing-page min-h-screen overflow-x-clip">
+        <header class="marketing-nav">
             <div
-                class="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-4 px-5 lg:px-8"
+                class="mx-auto flex h-18 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8"
             >
                 <Link
                     href="/"
-                    class="flex min-h-11 items-center gap-3 rounded-full focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#E0A800]"
+                    class="brand-link focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent)]"
                 >
-                    <span
-                        class="grid size-11 place-items-center rounded-2xl bg-[#FFD84D] text-xl font-black shadow-[0_4px_0_#E0A800]"
-                        >J</span
-                    >
-                    <span class="text-2xl font-black tracking-[-0.04em]"
+                    <span class="brand-mark">J</span>
+                    <span class="text-xl font-black tracking-[-0.04em]"
                         >JomKid</span
                     >
                 </Link>
+
                 <nav
                     aria-label="Navigasi utama"
-                    class="hidden items-center gap-8 text-sm font-bold md:flex"
+                    class="hidden h-full items-center gap-7 text-sm font-bold md:flex"
                 >
-                    <a
-                        href="#cara-main"
-                        class="inline-flex min-h-11 items-center hover:text-[#B36A00]"
-                        >Cara main</a
-                    >
-                    <a
-                        href="#dunia"
-                        class="inline-flex min-h-11 items-center hover:text-[#B36A00]"
-                        >Dunia</a
-                    >
-                    <a
-                        href="#ibu-bapa"
-                        class="inline-flex min-h-11 items-center hover:text-[#B36A00]"
-                        >Ibu bapa</a
-                    >
-                    <a
-                        href="#pakej"
-                        class="inline-flex min-h-11 items-center hover:text-[#B36A00]"
-                        >Pakej</a
-                    >
+                    <a href="#cara-main" class="nav-item">Cara main</a>
+                    <a href="#dunia" class="nav-item">Dunia</a>
+                    <a href="#ibu-bapa" class="nav-item">Ibu bapa</a>
+                    <a href="#pakej" class="nav-item">Pakej</a>
                 </nav>
+
                 <div class="flex items-center gap-2">
                     <Link
                         v-if="$page.props.auth.user"
@@ -115,468 +66,402 @@ const activities = [
                                 ? '/admin'
                                 : '/dashboard'
                         "
-                        class="inline-flex min-h-11 items-center rounded-full bg-[#17213B] px-5 text-sm font-black text-white focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#FFD84D]"
-                        >Buka akaun</Link
+                        class="button-primary min-h-11 px-5 text-sm"
                     >
+                        Buka akaun
+                    </Link>
                     <template v-else>
                         <Link
                             href="/login"
                             class="hidden min-h-11 items-center px-3 text-sm font-bold sm:inline-flex"
-                            >Log masuk</Link
                         >
+                            Log masuk
+                        </Link>
                         <Link
                             v-if="canRegister"
                             href="/checkout?package=basic"
-                            class="inline-flex min-h-12 items-center rounded-full bg-[#FFD84D] px-5 text-sm font-black shadow-[0_4px_0_#E0A800] transition hover:-translate-y-0.5 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#17213B]"
-                            >Mula sekarang</Link
+                            class="button-primary min-h-11 px-5 text-sm"
                         >
+                            Pilih pakej
+                        </Link>
                     </template>
                 </div>
             </div>
         </header>
 
         <main>
-            <section class="relative">
+            <section class="hero-shell">
                 <div
-                    class="absolute inset-x-0 top-0 h-[72%] rounded-b-[56px] bg-[#FFD84D] sm:rounded-b-[88px]"
-                    aria-hidden="true"
-                ></div>
-                <div
-                    class="relative mx-auto grid max-w-7xl gap-10 px-5 pt-10 pb-16 lg:grid-cols-[.88fr_1.12fr] lg:items-center lg:px-8 lg:pt-16 lg:pb-24"
+                    class="mx-auto grid min-h-[calc(100dvh-72px)] max-w-7xl items-center gap-8 px-4 py-8 sm:px-6 md:grid-cols-[.82fr_1.18fr] lg:gap-14 lg:px-8"
                 >
-                    <div class="max-w-xl">
-                        <p
-                            class="inline-flex min-h-10 items-center gap-2 rounded-full bg-white/80 px-4 text-sm font-black text-[#845400]"
-                        >
-                            <Sparkles class="size-4" /> GAME BAHASA MELAYU
-                        </p>
-                        <h1
-                            class="mt-6 text-[clamp(3.2rem,6vw,6.5rem)] leading-[.9] font-black tracking-[-0.065em]"
-                        >
-                            Belajar bila<br /><span
-                                class="text-white drop-shadow-[0_3px_0_#B36A00]"
-                                >anak bermain.</span
-                            >
+                    <div class="relative py-6 md:py-10">
+                        <p class="hero-eyebrow">Bahasa Melayu jadi permainan</p>
+                        <h1 class="hero-title">
+                            Dengar, sentuh,<br />terus faham.
                         </h1>
-                        <p
-                            class="mt-7 max-w-lg text-lg leading-8 font-semibold text-[#3A4055] sm:text-xl"
-                        >
-                            Aktiviti pendek JomABC mengajak anak dengar, sentuh
-                            dan cuba semula. Ibu bapa pula boleh melihat
-                            kemajuan setiap profil.
+                        <p class="hero-copy">
+                            Aktiviti pendek JomABC membantu anak mengenal bunyi,
+                            huruf dan perkataan melalui cubaan aktif.
                         </p>
-                        <div class="mt-8 flex flex-wrap items-center gap-4">
+                        <div class="mt-8 flex flex-wrap gap-3">
                             <Link
                                 href="/checkout?package=basic"
-                                class="inline-flex min-h-15 items-center gap-3 rounded-full bg-[#17213B] px-7 font-black text-white shadow-[0_6px_0_#65708E] transition hover:-translate-y-1 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-white"
+                                class="button-primary min-h-14 gap-3 px-7"
                             >
-                                Mulakan JomABC <ArrowRight class="size-5" />
+                                Pilih pakej <ArrowRight class="size-5" />
                             </Link>
-                            <p class="text-sm font-bold">
-                                Dari <strong class="text-lg">RM69</strong
-                                ><br /><span class="font-medium"
-                                    >sekali bayar</span
-                                >
-                            </p>
+                            <a
+                                href="#cara-main"
+                                class="button-secondary min-h-14 px-7"
+                            >
+                                Lihat cara main
+                            </a>
                         </div>
                     </div>
 
-                    <article
-                        aria-label="Demo permainan JomABC"
-                        class="relative mx-auto w-full max-w-2xl rounded-[36px] bg-white p-5 shadow-[0_22px_70px_rgba(51,44,18,.18)] sm:p-8"
+                    <figure class="hero-figure">
+                        <img
+                            src="/images/jomkid-hero.webp"
+                            alt="Seorang kanak-kanak menyusun blok huruf sambil memakai fon kepala"
+                            width="1536"
+                            height="1024"
+                            fetchpriority="high"
+                            class="h-full w-full object-cover object-center"
+                        />
+                    </figure>
+                </div>
+            </section>
+
+            <section class="price-strip" aria-label="Harga permulaan JomKid">
+                <div
+                    class="mx-auto grid max-w-7xl gap-5 px-4 py-7 sm:grid-cols-[auto_1fr_auto] sm:items-center sm:px-6 lg:px-8"
+                >
+                    <p class="text-4xl font-black tracking-[-0.05em]">RM69</p>
+                    <p class="max-w-lg text-sm leading-6 font-semibold">
+                        Akses Basic lifetime untuk sehingga 3 profil anak. Bayar
+                        sekali, kemudian daftar menggunakan kod e-mel.
+                    </p>
+                    <Link
+                        href="/checkout?package=basic"
+                        class="inline-flex min-h-11 items-center font-black underline decoration-2 underline-offset-5"
                     >
-                        <div class="flex items-center justify-between gap-4">
-                            <div class="flex items-center gap-3">
-                                <span
-                                    class="grid size-11 place-items-center rounded-2xl bg-[#DDF2FF] text-[#2075A5]"
-                                    ><Volume2 class="size-5"
-                                /></span>
+                        Pilih Basic <ArrowRight class="ml-2 size-4" />
+                    </Link>
+                </div>
+            </section>
+
+            <section id="cara-main" class="section-pad">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-2xl">
+                        <h2 class="section-title">
+                            Satu arahan pada satu masa.
+                        </h2>
+                        <p class="section-copy">
+                            Anak tahu apa yang perlu didengar, disentuh dan
+                            dicuba semula tanpa paparan yang berserabut.
+                        </p>
+                    </div>
+
+                    <div
+                        class="mt-12 grid gap-5 md:grid-cols-[1.35fr_.65fr] md:grid-rows-2"
+                    >
+                        <article class="demo-panel md:row-span-2">
+                            <div class="flex items-start justify-between gap-5">
                                 <div>
                                     <p
-                                        class="text-xs font-black text-[#65708E]"
+                                        class="text-sm font-bold text-[var(--muted)]"
                                     >
-                                        JOMABC · AKTIVITI 1
+                                        JomABC
                                     </p>
-                                    <h2 class="text-xl font-black">
+                                    <h3 class="mt-1 text-2xl font-black">
                                         Cari bunyi M
-                                    </h2>
+                                    </h3>
+                                </div>
+                                <span class="activity-count">1 / 3</span>
+                            </div>
+
+                            <div class="mt-8 text-center">
+                                <button
+                                    type="button"
+                                    class="sound-button"
+                                    :class="listening ? 'scale-105' : ''"
+                                    aria-label="Mainkan arahan bunyi"
+                                    @click="playPrompt"
+                                >
+                                    <Volume2 class="size-7" />
+                                </button>
+                                <p
+                                    class="mt-4 text-sm font-bold text-[var(--muted)]"
+                                >
+                                    Tekan untuk dengar
+                                </p>
+                                <p class="mt-7 text-xl font-black">
+                                    Huruf mana berbunyi “mmm”?
+                                </p>
+                                <div
+                                    class="mx-auto mt-5 grid max-w-lg grid-cols-3 gap-3"
+                                >
+                                    <button
+                                        v-for="letter in ['N', 'M', 'B']"
+                                        :key="letter"
+                                        type="button"
+                                        class="letter-button"
+                                        :class="
+                                            answer === letter
+                                                ? letter === 'M'
+                                                    ? 'letter-correct'
+                                                    : 'letter-wrong'
+                                                : ''
+                                        "
+                                        @click="choose(letter)"
+                                    >
+                                        {{ letter }}
+                                    </button>
                                 </div>
                             </div>
-                            <div
-                                class="flex gap-1.5"
-                                aria-label="Langkah 1 daripada 3"
-                            >
-                                <span
-                                    class="h-2 w-8 rounded-full bg-[#FFD84D]"
-                                ></span
-                                ><span
-                                    class="h-2 w-4 rounded-full bg-[#E8EAF0]"
-                                ></span
-                                ><span
-                                    class="h-2 w-4 rounded-full bg-[#E8EAF0]"
-                                ></span>
-                            </div>
-                        </div>
 
-                        <div
-                            class="mt-7 rounded-[28px] bg-[#78C9FF] px-5 py-8 text-center sm:px-8 sm:py-10"
-                        >
-                            <button
-                                type="button"
-                                class="mx-auto grid min-h-16 min-w-16 place-items-center rounded-full bg-white text-[#2075A5] shadow-[0_5px_0_#3798D4] transition hover:-translate-y-1 focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#17213B]"
-                                :class="listening ? 'scale-110' : ''"
-                                aria-label="Mainkan arahan bunyi"
-                                @click="playPrompt"
-                            >
-                                <Volume2 class="size-7" />
-                            </button>
-                            <p class="mt-4 text-sm font-black text-[#174E72]">
-                                Tekan untuk dengar
-                            </p>
-                            <h3 class="mt-6 text-2xl font-black text-white">
-                                Huruf mana berbunyi “mmm”?
+                            <div aria-live="polite" class="mt-6 min-h-16">
+                                <div
+                                    v-if="answer && correct"
+                                    class="feedback feedback-success"
+                                >
+                                    <p class="font-black">
+                                        <Check
+                                            class="mr-2 inline size-5"
+                                        />Betul! Ini huruf M.
+                                    </p>
+                                </div>
+                                <div
+                                    v-else-if="answer"
+                                    class="feedback feedback-error"
+                                >
+                                    <p class="font-black">
+                                        Hampir. Dengar sekali lagi.
+                                    </p>
+                                    <button
+                                        type="button"
+                                        class="inline-flex min-h-11 items-center gap-2 font-black"
+                                        @click="reset"
+                                    >
+                                        <RefreshCw class="size-4" /> Ulang
+                                    </button>
+                                </div>
+                                <p
+                                    v-else
+                                    class="py-4 text-center text-sm font-semibold text-[var(--muted)]"
+                                >
+                                    Pilih satu huruf untuk mencuba.
+                                </p>
+                            </div>
+                        </article>
+
+                        <article class="principle-panel principle-accent">
+                            <Headphones class="size-7" />
+                            <h3 class="mt-8 text-2xl font-black">
+                                Dengar dahulu.
                             </h3>
-                            <div class="mt-6 grid grid-cols-3 gap-3">
-                                <button
-                                    v-for="letter in ['N', 'M', 'B']"
-                                    :key="letter"
-                                    type="button"
-                                    class="min-h-24 rounded-[24px] bg-white text-4xl font-black shadow-[0_6px_0_rgba(23,78,114,.32)] transition hover:-translate-y-1 focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-[#FFD84D]"
-                                    :class="
-                                        answer === letter
-                                            ? letter === 'M'
-                                                ? 'ring-4 ring-[#4B9A67]'
-                                                : 'ring-4 ring-[#E96E55]'
-                                            : ''
-                                    "
-                                    @click="choose(letter)"
-                                >
-                                    {{ letter }}
-                                </button>
-                            </div>
-                        </div>
-
-                        <div aria-live="polite" class="mt-5 min-h-16">
-                            <div
-                                v-if="answer && correct"
-                                class="flex items-center justify-between gap-4 rounded-2xl bg-[#E4F5E8] px-5 py-4 text-[#28653D]"
-                            >
-                                <p class="font-black">
-                                    <Check class="mr-2 inline size-5" />Betul!
-                                    Ini huruf M.
-                                </p>
-                                <span class="text-2xl">★</span>
-                            </div>
-                            <div
-                                v-else-if="answer"
-                                class="flex items-center justify-between gap-4 rounded-2xl bg-[#FFE0D8] px-5 py-4 text-[#9C3E2B]"
-                            >
-                                <p class="font-black">
-                                    Hampir! Dengar sekali lagi.
-                                </p>
-                                <button
-                                    type="button"
-                                    class="inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-4 text-sm font-black"
-                                    @click="reset"
-                                >
-                                    <RotateCcw class="size-4" /> Ulang
-                                </button>
-                            </div>
-                            <p
-                                v-else
-                                class="py-4 text-center text-sm font-semibold text-[#65708E]"
-                            >
-                                Pilih satu huruf untuk mencuba demo.
-                            </p>
-                        </div>
-                    </article>
-                </div>
-            </section>
-
-            <section
-                id="cara-main"
-                class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28"
-            >
-                <div class="mx-auto max-w-2xl text-center">
-                    <p class="text-sm font-black text-[#B36A00]">
-                        SATU SESI, EMPAT LANGKAH
-                    </p>
-                    <h2
-                        class="mt-3 text-4xl leading-tight font-black tracking-[-0.045em] sm:text-5xl"
-                    >
-                        Mudah difahami oleh anak.
-                    </h2>
-                    <p class="mt-5 text-lg leading-8 text-[#65708E]">
-                        Setiap aktiviti fokus pada satu arahan supaya anak tahu
-                        apa yang perlu dibuat seterusnya.
-                    </p>
-                </div>
-                <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                    <article
-                        v-for="(item, index) in activities"
-                        :key="item.title"
-                        class="rounded-[28px] p-6"
-                        :class="item.color"
-                    >
-                        <span
-                            class="grid size-12 place-items-center rounded-2xl bg-white"
-                            ><component :is="item.icon" class="size-5"
-                        /></span>
-                        <p class="mt-8 text-sm font-black text-[#65708E]">
-                            0{{ index + 1 }}
-                        </p>
-                        <h3 class="mt-2 text-xl font-black">
-                            {{ item.title }}
-                        </h3>
-                        <p class="mt-2 leading-7 text-[#4D566E]">
-                            {{ item.copy }}
-                        </p>
-                    </article>
-                </div>
-            </section>
-
-            <section id="dunia" class="bg-white py-20 lg:py-28">
-                <div
-                    class="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-[.8fr_1.2fr] lg:items-center lg:px-8"
-                >
-                    <div>
-                        <p class="text-sm font-black text-[#B36A00]">
-                            DUNIA JOMKID
-                        </p>
-                        <h2
-                            class="mt-3 text-4xl leading-tight font-black tracking-[-0.045em] sm:text-5xl"
-                        >
-                            Mula dengan huruf dan bunyi.
-                        </h2>
-                        <p class="mt-5 text-lg leading-8 text-[#65708E]">
-                            JomABC dibuka dahulu. JomMengaji dan JomMengira akan
-                            menyusul selepas pengalaman setiap dunia siap dibina
-                            dan diuji.
-                        </p>
-                    </div>
-                    <div class="grid gap-4 sm:grid-cols-3">
-                        <article
-                            class="rounded-[32px] bg-[#FFD84D] p-6 shadow-[0_10px_30px_rgba(224,168,0,.18)]"
-                        >
-                            <span
-                                class="grid size-16 place-items-center rounded-full bg-white text-3xl font-black"
-                                >A</span
-                            >
-                            <p class="mt-10 text-xs font-black text-[#845400]">
-                                SEDIA DAHULU
-                            </p>
-                            <h3 class="mt-2 text-2xl font-black">JomABC</h3>
                             <p class="mt-2 leading-7">
-                                Huruf, bunyi dan perkataan mudah.
+                                Arahan ringkas memberi satu fokus yang jelas.
                             </p>
                         </article>
-                        <article class="rounded-[32px] bg-[#F2EEFF] p-6">
-                            <span
-                                class="grid size-16 place-items-center rounded-full bg-white text-3xl font-black"
-                                >ا</span
-                            >
-                            <p class="mt-10 text-xs font-black text-[#6A58A8]">
-                                AKAN DATANG
-                            </p>
-                            <h3 class="mt-2 text-2xl font-black">JomMengaji</h3>
-                            <p class="mt-2 leading-7 text-[#65708E]">
-                                Pengenalan huruf dan bunyi.
-                            </p>
-                        </article>
-                        <article class="rounded-[32px] bg-[#E4F5E8] p-6">
-                            <span
-                                class="grid size-16 place-items-center rounded-full bg-white text-3xl font-black"
-                                >1</span
-                            >
-                            <p class="mt-10 text-xs font-black text-[#3E7D52]">
-                                AKAN DATANG
-                            </p>
-                            <h3 class="mt-2 text-2xl font-black">JomMengira</h3>
-                            <p class="mt-2 leading-7 text-[#65708E]">
-                                Nombor dan operasi asas.
-                            </p>
-                        </article>
-                    </div>
-                </div>
-            </section>
 
-            <section
-                id="ibu-bapa"
-                class="mx-auto grid max-w-7xl gap-12 px-5 py-20 lg:grid-cols-2 lg:items-center lg:px-8 lg:py-28"
-            >
-                <div
-                    class="order-2 rounded-[36px] bg-[#17213B] p-7 text-white shadow-[0_18px_60px_rgba(23,33,59,.18)] sm:p-9 lg:order-1"
-                >
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-bold text-[#AEB6CA]">
-                                PROFIL ANAK
-                            </p>
-                            <h3 class="mt-1 text-2xl font-black">
-                                Alya · JomABC
+                        <article class="principle-panel">
+                            <Check class="size-7 text-[var(--accent)]" />
+                            <h3 class="mt-8 text-2xl font-black">
+                                Terus tahu.
                             </h3>
-                        </div>
-                        <span
-                            class="grid size-12 place-items-center rounded-full bg-[#FFD84D] font-black text-[#17213B]"
-                            >A</span
-                        >
-                    </div>
-                    <div class="mt-8 rounded-[26px] bg-white/10 p-6">
-                        <div class="flex justify-between text-sm font-bold">
-                            <span>Aktiviti semasa</span><span>Huruf M</span>
-                        </div>
-                        <div class="mt-4 h-3 rounded-full bg-white/15">
-                            <div
-                                class="h-full w-2/3 rounded-full bg-[#FFD84D]"
-                            ></div>
-                        </div>
-                        <p class="mt-4 text-sm text-[#C8CEDE]">
-                            Seterusnya: ulang bunyi B
-                        </p>
-                    </div>
-                    <div class="mt-5 grid grid-cols-2 gap-4">
-                        <div
-                            class="rounded-[22px] bg-[#78C9FF] p-5 text-[#173F59]"
-                        >
-                            <BarChart3 class="size-5" />
-                            <p class="mt-5 text-sm font-bold">
-                                Kemajuan aktiviti
+                            <p class="mt-2 leading-7 text-[var(--muted)]">
+                                Jawapan salah boleh dicuba semula serta-merta.
                             </p>
-                        </div>
-                        <div
-                            class="rounded-[22px] bg-[#FF8F78] p-5 text-[#692C20]"
-                        >
-                            <Users class="size-5" />
-                            <p class="mt-5 text-sm font-bold">
-                                Profil berasingan
-                            </p>
-                        </div>
+                        </article>
                     </div>
-                </div>
-                <div class="order-1 lg:order-2">
-                    <p class="text-sm font-black text-[#B36A00]">
-                        UNTUK IBU BAPA
-                    </p>
-                    <h2
-                        class="mt-3 text-4xl leading-tight font-black tracking-[-0.045em] sm:text-5xl"
-                    >
-                        Anak nampak permainan. Anda nampak kemajuan.
-                    </h2>
-                    <p class="mt-5 text-lg leading-8 text-[#65708E]">
-                        Setiap profil menyimpan aktiviti dan topik yang perlu
-                        diulang. Basic menyokong sehingga 3 profil; Premium
-                        tanpa had.
-                    </p>
                 </div>
             </section>
 
-            <section id="pakej" class="bg-[#FFD84D] py-20 lg:py-28">
-                <div class="mx-auto max-w-6xl px-5 lg:px-8">
-                    <div class="mx-auto max-w-2xl text-center">
-                        <p class="text-sm font-black text-[#845400]">
-                            AKSES LIFETIME
+            <section id="dunia" class="world-section">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-2xl">
+                        <h2 class="section-title">JomABC dibuka dahulu.</h2>
+                        <p class="section-copy">
+                            Huruf, bunyi dan perkataan mudah menjadi dunia
+                            pertama sebelum JomMengaji dan JomMengira menyusul.
                         </p>
-                        <h2
-                            class="mt-3 text-4xl font-black tracking-[-0.045em] sm:text-5xl"
-                        >
-                            Bayar sekali. Pilih ikut keluarga.
-                        </h2>
                     </div>
-                    <div class="mt-12 grid gap-5 md:grid-cols-2">
-                        <article class="rounded-[32px] bg-white p-7 sm:p-9">
-                            <p class="text-sm font-black text-[#65708E]">
-                                BASIC
-                            </p>
-                            <div class="mt-3 flex items-end gap-2">
-                                <strong class="text-5xl font-black">RM69</strong
-                                ><span class="pb-1 font-semibold text-[#65708E]"
-                                    >lifetime</span
-                                >
+                    <figure class="world-figure mt-10">
+                        <img
+                            src="/images/jomkid-world.webp"
+                            alt="Dunia permainan huruf dengan laluan, fon kepala, buku dan puzzle"
+                            width="1822"
+                            height="863"
+                            class="h-full w-full object-cover"
+                        />
+                    </figure>
+                    <div class="mt-6 grid gap-4 sm:grid-cols-[1.2fr_.9fr_.9fr]">
+                        <div class="world-label world-active">
+                            <strong>JomABC</strong>
+                            <span>Sedia dimainkan dahulu</span>
+                        </div>
+                        <div class="world-label">
+                            <strong>JomMengaji</strong>
+                            <span>Akan datang</span>
+                        </div>
+                        <div class="world-label">
+                            <strong>JomMengira</strong>
+                            <span>Akan datang</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ibu-bapa" class="section-pad">
+                <div
+                    class="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 md:grid-cols-[1.1fr_.9fr] md:items-center lg:gap-16 lg:px-8"
+                >
+                    <figure class="family-figure">
+                        <img
+                            src="/images/jomkid-family.webp"
+                            alt="Seorang ibu melihat kemajuan pembelajaran bersama anaknya"
+                            width="1536"
+                            height="1024"
+                            class="h-full w-full object-cover object-left"
+                        />
+                    </figure>
+                    <div>
+                        <h2 class="section-title">
+                            Anak bermain. Ibu bapa tetap tahu.
+                        </h2>
+                        <p class="section-copy">
+                            Setiap profil menyimpan aktiviti dan topik yang
+                            perlu diulang untuk semakan keluarga.
+                        </p>
+                        <div
+                            class="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2"
+                        >
+                            <div class="parent-fact">
+                                <strong>Basic</strong>
+                                <span>Sehingga 3 profil anak</span>
                             </div>
-                            <ul class="mt-7 space-y-3 font-semibold">
-                                <li class="flex gap-3">
+                            <div class="parent-fact">
+                                <strong>Premium</strong>
+                                <span>Profil anak tanpa had</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="pakej" class="pricing-section">
+                <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-2xl">
+                        <p class="pricing-eyebrow">Akses lifetime</p>
+                        <h2 class="section-title">Pilih ikut keluarga anda.</h2>
+                        <p class="section-copy">
+                            Kedua-dua pakej dibayar sekali. Perbezaannya ialah
+                            jumlah profil serta hak reseller dan affiliate.
+                        </p>
+                    </div>
+
+                    <div class="mt-12 grid gap-5 md:grid-cols-[.92fr_1.08fr]">
+                        <article class="price-option">
+                            <div>
+                                <p
+                                    class="text-sm font-black text-[var(--muted)]"
+                                >
+                                    Basic
+                                </p>
+                                <p
+                                    class="mt-3 text-5xl font-black tracking-[-0.06em]"
+                                >
+                                    RM69
+                                </p>
+                                <p
+                                    class="mt-1 text-sm font-semibold text-[var(--muted)]"
+                                >
+                                    sekali bayar
+                                </p>
+                            </div>
+                            <div class="mt-9 grid gap-3 font-semibold">
+                                <p class="flex gap-3">
                                     <Check
-                                        class="size-5 text-[#4B9A67]"
-                                    />Maksimum 3 profil anak
-                                </li>
-                                <li class="flex gap-3">
-                                    <Check class="size-5 text-[#4B9A67]" />Akses
-                                    pembelajaran lifetime
-                                </li>
-                                <li class="flex gap-3">
+                                        class="size-5 text-[var(--accent)]"
+                                    />3 profil anak
+                                </p>
+                                <p class="flex gap-3">
                                     <Check
-                                        class="size-5 text-[#4B9A67]"
-                                    />Laporan kemajuan ibu bapa
-                                </li>
-                            </ul>
+                                        class="size-5 text-[var(--accent)]"
+                                    />Akses pembelajaran lifetime
+                                </p>
+                                <p class="flex gap-3">
+                                    <Check
+                                        class="size-5 text-[var(--accent)]"
+                                    />Laporan ibu bapa
+                                </p>
+                            </div>
                             <Link
                                 href="/checkout?package=basic"
-                                class="mt-8 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-full bg-[#17213B] px-6 font-black text-white"
-                                >Pilih Basic <ChevronRight class="size-5"
-                            /></Link>
+                                class="button-secondary mt-9 min-h-14 w-full justify-center"
+                            >
+                                Pilih Basic
+                            </Link>
                         </article>
-                        <article
-                            class="rounded-[32px] bg-[#17213B] p-7 text-white sm:p-9"
-                        >
-                            <p class="text-sm font-black text-[#FFD84D]">
-                                PREMIUM + RESELLER
-                            </p>
-                            <div class="mt-3 flex items-end gap-2">
-                                <strong class="text-5xl font-black">RM99</strong
-                                ><span class="pb-1 font-semibold text-[#C8CEDE]"
-                                    >lifetime</span
+
+                        <article class="price-option price-featured">
+                            <div>
+                                <p class="text-sm font-black">
+                                    Premium + Reseller
+                                </p>
+                                <p
+                                    class="mt-3 text-5xl font-black tracking-[-0.06em]"
                                 >
+                                    RM99
+                                </p>
+                                <p
+                                    class="mt-1 text-sm font-semibold opacity-75"
+                                >
+                                    sekali bayar
+                                </p>
                             </div>
-                            <ul class="mt-7 space-y-3 font-semibold">
-                                <li class="flex gap-3">
-                                    <Check
-                                        class="size-5 text-[#FFD84D]"
-                                    />Profil anak tanpa had
-                                </li>
-                                <li class="flex gap-3">
-                                    <Check
-                                        class="size-5 text-[#FFD84D]"
-                                    />Reseller license
-                                </li>
-                                <li class="flex gap-3">
-                                    <Check
-                                        class="size-5 text-[#FFD84D]"
-                                    />Affiliate langsung 50%
-                                </li>
-                            </ul>
+                            <div class="mt-9 grid gap-3 font-semibold">
+                                <p class="flex gap-3">
+                                    <Check class="size-5" />Profil anak tanpa
+                                    had
+                                </p>
+                                <p class="flex gap-3">
+                                    <Check class="size-5" />Reseller license
+                                </p>
+                                <p class="flex gap-3">
+                                    <Check class="size-5" />Affiliate langsung
+                                    50%
+                                </p>
+                            </div>
                             <Link
                                 href="/checkout?package=premium"
-                                class="mt-8 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-full bg-[#FFD84D] px-6 font-black text-[#17213B]"
-                                >Pilih Premium <ChevronRight class="size-5"
-                            /></Link>
+                                class="featured-button mt-9 min-h-14 w-full justify-center"
+                            >
+                                Pilih Premium
+                            </Link>
                         </article>
                     </div>
-                    <div
-                        class="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm font-semibold text-[#53451A]"
+
+                    <p
+                        class="mt-8 flex items-start gap-3 text-sm leading-6 text-[var(--muted)]"
                     >
-                        <span class="flex items-center gap-2"
-                            ><Mail class="size-4" />Kod dihantar selepas bayaran
-                            disahkan</span
-                        ><span class="flex items-center gap-2"
-                            ><BookOpen class="size-4" />Daftar menggunakan kod
-                            sekali guna</span
-                        >
-                    </div>
+                        <Mail class="mt-0.5 size-5 shrink-0" />Kod pendaftaran
+                        dihantar selepas CHIP mengesahkan bayaran.
+                    </p>
                 </div>
             </section>
         </main>
 
-        <footer class="bg-[#17213B] py-10 text-white">
+        <footer class="marketing-footer">
             <div
-                class="mx-auto flex max-w-7xl flex-col gap-5 px-5 sm:flex-row sm:items-center sm:justify-between lg:px-8"
+                class="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8"
             >
-                <div class="flex items-center gap-3">
-                    <span
-                        class="grid size-10 place-items-center rounded-2xl bg-[#FFD84D] font-black text-[#17213B]"
-                        >J</span
-                    ><strong class="text-xl">JomKid</strong>
+                <div class="brand-link">
+                    <span class="brand-mark">J</span>
+                    <strong class="text-xl">JomKid</strong>
                 </div>
-                <p class="text-sm text-[#AEB6CA]">
+                <p class="text-sm text-[var(--muted)]">
                     Game-first learning web app oleh Stwo Ventures.
                 </p>
             </div>
@@ -585,12 +470,359 @@ const activities = [
 </template>
 
 <style scoped>
-html {
-    scroll-behavior: smooth;
+.marketing-page {
+    --page: #f7f8f4;
+    --surface: #fdfefb;
+    --surface-soft: #eef1f4;
+    --ink: #16213a;
+    --muted: #5d687b;
+    --line: #dbe0e6;
+    --accent: #d84d16;
+    --accent-strong: #b83d0d;
+    --accent-ink: #fff8f2;
+    --sky: #dbeefa;
+    color: var(--ink);
+    background: var(--page);
 }
-a,
-button {
-    -webkit-tap-highlight-color: transparent;
+.marketing-nav {
+    position: relative;
+    z-index: 20;
+    background: color-mix(in srgb, var(--page) 92%, transparent);
+    border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(16px);
+}
+.brand-link,
+.button-primary,
+.button-secondary,
+.featured-button,
+.nav-item {
+    display: inline-flex;
+    align-items: center;
+}
+.brand-link {
+    min-height: 2.75rem;
+    gap: 0.75rem;
+}
+.brand-mark {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    border-radius: 0.875rem;
+    color: var(--accent-ink);
+    background: var(--accent);
+    font-weight: 900;
+}
+.nav-item {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    justify-content: center;
+    padding-inline: 0.25rem;
+}
+.nav-item:hover {
+    color: var(--accent);
+}
+.button-primary,
+.featured-button {
+    border-radius: 999px;
+    color: var(--accent-ink);
+    background: var(--accent);
+    font-weight: 900;
+    transition:
+        transform 240ms cubic-bezier(0.16, 1, 0.3, 1),
+        background-color 240ms ease;
+}
+.button-primary:hover,
+.featured-button:hover {
+    transform: translateY(-2px);
+    background: var(--accent-strong);
+}
+.button-primary:active,
+.featured-button:active {
+    transform: translateY(1px) scale(0.98);
+}
+.button-secondary {
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    background: var(--surface);
+    font-weight: 900;
+    transition:
+        transform 240ms cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 240ms ease;
+}
+.button-secondary:hover {
+    transform: translateY(-2px);
+    border-color: var(--ink);
+}
+.hero-shell {
+    background: var(--page);
+}
+.hero-eyebrow,
+.pricing-eyebrow {
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+.hero-title {
+    max-width: 9ch;
+    margin-top: 1rem;
+    font-size: clamp(3.1rem, 6.2vw, 6rem);
+    font-weight: 900;
+    letter-spacing: -0.065em;
+    line-height: 0.94;
+}
+.hero-copy {
+    max-width: 36rem;
+    margin-top: 1.5rem;
+    color: var(--muted);
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-weight: 600;
+    line-height: 1.7;
+}
+.hero-figure,
+.family-figure,
+.world-figure {
+    overflow: hidden;
+    border-radius: 1.5rem;
+    background: var(--surface-soft);
+}
+.hero-figure {
+    height: min(72dvh, 680px);
+}
+.price-strip {
+    color: var(--accent-ink);
+    background: var(--accent);
+}
+.section-pad,
+.world-section,
+.pricing-section {
+    padding-block: clamp(5rem, 9vw, 8rem);
+}
+.world-section {
+    background: var(--surface);
+}
+.pricing-section {
+    background: var(--surface-soft);
+}
+.section-title {
+    max-width: 16ch;
+    font-size: clamp(2.5rem, 5vw, 4.8rem);
+    font-weight: 900;
+    letter-spacing: -0.055em;
+    line-height: 0.98;
+}
+.section-copy {
+    max-width: 42rem;
+    margin-top: 1.25rem;
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.75;
+}
+.demo-panel,
+.principle-panel,
+.price-option {
+    border-radius: 1.25rem;
+    background: var(--surface);
+}
+.demo-panel {
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border: 1px solid var(--line);
+}
+.activity-count {
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+.sound-button {
+    display: grid;
+    width: 4rem;
+    height: 4rem;
+    margin-inline: auto;
+    place-items: center;
+    border-radius: 999px;
+    color: var(--accent-ink);
+    background: var(--accent);
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sound-button:active {
+    transform: scale(0.96);
+}
+.letter-button {
+    min-height: 6.5rem;
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
+    color: var(--ink);
+    background: var(--page);
+    font-size: 2.5rem;
+    font-weight: 900;
+    transition:
+        transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 220ms ease;
+}
+.letter-button:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+}
+.letter-button:active {
+    transform: translateY(1px) scale(0.98);
+}
+.letter-correct {
+    border-color: #2f855a;
+    box-shadow: inset 0 0 0 2px #2f855a;
+}
+.letter-wrong {
+    border-color: #bd3f32;
+    box-shadow: inset 0 0 0 2px #bd3f32;
+}
+.feedback {
+    display: flex;
+    min-height: 4rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+}
+.feedback-success {
+    color: #245d3c;
+    background: #e3f2e8;
+}
+.feedback-error {
+    color: #8e3026;
+    background: #f8e4e0;
+}
+.principle-panel {
+    padding: 1.75rem;
+    border: 1px solid var(--line);
+}
+.principle-accent {
+    color: var(--accent-ink);
+    background: var(--accent);
+    border-color: transparent;
+}
+.world-figure {
+    aspect-ratio: 2.1 / 1;
+}
+.world-label {
+    display: grid;
+    gap: 0.35rem;
+    padding: 1.2rem 1.35rem;
+    border-left: 2px solid var(--line);
+}
+.world-label strong {
+    font-size: 1.05rem;
+}
+.world-label span {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+.world-active {
+    border-left-color: var(--accent);
+}
+.family-figure {
+    aspect-ratio: 3 / 2;
+}
+.parent-fact {
+    display: grid;
+    gap: 0.35rem;
+    padding-left: 1.1rem;
+    border-left: 2px solid var(--accent);
+}
+.parent-fact span {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+.price-option {
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border: 1px solid var(--line);
+}
+.price-featured {
+    color: var(--accent-ink);
+    background: var(--accent);
+    border-color: transparent;
+}
+.price-featured .featured-button {
+    color: var(--ink);
+    background: var(--surface);
+}
+.marketing-footer {
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+}
+
+@media (prefers-color-scheme: dark) {
+    .marketing-page {
+        --page: #111827;
+        --surface: #172036;
+        --surface-soft: #1d2942;
+        --ink: #f1f4f8;
+        --muted: #b2bdcd;
+        --line: #33405a;
+        --accent: #f06a32;
+        --accent-strong: #ff7942;
+        --accent-ink: #151a28;
+        --sky: #243a52;
+    }
+    .hero-figure img,
+    .family-figure img,
+    .world-figure img {
+        opacity: 0.92;
+    }
+    .feedback-success {
+        color: #bce6c9;
+        background: #1e4730;
+    }
+    .feedback-error {
+        color: #ffd0c8;
+        background: #512b28;
+    }
+}
+@media (max-width: 767px) {
+    .hero-title {
+        max-width: 10ch;
+        font-size: clamp(3rem, 15vw, 4.5rem);
+    }
+    .hero-copy {
+        max-width: 32ch;
+    }
+    .hero-figure {
+        height: 52dvh;
+        min-height: 380px;
+    }
+    .world-figure {
+        aspect-ratio: 1 / 1;
+    }
+    .family-figure {
+        aspect-ratio: 1 / 1;
+    }
+}
+@media (prefers-reduced-motion: no-preference) {
+    .hero-figure {
+        animation: hero-enter 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .hero-title,
+    .hero-copy,
+    .hero-eyebrow {
+        animation: copy-enter 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .hero-copy {
+        animation-delay: 80ms;
+    }
+}
+@keyframes hero-enter {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+}
+@keyframes copy-enter {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
 }
 @media (prefers-reduced-motion: reduce) {
     *,
